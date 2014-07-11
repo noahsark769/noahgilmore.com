@@ -1,0 +1,85 @@
+.height(@h) {
+	height: @h;
+	line-height: @h;
+}
+
+.box-sizing(@s) {
+	-webkit-box-sizing: @s;
+	-moz-box-sizing: @s;
+	box-sizing: @s;
+}
+
+// let me use padding without fear
+* {
+	.box-sizing(border-box);
+}
+
+html, body {
+	height: 100%;
+}
+
+@main-width: 960px;
+@roboto: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+@bariol: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+.container {
+	display: block;
+	width: @main-width;
+	height: 100%;
+	margin: 0 auto;
+}
+
+
+@left-container-width: @main-width * 0.4;
+.left {
+	display: inline-block;
+	width: @left-container-width;
+	height: 100%;
+	background-image: url("https://berkeleytime-production-static.s3.amazonaws.com/static_media/css/img/berkeley.jpg");
+	background-size: cover;
+	background-position: center center;
+
+	padding-top: 50px;
+
+	position: relative;
+
+	.title {
+		font-family: @roboto;
+		height: 60px;
+		line-height: 60px - 20px;
+		font-size: 30px;
+		text-transform: uppercase;
+
+		width: 100%;
+		text-align: left;
+		margin-bottom: 10px;
+		padding: 10px 15px 10px 0;
+		background-color: white;
+		text-align: right;
+	}
+
+	.links {
+		display: block;
+		position: absolute;
+		bottom: 50px;
+		left: 0;
+		right: 0;
+
+		.link {
+			display: block;
+			width: 100%;
+			padding: 15px 15px 15px 0;
+			background-color: white;
+
+			text-align: center;
+			font-family: @bariol;
+			text-transform: uppercase;
+
+			margin-bottom: 10px;
+			text-align: right;
+
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

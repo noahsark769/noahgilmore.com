@@ -1,0 +1,59 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+.container {
+  display: block;
+  width: 960px;
+  height: 100%;
+  margin: 0 auto;
+}
+.left {
+  display: inline-block;
+  width: 384px;
+  height: 100%;
+  background-image: url("https://berkeleytime-production-static.s3.amazonaws.com/static_media/css/img/berkeley.jpg");
+  background-size: cover;
+  background-position: center center;
+  padding-top: 50px;
+  position: relative;
+}
+.left .title {
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+  height: 60px;
+  line-height: 40px;
+  font-size: 30px;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 10px 15px 10px 0;
+  background-color: white;
+  text-align: right;
+}
+.left .links {
+  display: block;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+}
+.left .links .link {
+  display: block;
+  width: 100%;
+  padding: 15px 15px 15px 0;
+  background-color: white;
+  text-align: center;
+  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: right;
+}
+.left .links .link:last-of-type {
+  margin-bottom: 0;
+}
