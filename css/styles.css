@@ -53,6 +53,14 @@ body {
   text-transform: uppercase;
   margin-bottom: 10px;
   text-align: right;
+  cursor: pointer;
+}
+.left .links .link a,
+.left .links .link a:active,
+.left .links .link a:focus {
+  outline: none;
+  color: inherit;
+  text-decoration: none;
 }
 .left .links .link:last-of-type {
   margin-bottom: 0;
