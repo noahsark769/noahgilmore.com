@@ -12,10 +12,16 @@ body {
   width: 960px;
   height: 100%;
   margin: 0 auto;
+  font-size: 0;
+}
+.left,
+.right {
+  display: inline-block;
+  vertical-align: middle;
 }
 .left {
-  display: inline-block;
   width: 384px;
+  margin-right: 70px;
   height: 100%;
   background-image: url("https://berkeleytime-production-static.s3.amazonaws.com/static_media/css/img/berkeley.jpg");
   background-size: cover;
@@ -50,6 +56,7 @@ body {
   background-color: white;
   text-align: center;
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
   text-transform: uppercase;
   margin-bottom: 10px;
   text-align: right;
@@ -64,4 +71,14 @@ body {
 }
 .left .links .link:last-of-type {
   margin-bottom: 0;
+}
+.right {
+  width: 506px;
+  text-align: left;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+  text-transform: lowercase;
+  border-bottom: 1px solid #eee;
 }
