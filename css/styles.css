@@ -74,11 +74,14 @@ body {
 }
 .right {
   width: 506px;
+  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+}
+.right .intro {
+  width: 100%;
   text-align: left;
   height: 40px;
   line-height: 40px;
   font-size: 16px;
-  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
   text-transform: lowercase;
   border-bottom: 1px solid #eee;
 }
