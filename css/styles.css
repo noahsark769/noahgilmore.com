@@ -76,7 +76,14 @@ body {
   width: 506px;
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
 }
-.right .intro {
+.right .section {
+  display: none;
+}
+.right .section.current {
+  display: block;
+}
+.right .intro,
+.right .about {
   width: 100%;
   text-align: left;
   height: 40px;
