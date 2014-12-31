@@ -65,7 +65,6 @@ body {
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
   font-size: 16px;
   text-transform: uppercase;
-  margin-bottom: 10px;
   text-align: right;
   cursor: pointer;
 }
@@ -93,9 +92,8 @@ body {
 .right.current {
   display: inline-block;
 }
-.right.intro-container {
-  vertical-align: middle;
-}
+.right.intro-container,
+.right.contact-container,
 .right.about-container {
   vertical-align: middle;
 }
@@ -120,10 +118,17 @@ body {
 .right .about p:last-of-type {
   margin-bottom: 0;
 }
-.right .about p a,
-.right .about p a:active,
-.right .about p a:visited {
+.right .section a,
+.right .section a:active,
+.right .section a:visited {
   color: #bd723a;
   text-decoration: underline;
   cursor: pointer;
+}
+.right .contact p {
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
 }
