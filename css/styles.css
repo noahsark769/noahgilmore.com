@@ -14,8 +14,7 @@ body {
   margin: 0 auto;
   font-size: 0;
 }
-.left,
-.right {
+.left {
   display: inline-block;
   vertical-align: middle;
 }
@@ -75,20 +74,35 @@ body {
 .right {
   width: 506px;
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
-}
-.right .section {
   display: none;
 }
-.right .section.current {
-  display: block;
+.right.current {
+  display: inline-block;
+}
+.right.intro-container {
+  vertical-align: middle;
+}
+.right.about-container {
+  vertical-align: middle;
 }
 .right .intro,
 .right .about {
   width: 100%;
   text-align: left;
-  height: 40px;
-  line-height: 40px;
   font-size: 16px;
+}
+.right .intro {
+  line-height: 40px;
   text-transform: lowercase;
   border-bottom: 1px solid #eee;
+}
+.right .about {
+  line-height: 1.5em;
+  margin-top: 60px;
+}
+.right .about p {
+  margin-bottom: 10px;
+}
+.right .about p:last-of-type {
+  margin-bottom: 0;
 }

@@ -9,6 +9,27 @@
     box-sizing: @s;
 }
 
+.vertically-centered(@font-size) {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: @font-size;
+}
+
+.vertically-centered() {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.vertically-centered-parent() {
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    font-size: 0;
+}
+
 // let me use padding without fear
 * {
     .box-sizing(border-box);
@@ -29,7 +50,7 @@ html, body {
     font-size: 0;
 }
 
-.left, .right {
+.left {
     display: inline-block;
     vertical-align: middle;
 }
@@ -38,7 +59,9 @@ html, body {
 @left-container-width: @main-width * 0.4;
 @right-container-width: @main-width * 0.6;
 @left-right-margin: 70px;
+@left-column-top-padding: 50px;
 
+@title-topbottom-padding: 10px;
 .left {
     width: @left-container-width;
     margin-right: @left-right-margin;
@@ -47,7 +70,7 @@ html, body {
     background-size: cover;
     background-position: center center;
 
-    padding-top: 50px;
+    padding-top: @left-column-top-padding;
 
     position: relative;
 
@@ -61,7 +84,7 @@ html, body {
         width: 100%;
         text-align: left;
         margin-bottom: 10px;
-        padding: 10px 15px 10px 0;
+        padding: @title-topbottom-padding 15px @title-topbottom-padding 0;
         background-color: white;
         text-align: right;
     }
@@ -105,21 +128,41 @@ html, body {
 .right {
     width: @right-container-width - @left-right-margin;
     font-family: @bariol;
+    display: none;
+    &.current {
+        display: inline-block;
+    }
 
-    .section {
-        display: none;
-        &.current {
-            display: block;
-        }
+    &.intro-container {
+        vertical-align: middle;
+    }
+
+    &.about-container {
+        vertical-align: middle;
     }
 
     .intro, .about {
         width: 100%;
         text-align: left;
-        height: 40px;
-        line-height: 40px;
         font-size: 16px;
+    }
+
+    .intro {
+        line-height: 40px;
         text-transform: lowercase;
         border-bottom: 1px solid #eee;
+    }
+
+    .about {
+        line-height: 1.5em;
+        margin-top: @left-column-top-padding + @title-topbottom-padding;
+
+        p {
+            margin-bottom: 10px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
     }
 }

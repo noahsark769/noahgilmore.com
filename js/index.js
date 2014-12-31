@@ -9,7 +9,7 @@ var transitionTo = function (sectionKey) {
         console.log(nextSection.get(0));
         nextSection.addClass("js-is-active-section");
         nextSection.addClass("current");
-        nextSection.fadeIn();
+        nextSection.fadeIn().css("display", "inline-block");
     });
 };
 
