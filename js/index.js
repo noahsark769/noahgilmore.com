@@ -14,8 +14,11 @@ var transitionTo = function (sectionKey) {
 };
 
 $(document).ready(function () {
-    $(".link a").click(function () {
+    $(".js-section-link").click(function () {
+        var $this = $(this);
         var sectionKey = $(this).data("section");
-        transitionTo(sectionKey);
+        if (!$(".js-section-" + sectionKey).hasClass("js-is-active-section")) {
+            transitionTo(sectionKey);
+        }
     });
 });
