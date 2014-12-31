@@ -39,6 +39,7 @@ html, body {
     height: 100%;
 }
 
+@link-color: #bd723a;
 @main-width: 960px;
 @roboto: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
 @bariol: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
@@ -122,6 +123,22 @@ html, body {
             &:last-of-type {
                 margin-bottom: 0;
             }
+
+            .details {
+                display: none;
+
+                a, a:active, a:visited {
+                    color: @link-color;
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+
+            &:hover {
+                .details {
+                    display: inline-block;
+                }
+            }
         }
     }
 }
@@ -166,7 +183,7 @@ html, body {
             }
 
             a, a:active, a:visited {
-                color: #bd723a;
+                color: @link-color;
                 text-decoration: underline;
                 cursor: pointer;
             }

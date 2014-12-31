@@ -72,6 +72,19 @@ body {
 .left .links .link:last-of-type {
   margin-bottom: 0;
 }
+.left .links .link .details {
+  display: none;
+}
+.left .links .link .details a,
+.left .links .link .details a:active,
+.left .links .link .details a:visited {
+  color: #bd723a;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.left .links .link:hover .details {
+  display: inline-block;
+}
 .right {
   width: 506px;
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
