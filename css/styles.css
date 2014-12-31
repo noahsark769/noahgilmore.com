@@ -107,3 +107,10 @@ body {
 .right .about p:last-of-type {
   margin-bottom: 0;
 }
+.right .about p a,
+.right .about p a:active,
+.right .about p a:visited {
+  color: #bd723a;
+  text-decoration: underline;
+  cursor: pointer;
+}
