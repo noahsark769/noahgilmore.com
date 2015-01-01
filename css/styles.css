@@ -51,7 +51,7 @@ body {
 .left .links {
   display: block;
   position: absolute;
-  bottom: 50px;
+  bottom: 40px;
   left: 0;
   right: 0;
 }
@@ -65,11 +65,9 @@ body {
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
   font-size: 16px;
   text-transform: uppercase;
+  margin-bottom: 10px;
   text-align: right;
   cursor: pointer;
-}
-.left .links .link:last-of-type {
-  margin-bottom: 0;
 }
 .left .links .link .details {
   display: none;
