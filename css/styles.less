@@ -63,6 +63,7 @@ html, body {
 @left-column-top-padding: 50px;
 
 @title-topbottom-padding: 10px;
+@title-top-offset: @left-column-top-padding + @title-topbottom-padding;
 .left {
     width: @left-container-width;
     margin-right: @left-right-margin;
@@ -151,6 +152,16 @@ html, body {
         vertical-align: middle;
     }
 
+    &.projects-container {
+        vertical-align: top;
+    }
+
+    a, a:active, a:visited {
+        color: @link-color;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
     .intro, .about {
         width: 100%;
         text-align: left;
@@ -177,13 +188,6 @@ html, body {
         }
     }
 
-    .section {
-        a, a:active, a:visited {
-            color: @link-color;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-    }
 
     .contact {
         p {
@@ -192,6 +196,68 @@ html, body {
             font-size: 20px;
             width: 100%;
             text-align: center;
+        }
+    }
+
+    @project-highlight-width: @right-container-width * 0.05;
+    @project-highlight-margin: 10px;
+    @project-inner-width: @right-container-width * 0.95 - @project-highlight-margin;
+    .projects {
+        padding-top: @title-top-offset - @title-topbottom-padding;
+        h2 {
+            .height(20px);
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .project {
+            display: table;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 10px;
+
+            .highlight, .project-inner {
+                display: table-cell;
+                margin: 0;
+                padding: 0;
+            }
+
+            .highlight {
+                display: inline-block;
+                vertical-align: top;
+                height: 100%;
+                width: @project-highlight-width;
+                margin-right: @project-highlight-margin;
+            }
+
+            &.berkeleytime .highlight {
+                background-color: #37AEE9;
+            }
+
+            .project-inner {
+                display: table-cell;
+                vertical-align: top;
+
+                .title {
+                    .height(18px);
+                    font-size: 18px;
+                    margin-bottom: 5px;
+                }
+
+                .technologies {
+                    .height(12px);
+                    font-size: 12px;
+                    font-family: @roboto;
+                    margin-bottom: 10px;
+                }
+
+                .description {
+                    width: 100%;
+                    text-align: left;
+                    font-size: 16px;
+                    line-height: 1.5em;
+                }
+            }
         }
     }
 }
