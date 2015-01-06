@@ -185,6 +185,7 @@ body {
 .right .projects .project .project-inner {
   display: table-cell;
   vertical-align: top;
+  padding-top: 5px;
 }
 .right .projects .project .project-inner .title {
   height: 18px;
