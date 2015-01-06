@@ -86,6 +86,7 @@ body {
   width: 506px;
   font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
   display: none;
+  overflow: scroll;
 }
 .right.current {
   display: inline-block;
@@ -97,6 +98,7 @@ body {
 }
 .right.projects-container {
   vertical-align: top;
+  height: 95%;
 }
 .right a,
 .right a:active,
@@ -147,7 +149,7 @@ body {
   display: table;
   margin: 0;
   padding: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .right .projects .project .highlight,
 .right .projects .project .project-inner {
@@ -171,6 +173,15 @@ body {
 .right .projects .project.flipboard .highlight {
   background-color: #C10000;
 }
+.right .projects .project.calchart .highlight {
+  background-color: #030367;
+}
+.right .projects .project.calchart-viewer .highlight {
+  background-color: #269C2E;
+}
+.right .projects .project.revolv .highlight {
+  background-color: #008BB9;
+}
 .right .projects .project .project-inner {
   display: table-cell;
   vertical-align: top;
@@ -182,7 +193,6 @@ body {
   margin-bottom: 5px;
 }
 .right .projects .project .project-inner .technologies {
-  height: 12px;
   line-height: 12px;
   font-size: 12px;
   font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;

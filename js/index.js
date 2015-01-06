@@ -19,7 +19,10 @@ $(document).ready(function () {
         }
     });
 
-    $(".project.berkeleytime .description").seemore({max_tokens: 40, postfix: "..."});
-    $(".project.yelp .description").seemore({max_tokens: 40, postfix: "..."});
-    $(".project.flipboard .description").seemore({max_tokens: 40, postfix: "..."});
+    $(".project.berkeleytime .description").seemore({max_tokens: 20, postfix: "..."});
+    $(".project.yelp .description").seemore({max_tokens: 20, postfix: "..."});
+    $(".project.flipboard .description").seemore({max_tokens: 20, postfix: "..."});
+    $(".project.calchart .description").seemore({max_tokens: 20, postfix: "..."});
+    $(".project.calchart-viewer .description").seemore({max_tokens: 19, postfix: "..."});
+    $(".project.revolv .description").seemore({max_tokens: 16, postfix: "..."});
 });
