@@ -168,6 +168,9 @@ body {
 .right .projects .project.yelp .highlight {
   background-color: #C11101;
 }
+.right .projects .project.flipboard .highlight {
+  background-color: #C10000;
+}
 .right .projects .project .project-inner {
   display: table-cell;
   vertical-align: top;

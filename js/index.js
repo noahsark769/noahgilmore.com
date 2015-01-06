@@ -21,4 +21,5 @@ $(document).ready(function () {
 
     $(".project.berkeleytime .description").seemore({max_tokens: 40, postfix: "..."});
     $(".project.yelp .description").seemore({max_tokens: 40, postfix: "..."});
+    $(".project.flipboard .description").seemore({max_tokens: 40, postfix: "..."});
 });
