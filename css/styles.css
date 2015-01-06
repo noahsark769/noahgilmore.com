@@ -165,6 +165,9 @@ body {
 .right .projects .project.berkeleytime .highlight {
   background-color: #37AEE9;
 }
+.right .projects .project.yelp .highlight {
+  background-color: #C11101;
+}
 .right .projects .project .project-inner {
   display: table-cell;
   vertical-align: top;
