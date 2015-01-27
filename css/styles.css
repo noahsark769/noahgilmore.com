@@ -168,19 +168,19 @@ body {
   background-color: #37AEE9;
 }
 .right .projects .project.yelp .highlight {
-  background-color: #C11101;
-}
-.right .projects .project.flipboard .highlight {
-  background-color: #C10000;
-}
-.right .projects .project.calchart .highlight {
-  background-color: #030367;
-}
-.right .projects .project.calchart-viewer .highlight {
-  background-color: #269C2E;
+  background-color: #da4453;
 }
 .right .projects .project.revolv .highlight {
-  background-color: #008BB9;
+  background-color: #e9573f;
+}
+.right .projects .project.flipboard .highlight {
+  background-color: #f68b42;
+}
+.right .projects .project.calchart .highlight {
+  background-color: #8cc152;
+}
+.right .projects .project.calchart-viewer .highlight {
+  background-color: #37bc9b;
 }
 .right .projects .project.calband-50k-challenge .highlight {
   background-color: #3bafda;
