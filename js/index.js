@@ -25,4 +25,5 @@ $(document).ready(function () {
     $(".project.calchart .description").seemore({max_tokens: 20, postfix: "..."});
     $(".project.calchart-viewer .description").seemore({max_tokens: 19, postfix: "..."});
     $(".project.revolv .description").seemore({max_tokens: 16, postfix: "..."});
+    $(".project.calband-50k-challenge .description").seemore({max_tokens: 20, postfix: "..."});
 });

@@ -182,6 +182,9 @@ body {
 .right .projects .project.revolv .highlight {
   background-color: #008BB9;
 }
+.right .projects .project.calband-50k-challenge .highlight {
+  background-color: #3bafda;
+}
 .right .projects .project .project-inner {
   display: table-cell;
   vertical-align: top;
