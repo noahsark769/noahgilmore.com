@@ -22,6 +22,9 @@ def print_fail(string):
 def print_color(color, string):
   print color + string + Colors.ENDC
 
+def current_branch():
+  return subprocess.check_output("git rev-parse --abbrev-ref HEAD".split()).strip()
+
 def check_return_code(command_list):
   return subprocess.Popen(command_list).wait()
 
@@ -38,9 +41,13 @@ def exec_strings(commands):
   print_success("[Info] All commands completed successfully.")
 
 if __name__ == "__main__":
-  exec_strings([
-    "git checkout gh-pages",
-    "git merge master",
-    "git push origin gh-pages",
-    "git checkout master"
-  ])
+  current_branch = current_branch()
+  if current_branch != "master":
+    print_fail("[Error] Must run this script from master. Currently on %s." % current_branch)
+  else:
+    exec_strings([
+      "git checkout gh-pages",
+      "git merge master",
+      "git push origin gh-pages",
+      "git checkout master"
+    ])
