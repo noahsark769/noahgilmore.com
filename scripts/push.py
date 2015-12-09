@@ -22,8 +22,14 @@ def print_fail(string):
 def print_color(color, string):
   print color + string + Colors.ENDC
 
-def current_branch():
+def get_current_branch():
   return subprocess.check_output("git rev-parse --abbrev-ref HEAD".split()).strip()
+
+def has_uncommitted_changes():
+  """Return whether the current branch has uncommitted changes. Note that this is not
+  technically the best possible way to do this, but it works for our purposes.
+  """
+  return bool(len(subprocess.check_output("git status -s".split()).strip()))
 
 def check_return_code(command_list):
   return subprocess.Popen(command_list).wait()
@@ -40,14 +46,25 @@ def exec_strings(commands):
       return
   print_success("[Info] All commands completed successfully.")
 
-if __name__ == "__main__":
-  current_branch = current_branch()
+def main():
+  print_info("[Info] Checking current branch...")
+  current_branch = get_current_branch()
   if current_branch != "master":
     print_fail("[Error] Must run this script from master. Currently on %s." % current_branch)
-  else:
-    exec_strings([
-      "git checkout gh-pages",
-      "git merge master",
-      "git push origin gh-pages",
-      "git checkout master"
-    ])
+    return
+
+  print_info("[Info] Checking for uncommitted work...")
+  if has_uncommitted_changes():
+    print_fail("[Error] `git status -s` reports uncommitted work. Fix this to push.")
+    return
+
+  print_info("[Info] Pushing...")
+  exec_strings([
+    "git checkout gh-pages",
+    "git merge master",
+    "git push origin gh-pages",
+    "git checkout master"
+  ])
+
+if __name__ == "__main__":
+  main()
