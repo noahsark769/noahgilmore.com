@@ -2,6 +2,7 @@ from simplegit import Git
 from logger import Logger
 
 from datetime import datetime
+import subprocess
 
 logger = Logger()
 git = Git(logger=logger)
