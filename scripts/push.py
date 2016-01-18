@@ -1,70 +1,62 @@
-import subprocess
+from simplegit import git
+from logger import Logger
 
-class Colors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+logger = Logger()
+git = Git(logger=logger)
 
-def print_info(string):
-  return print_color(Colors.OKBLUE, string)
-
-def print_success(string):
-  return print_color(Colors.OKGREEN, string)
-
-def print_fail(string):
-  return print_color(Colors.FAIL, string)
-
-def print_color(color, string):
-  print color + string + Colors.ENDC
 
 def get_current_branch():
-  return subprocess.check_output("git rev-parse --abbrev-ref HEAD".split()).strip()
+    lines, _, _ = git.call("rev-parse", "--abbrev-ref HEAD")
+    return lines[0].strip()
+
 
 def has_uncommitted_changes():
-  """Return whether the current branch has uncommitted changes. Note that this is not
-  technically the best possible way to do this, but it works for our purposes.
-  """
-  return bool(len(subprocess.check_output("git status -s".split()).strip()))
+    """Return whether the current branch has uncommitted changes. Note that this is not
+    technically the best possible way to do this, but it works for our purposes.
+    """
+    lines, _, _ = git.status("-s")
+    return bool(len(lines))
 
-def check_return_code(command_list):
-  return subprocess.Popen(command_list).wait()
 
-def exec_string(command_string):
-  return check_return_code(command_string.strip().split())
+def git_step(cmd, args_string):
+    """Return a step function that returns true if the given git command and
+    arg string e.g. 'push', 'origin master' returns nonzero exit code."""
+    def step():
+        _, rtncode, _ = git.call(cmd, args_string)
+        return rtncode == 0
+    return step
 
-def exec_strings(commands):
-  """Execute a series of commands and stop if one of them has non-zero return code."""
-  for command in commands:
-    print_info("[Exec] %s" % command)
-    if exec_string(command) != 0:
-      print_fail("[Error] Command `%s` did not return exit status 0." % command)
-      return
-  print_success("[Info] All commands completed successfully.")
+
+def exec_steps(*args):
+    """Given step functions as args, executes them in order until one returns
+    False.
+    """
+    for step in args:
+        if not step():
+            logger.fatal("Step did not return True." % command)
+            return
+    logger.success("All steps completed successfully.")
+
 
 def main():
-  print_info("[Info] Checking current branch...")
-  current_branch = get_current_branch()
-  if current_branch != "master":
-    print_fail("[Error] Must run this script from master. Currently on %s." % current_branch)
+    logger.info("Checking current branch...")
+    current_branch = get_current_branch()
+    if current_branch != "master":
+        logger.fatal("Must run this script from master. Currently on %s." % current_branch)
     return
 
-  print_info("[Info] Checking for uncommitted work...")
-  if has_uncommitted_changes():
-    print_fail("[Error] `git status -s` reports uncommitted work. Fix this to push.")
-    return
+    logger.info("Checking for uncommitted work...")
+    if has_uncommitted_changes():
+        logger.fatal("`git status -s` reports uncommitted work. Fix this to push.")
+        return
 
-  print_info("[Info] Pushing...")
-  exec_strings([
-    "git checkout gh-pages",
-    "git merge master",
-    "git push origin gh-pages",
-    "git checkout master"
-  ])
+    logger.info("Pushing...")
+    exec_steps(
+        git_step("checkout", "gh-pages"),
+        git_step("merge", "master"),
+        git_step("push", "origin gh-pages"),
+        git_step("checkout", "master"),
+    )
 
 if __name__ == "__main__":
-  main()
+    main()
