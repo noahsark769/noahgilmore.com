@@ -1,6 +1,8 @@
 from simplegit import Git
 from logger import Logger
 
+from datetime import datetime
+
 logger = Logger()
 git = Git(logger=logger)
 
