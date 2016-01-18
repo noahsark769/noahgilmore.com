@@ -1,4 +1,4 @@
-from simplegit import git
+from simplegit import Git
 from logger import Logger
 
 logger = Logger()
@@ -7,6 +7,7 @@ git = Git(logger=logger)
 
 def get_current_branch():
     lines, _, _ = git.call("rev-parse", "--abbrev-ref HEAD")
+    print lines
     return lines[0].strip()
 
 
@@ -43,7 +44,7 @@ def main():
     current_branch = get_current_branch()
     if current_branch != "master":
         logger.fatal("Must run this script from master. Currently on %s." % current_branch)
-    return
+        return
 
     logger.info("Checking for uncommitted work...")
     if has_uncommitted_changes():
