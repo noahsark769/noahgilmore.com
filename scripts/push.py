@@ -7,7 +7,6 @@ git = Git(logger=logger)
 
 def get_current_branch():
     lines, _, _ = git.call("rev-parse", "--abbrev-ref HEAD")
-    print lines
     return lines[0].strip()
 
 
