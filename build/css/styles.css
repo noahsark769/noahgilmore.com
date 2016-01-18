@@ -1,0 +1,210 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+.container {
+  display: block;
+  width: 960px;
+  height: 100%;
+  margin: 0 auto;
+  font-size: 0;
+}
+.left {
+  display: inline-block;
+  vertical-align: middle;
+}
+.left {
+  width: 384px;
+  margin-right: 70px;
+  height: 100%;
+  background-image: url("https://berkeleytime-production-static.s3.amazonaws.com/static_media/css/img/berkeley.jpg");
+  background-size: cover;
+  background-position: center center;
+  padding-top: 50px;
+  position: relative;
+}
+.left a,
+.left a:active,
+.left a:focus {
+  outline: none;
+  color: inherit;
+  text-decoration: none;
+}
+.left .title {
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+  height: 60px;
+  line-height: 40px;
+  font-size: 30px;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 10px 15px 10px 0;
+  background-color: white;
+  text-align: right;
+}
+.left .links {
+  display: block;
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+}
+.left .links .link {
+  display: block;
+  width: 100%;
+  padding: 15px 15px 15px 0;
+  background-color: white;
+  pointer: cursor;
+  text-align: center;
+  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: right;
+  cursor: pointer;
+}
+.left .links .link .details {
+  display: none;
+}
+.left .links .link .details a,
+.left .links .link .details a:active,
+.left .links .link .details a:visited {
+  color: #bd723a;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.left .links .link:hover .details {
+  display: inline-block;
+}
+.right {
+  width: 506px;
+  font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+  display: none;
+  overflow: scroll;
+}
+.right.current {
+  display: inline-block;
+}
+.right.intro-container,
+.right.contact-container,
+.right.about-container {
+  vertical-align: middle;
+}
+.right.projects-container {
+  vertical-align: top;
+  height: 95%;
+}
+.right a,
+.right a:active,
+.right a:visited {
+  color: #bd723a;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.right .intro,
+.right .about {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+}
+.right .intro {
+  line-height: 40px;
+  text-transform: lowercase;
+  border-bottom: 1px solid #eee;
+}
+.right .about {
+  line-height: 1.5em;
+  margin-top: 60px;
+}
+.right .about p {
+  margin-bottom: 10px;
+}
+.right .about p:last-of-type {
+  margin-bottom: 0;
+}
+.right .contact p {
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+}
+.right .projects {
+  padding-top: 50px;
+}
+.right .projects h2 {
+  height: 20px;
+  line-height: 20px;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.right .projects .project {
+  display: table;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
+}
+.right .projects .project .highlight,
+.right .projects .project .project-inner {
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+}
+.right .projects .project .highlight {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  width: 28.8px;
+  margin-right: 10px;
+}
+.right .projects .project.berkeleytime .highlight {
+  background-color: #37AEE9;
+}
+.right .projects .project.yelp .highlight {
+  background-color: #37bc9b;
+}
+.right .projects .project.revolv .highlight {
+  background-color: #da4453;
+}
+.right .projects .project.flipboard .highlight {
+  background-color: #8cc152;
+}
+.right .projects .project.calchart .highlight {
+  background-color: #e9573f;
+}
+.right .projects .project.calchart-viewer .highlight {
+  background-color: #f68b42;
+}
+.right .projects .project.calband-50k-challenge .highlight {
+  background-color: #3bafda;
+}
+.right .projects .project .project-inner {
+  display: table-cell;
+  vertical-align: top;
+  padding-top: 5px;
+}
+.right .projects .project .project-inner .title {
+  height: 18px;
+  line-height: 18px;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.right .projects .project .project-inner .technologies {
+  line-height: 12px;
+  font-size: 12px;
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+  margin-bottom: 10px;
+}
+.right .projects .project .project-inner .description {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.5em;
+}
