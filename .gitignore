@@ -2,3 +2,4 @@ scripts/*.pyc
 build/*
 blog/static
 blog/node_modules
+venv
