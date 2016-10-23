@@ -3,3 +3,4 @@ build/*
 blog/static
 blog/node_modules
 venv
+notebooks

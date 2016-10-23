@@ -1,0 +1,8 @@
+<%def name="md()">
+    <%
+        from markdown import markdown
+    %>
+    <div class='markdown-container'>
+        ${markdown(capture(caller.body))}
+    </div>
+</%def>
