@@ -1,0 +1,73 @@
+<link rel="import" href="/blog/bower_components/polymer/polymer.html">
+<link rel="import" href="/blog/bower_components/marked-element/marked-element.html">
+
+<dom-module id="ng-markdown-content">
+    <template>
+        <div class="markdown-content">
+            <marked-element markdown="{{content}}">
+                <div class="markdown-html"></div>
+            </marked-element>
+        </div>
+    </template>
+
+    <style is="custom-style">
+        p, li {
+            font-family: "Gentium Book Basic", times, serif;
+            font-size: 21px;
+            line-height: 24px;
+            color: #333;
+            padding-bottom: 15px;
+            margin-top: 15px;
+        }
+        a {
+            color: #1A3F4B;
+        }
+        code {
+            font-family: monospace;
+            font-size: 16px; 
+        }
+        pre {
+            display: block;
+        }
+        pre > code {
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        ol {
+            margin-left: 30px;
+        }
+        ol li {
+            list-style-type: decimal;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            width: 100%;
+            font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+            margin-bottom: 10px;   
+            margin-top: 40px;
+        }
+        h1 {
+            font-size: 28px;
+        }
+        h2 {
+            font-size: 24px;
+        }
+        h3 {
+            font-size: 20px;
+        }
+    </style>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "ng-markdown-content",
+        ready: function() {
+            this.content = document.createElement("marked-element").unindent(Polymer.dom(this).innerHTML);
+        }
+    })
+</script>

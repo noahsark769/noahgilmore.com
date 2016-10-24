@@ -1,21 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pyparsing Trees | Noah</title>
+    <title>Pyparsing Trees | Noah Gilmore</title>
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" type="text/css" href="/build/css/reset.css">
     <link rel="stylesheet" type="text/css" href="/build/css/fonts.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
     <script type="text/javascript" src="/blog/bower_components/webcomponentsjs/webcomponents.js"></script>
 
     <link rel="import" href="/blog/components/ng-nav.html">
-	<link rel="import" href="/blog/components/ng-blog-content.html">
+    <link rel="import" href="/blog/components/ng-blog-content.html">
+    <link rel="import" href="/blog/components/ng-blog-post-title.html">
+    <link rel="import" href="/blog/components/ng-captioned-image.html">
+    <link rel="import" href="/blog/components/ng-markdown-content.html">
 </head>
 <body>
-	<ng-nav></ng-nav>
-	<ng-blog-content>
-		<p>lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</p>
-	</ng-blog-content>
+    <ng-nav></ng-nav>
+    <ng-blog-content>
+        <ng-blog-post-title title="Pyparsing trees" date="October 23rd, 2016"></ng-blog-post-title>
+        <ng-markdown-content>
+            A common problem in computer science is how to take a character string and transform it into well structured data. This sort of transform has particular applications to static analysis of programming languages, where the objective is to take source code and make it into a [syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+        </ng-markdown-content>
+        <ng-captioned-image src="pyparsing-trees-1.png" alt="Simple syntax tree" caption="This is a simple example - even a variable assignment in most languages has a far more complicated grammar." style="width: 100%"></ng-captioned-image>
+        <ng-markdown-content>
+            If we want to do this in python (think about a script or hook running static analysis on your code), [Pyparsing](http://pyparsing.wikispaces.com/) is a really easy to use tool. You can use pyparsing's predefined grammar rules to build a grammar, from which you can get back a list of token data.
+
+            For example, here's a grammar which takes in a string where we expect a variable amount of numbers, then a variable amount of letters (for example, `123abc`) and separates the numbers from the letters:
+
+            ```python
+            import pyparsing
+            grammar = pyparsing.Word("1234567890") + pyparsing.Word(pyparsing.alphas)
+
+            print(grammar.parseString("567142abcbab"))
+            ```
+            ```
+            ['567142', 'abcbab']
+            ```
+
+            This is great, but what if we want a more structured output? For example, let's say we have a language meant describe a tree structure, where each node in the tree can have a value. Each node is represented by a pair of parentheses, and inside is the value followed by the child nodes:
+        </ng-markdown-content>
+        <ng-captioned-image src="pyparsing-trees-2.png" alt="Simple syntax tree" caption="If you know lisp, you'll love this." style="width: 100%"></ng-captioned-image>
+        <ng-markdown-content>
+            How could we write a parser for this? It differs in a couple of ways from the first example:
+
+            1. It's inherently recursive, since after the value in each node, zero or more child nodes can follow:
+               ```
+               node := (value, [node, node, node, ...])
+               ```
+            2. If we just parse the string as a list, we won't be able to preserve the tree structure.
+
+            ### Recursive grammars with pyparsing
+            Pyparsing supports recursive grammars using a grammar component called `Forward`. To define a recursive grammar, you simply create a `pyparsing.Forward()`, then use the shift left operator to set its content:
+
+            ```python
+            grammar = pyparsing.Forward()
+            grammar << pyparsing.Suppress("(") + pyparsing.Word("0123456789") + pyparsing.ZeroOrMore(grammar) + pyparsing.Suppress(")")
+
+            query = "(1 (2 (3)) (4 (5 (6) (7) (8)))"
+            print(grammar.parseString(query))
+            ```
+            ```
+            ['5', '6', '7', '9', '9', '5', '6', '7', '8', '9', '7', '8', '9']
+            ```
+
+            This parses the grammar, but we still don't have the tree structure.
+
+            ### Parse actions
+            Pyparsing allows a "parse action" to be defined:
+
+            ```python
+            def action(string, location, tokens):
+                return tokens
+
+            grammar.setParseAction(action)
+            ```
+
+            The parse action is a function which will be applied every time a parse element generates output. It takes three arguments:
+
+            1. The full input string.
+            2. The location of the parse element as an index into the full string.
+            3. The list generated tokens, as strings.
+
+            The value returned from the parse action function will replace the string tokens, and the default implementation does nothing with the tokens and just returns them the way they are. The parse action is our chance to hook into pyparsing and output structured data instead of strings.
+
+            As an example, let's check out the number-letter language from before. What if we want to transform all letter output to uppercase?
+
+            ```python
+            import pyparsing
+
+            def transform(string, location, tokens):
+                return [token.upper() for token in tokens]
+
+            grammar = pyparsing.Word("1234567890") + pyparsing.Word(pyparsing.alphas)
+            grammar.setParseAction(transform)
+
+            print(grammar.parseString("567142abcbab"))
+            ```
+            ```
+            ['567142', 'ABCBAB']
+            ```
+
+            Applying this to the tree grammar, we have:
+
+            
+
+        </ng-markdown-content>
+    </ng-blog-content>
 </body>
 </html>
