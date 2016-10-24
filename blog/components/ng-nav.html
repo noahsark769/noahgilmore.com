@@ -23,15 +23,15 @@
         .nav-links {
             @apply(--layout-flex-11);
             @apply(--layout-horizontal);
+            @apply(--layout-wrap);
             @apply(--layout-end-justified);
         }
         .nav-links > li {
-            @apply(--layout-flex);
             @apply(--layout-horizontal);
             @apply(--layout-center);
-            max-width: 100px;
             font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
-            font-size: 20px;
+            font-size: 22px;
+            padding: 0px 20px;
         }
         .nav-links > li > a {
             height: auto;
@@ -45,6 +45,28 @@
             @apply(--layout-flex-1);
             font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
             font-size: 35px;
+        }
+
+        /* smaller screens */
+        @media all and (max-width: 600px) {
+            nav {
+                @apply(--layout-vertical);
+                padding: 40px 40px 20px 40px;
+            }
+            .nav-links {
+                @apply(--layout-start-justified);
+            }
+            .nav-links > li {
+                @apply(--flex-none);
+                width: 100%;
+                font-size: 20px;
+                margin: 5px 0px;
+                padding: 10px 10px;
+                background-color: #eee;
+            }
+            .nav-links > li a {
+                width: 100%;
+            }
         }
     </style>
 </dom-module>
