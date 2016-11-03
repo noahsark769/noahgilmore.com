@@ -6,3 +6,5 @@ blog/bower_components
 venv
 notebooks
 .DS_Store
+.ipynb_checkpoints/
+*.ipynb
