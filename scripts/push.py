@@ -11,6 +11,58 @@ logger = Logger()
 git = Git(logger=logger)
 
 
+class IgnoredBuildPathsContext(object):
+    """Struct of ignored build paths that should be unignored on build."""
+
+    def __init__(self, paths):
+        """Init."""
+        self.paths = paths
+
+    def deignore_step(self):
+        """Return a step function which removes paths from gitignore."""
+        def step():
+            logger.info("Removing build files from gitignore...")
+            try:
+                with open(".gitignore", "r") as f:
+                    content = f.readlines()
+                with open(".gitignore", "w") as f:
+                    f.writelines(
+                        filter(
+                            lambda line: line.strip() in self.paths,
+                            content
+                        )
+                    )
+            except Exception as e:
+                logger.fatal(str(e))
+                return False
+            return True
+        return step
+
+    def reignore_step(self):
+        """Return a step which re-ignores the ignored paths."""
+        def step():
+            logger.info("Adding build files to gitignore...")
+            try:
+                with open(".gitignore", "r") as f:
+                    content = f.readlines()
+                content.append("\n".join(self.paths))
+                with open(".gitignore", "w") as f:
+                    f.writelines(content)
+            except Exception as e:
+                logger.fatal(str(e))
+                return False
+            return True
+        return step
+
+    def add_step(self):
+        """Return a step to add ignored files."""
+        for path in self.paths:
+            _, rtncode, _ = git.add(path)
+            if rtncode != 0:
+                return False
+        return True
+
+
 def get_current_branch():
     """Return the current branch name."""
     lines, _, _ = git.call("rev-parse", "--abbrev-ref HEAD")
@@ -48,40 +100,6 @@ def git_step(cmd, args_string):
     return step
 
 
-def deignore_build_step():
-    """Return a step function which removes the last line from gitignore."""
-    def step():
-        logger.info("Removing build files from gitignore...")
-        try:
-            with open(".gitignore", "r") as f:
-                content = f.readlines()
-            with open(".gitignore", "w") as f:
-                f.writelines(content[:-2])
-        except Exception as e:
-            logger.fatal(str(e))
-            return False
-        return True
-    return step
-
-
-def ignore_build_step():
-    """Return a step function which adds 'build/*' to gitignore."""
-    def step():
-        logger.info("Adding build files to gitignore...")
-        try:
-            with open(".gitignore", "r") as f:
-                content = f.readlines()
-            content.append("build/*\n")
-            content.append("blog/bower_components")
-            with open(".gitignore", "w") as f:
-                f.writelines(content)
-        except Exception as e:
-            logger.fatal(str(e))
-            return False
-        return True
-    return step
-
-
 def subprocess_step(*args, **kwargs):
     """Step for calling a subprocess."""
     def step():
@@ -107,15 +125,19 @@ def main():
         return
 
     logger.info("Pushing...")
+
+    context = IgnoredBuildPathsContext(
+        paths=["build/*", "blog/bower_components"]
+    )
+
     exec_steps(
         git_step("checkout", "gh-pages"),
         git_step("merge", "master"),
-        deignore_build_step(),
+        context.deignore_step(),
         subprocess_step("python", "scripts/build.py"),
         subprocess_step("bower", "install", cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "blog")), # noqa
-        git_step("add", "build/*"),
-        git_step("add", "blog/bower_components"),
-        ignore_build_step(),
+        context.add_step(),
+        context.reignore_step(),
         git_step("commit", "-m '[%s] Build for release'" % datetime.today().strftime("%c")), # noqa
         git_step("push", "origin gh-pages"),
         git_step("checkout", "master"),
