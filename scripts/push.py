@@ -71,7 +71,7 @@ def ignore_build_step():
             with open(".gitignore", "r") as f:
                 content = f.readlines()
             content.append("build/*\n")
-            content.append("blog/bower_components\n")
+            content.append("blog/bower_components")
             with open(".gitignore", "w") as f:
                 f.writelines(content)
         except Exception as e:
