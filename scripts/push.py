@@ -31,6 +31,7 @@ class IgnoredBuildPathsContext(object):
                             lambda line: line.strip() in self.paths,
                             content
                         )
+                    )
             except Exception as e:
                 logger.fatal(str(e))
                 return False
