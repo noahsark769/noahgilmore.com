@@ -112,7 +112,7 @@ def main():
         git_step("merge", "master"),
         deignore_build_step(),
         subprocess_step("python", "scripts/build.py"),
-        subprocess_step("bower", "install", cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "blog")), # noqa
+        subprocess_step("bower", "install", cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "blog")), # noqa
         git_step("add", "build/*"),
         git_step("add", "blog/bower_components"),
         ignore_build_step(),
