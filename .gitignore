@@ -2,9 +2,9 @@ scripts/*.pyc
 build/*
 blog/static
 blog/node_modules
-blog/bower_components
 venv
 notebooks
 .DS_Store
 .ipynb_checkpoints/
-*.ipynb
+build/*
+blog/bower_components
