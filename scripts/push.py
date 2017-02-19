@@ -28,7 +28,7 @@ class IgnoredBuildPathsContext(object):
                 with open(".gitignore", "w") as f:
                     f.writelines(
                         filter(
-                            lambda line: line.strip() in self.paths,
+                            lambda line: line.strip() not in self.paths,
                             content
                         )
                     )
