@@ -28,8 +28,8 @@ class IgnoredBuildPathsContext(object):
                 with open(".gitignore", "w") as f:
                     f.writelines(
                         filter(
-                            lambda line: line.strip() in self.paths
-                            content[:-2]
+                            lambda line: line.strip() in self.paths,
+                            content
                         )
             except Exception as e:
                 logger.fatal(str(e))
