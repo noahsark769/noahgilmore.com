@@ -113,32 +113,6 @@ def subprocess_step(*args, **kwargs):
 
 def main():
     """Main."""
-
-    # what i wish i could do:
-    class PushStep(Steps.Step):
-        def steps(self):
-            context = IgnoredBuildPathsContext(
-                paths=["build/*", "blog/bower_components"]
-            )
-            return [
-                GitStep("checkout", "gh-pages"),
-                GitStep("merge", "master"),
-                context.deignore_step(),
-                BuildStep(),
-                BowerInstallStep(cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "blog"))
-                context.add_step(),
-                context.reignore_step(),
-                GitCommitStep("[%s] Build for release" % datetime.today().strftime("%c")), # noqa
-                GitStep("push", "origin gh-pages"),
-                GitStep("checkout", "master"),
-            ]
-
-    Steps.execute([
-        EnsureCurrentBranchStep("master"),
-        CheckUncommittedFilesStep(),
-        PushStep
-    ])
-
     logger.info("Checking current branch...")
     current_branch = get_current_branch()
     if current_branch != "master":
