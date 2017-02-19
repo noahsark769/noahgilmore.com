@@ -112,6 +112,7 @@ def main():
         deignore_build_step(),
         subprocess_step("python", "scripts/build.py"),
         git_step("add", "build/*"),
+        git_step("add", "blog/bower_components"),
         ignore_build_step(),
         git_step("commit", "-m '[%s] Build for release'" % datetime.today().strftime("%c")), # noqa
         git_step("push", "origin gh-pages"),
