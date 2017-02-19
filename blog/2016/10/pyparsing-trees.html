@@ -57,7 +57,7 @@
             ### Recursive grammars with pyparsing
             Pyparsing supports recursive grammars using a grammar component called `Forward`. To define a recursive grammar, you simply create a `pyparsing.Forward()`, then use the shift left operator to set its content:
 
-            ```python
+            ```pythonnn
             grammar = pyparsing.Forward()
             grammar << pyparsing.Suppress("(") + pyparsing.Word("0123456789") + pyparsing.ZeroOrMore(grammar) + pyparsing.Suppress(")")
 
