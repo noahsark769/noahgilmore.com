@@ -50,7 +50,7 @@
 
             1. It's inherently recursive, since after the value in each node, zero or more child nodes can follow:
                ```nohighlight
-               node := (value, [node, node, node, ...])
+               node := (value[, node, node, node, ...])
                ```
             2. If we just parse the string as a list, we won't be able to preserve the tree structure.
 
