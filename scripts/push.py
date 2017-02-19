@@ -126,7 +126,9 @@ def main():
 
     logger.info("Pushing...")
 
-    context = IgnoredBuildPathsContext(paths=["build/*", "blog/bower_components"])
+    context = IgnoredBuildPathsContext(
+        paths=["build/*", "blog/bower_components"]
+    )
 
     exec_steps(
         git_step("checkout", "gh-pages"),
@@ -134,7 +136,7 @@ def main():
         context.deignore_step(),
         subprocess_step("python", "scripts/build.py"),
         subprocess_step("bower", "install", cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "blog")), # noqa
-        context.add_step()
+        context.add_step(),
         context.reignore_step(),
         git_step("commit", "-m '[%s] Build for release'" % datetime.today().strftime("%c")), # noqa
         git_step("push", "origin gh-pages"),
