@@ -2,6 +2,7 @@
 
 from simplegit import Git
 from logger import Logger
+import os
 
 from datetime import datetime
 import subprocess
@@ -81,11 +82,11 @@ def ignore_build_step():
     return step
 
 
-def subprocess_step(*args):
+def subprocess_step(*args, **kwargs):
     """Step for calling a subprocess."""
     def step():
         logger.info(" ".join(args))
-        p = subprocess.Popen(args)
+        p = subprocess.Popen(args, **kwargs)
         return p.wait() == 0
     return step
 
@@ -111,9 +112,7 @@ def main():
         git_step("merge", "master"),
         deignore_build_step(),
         subprocess_step("python", "scripts/build.py"),
-        subprocess_step("cd", "blog"),
-        subprocess_step("bower", "install"),
-        subprocess_step("cd", ".."),
+        subprocess_step("bower", "install", cwd=os.path.join(os.path.dirname(os.path.realpath(__file__)), "blog")), # noqa
         git_step("add", "build/*"),
         git_step("add", "blog/bower_components"),
         ignore_build_step(),
