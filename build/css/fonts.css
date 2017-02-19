@@ -1,7 +1,0 @@
-@font-face {
-  font-family: 'Bariol';
-  src: url('/css/fonts/Bariol-Regular.eot');
-  /* IE9 Compat Modes */
-  src: url('/css/fonts/Bariol-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('/css/fonts/Bariol-Regular.woff') format('woff'), /* Modern Browsers */ url('/css/fonts/Bariol-Regular.ttf') format('truetype'), /* Safari, Android, iOS */ url('/css/fonts/Bariol-Regular.svg#svgBariolRegular') format('svg');
-  /* Legacy iOS */
-}
