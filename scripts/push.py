@@ -56,11 +56,13 @@ class IgnoredBuildPathsContext(object):
 
     def add_step(self):
         """Return a step to add ignored files."""
-        for path in self.paths:
-            _, rtncode, _ = git.add(path)
-            if rtncode != 0:
-                return False
-        return True
+        def step():
+            for path in self.paths:
+                _, rtncode, _ = git.add(path)
+                if rtncode != 0:
+                    return False
+            return True
+        return step
 
 
 def get_current_branch():
