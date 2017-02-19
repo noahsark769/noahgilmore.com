@@ -42,7 +42,7 @@ def git_step(cmd, args_string):
 
 
 def deignore_build_step():
-    """Return a step function which removed the last line from gitignore."""
+    """Return a step function which removes the last line from gitignore."""
     def step():
         logger.info("Removing build files from gitignore...")
         try:

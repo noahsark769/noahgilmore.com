@@ -1,2 +1,5 @@
+Mako==1.0.4
+MarkupSafe==0.23
 simplegit==0.0.1
 wheel==0.24.0
+Markdown==2.6.7

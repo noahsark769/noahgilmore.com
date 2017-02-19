@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NSObject Equality is Tricky | Noah Gilmore</title>
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" type="text/css" href="/build/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/build/css/fonts.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
+    <script type="text/javascript" src="/blog/bower_components/webcomponentsjs/webcomponents.js"></script>
+
+    <link rel="import" href="/blog/components/ng-nav.html">
+    <link rel="import" href="/blog/components/ng-blog-content.html">
+    <link rel="import" href="/blog/components/ng-blog-post-title.html">
+    <link rel="import" href="/blog/components/ng-captioned-image.html">
+    <link rel="import" href="/blog/components/ng-markdown-content.html">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+</head>
+<body>
+    <ng-nav></ng-nav>
+    <ng-blog-content>
+        <ng-blog-post-title title="NSObject Equality is Tricky" date="November 13th, 2016"></ng-blog-post-title>
+        <ng-markdown-content>
+            Swift can be tricky sometimes. Take for example an NSObject where we define equality:
+
+            ```swift
+            class A: NSObject {
+                let x: Int
+
+                init(x: Int) {
+                    self.x = x
+                }
+            }
+
+            func == (left: A, right: A) {
+                print("== for A")
+                return left.x == right.x
+            }
+            ```
+
+            Not too complicated - let's see what happens when we compare them:
+
+            ```swift
+            print(A(x: 1) == A(x: 1))
+            ```
+            ```nohighlight
+            == for A
+            true
+            ```
+
+            Nothing unexpected. But it's the opposite if we compare two arrays!
+
+            ```swift
+            print([A(x: 1)] == [A(x: 1)])
+            ```
+            ```nohighlight
+            false
+            ```
+
+            ## Equatable conformance is hard
+
+            Why does comparing two arrays with equal contents return false? It's because the Swift implementation of NSArray in Foundation compares as `AnyHashable`.
+
+            ```swift
+            print(A(x: 1) as AnyHashable == A(x: 1) as AnyHashable)
+            ```
+            ```nohighlight
+            false
+            ```
+
+            Apparently, doing this will use the NSObject implementation of `==(_:_:)` rather than the `A` one. The NSObject implementation of `==(_:_:)` checks isEqual, which returns false because the two objects aren't the same in memory. We can see this by adding an override:
+
+            ```swift
+            class A: NSObject {
+                let x: Int
+
+                init(x: Int) {
+                    self.x = x
+                }
+
+                override func isEqual(_ object: Any?) {
+                    print("isEqual for A")
+                    return super.isEqual(object)
+                }
+            }
+
+            func == (left: A, right: A) {
+                print("== for A")
+                return left.x == right.x
+            }
+            ```
+
+            Then,
+
+            ```swift
+            print([A(x: 1)] == [A(x: 1)])
+            ```
+            ```nohighlight
+            isEqual for A
+            false
+            ```
+
+            As far as I can tell, the best way to make an NSObject subclass work with Equatable is to override isEqual:
+
+            ```swift
+            class A: NSObject {
+                let x: Int
+
+                init(x: Int) {
+                    self.x = x
+                }
+
+                override func isEqual(_ object: Any?) {
+                    guard let object = object as? A else { return false }
+                    return object == self
+                }
+            }
+
+            func == (left: A, right: A) {
+                print("== for A")
+                return left.x == right.x
+            }
+            ```
+            ```swift
+            print([A(x: 1)] == [A(x: 1)])
+            ```
+            ```nohighlight
+            == for A
+            true
+            ```
+
+            Of course, if you define `A` as a `struct` or a regular `class`, there won't be an NSObject implementation of `==(_:_:)` to call, which means everything will work just fine. Working with NSObject can be tricky.
+        </ng-markdown-content>
+    </ng-blog-content>
+</body>
+</html>

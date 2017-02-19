@@ -1,0 +1,44 @@
+<link rel="import" href="/blog/bower_components/polymer/polymer.html">
+
+<dom-module id="ng-captioned-image">
+    <template>
+        <div class="captioned-image">
+            <img src="[[src]]" alt="alt">
+            <div class="caption">[[caption]]</div>
+        </div>
+    </template>
+
+    <style is="custom-style">
+        .captioned-image {
+            margin: 20px 0;
+        }
+        img {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .caption {
+            font-family: "Gentium Book Basic", times, serif;
+            font-style: italic;
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+    </style>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "ng-captioned-image",
+        properties: {
+            src: {
+                type: String
+            },
+            alt: {
+                type: String
+            },
+            caption: {
+                type: String
+            }
+        }
+    })
+</script>

@@ -1,0 +1,43 @@
+<link rel="import" href="/blog/bower_components/polymer/polymer.html">
+
+<dom-module id="ng-blog-post-title">
+    <template>
+        <div class="blog-post-title">
+            <h1>[[title]]</h1>
+            <p class="date">[[date]]</p>
+        </div>
+    </template>
+
+    <style is="custom-style">
+        .blog-post-title {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .blog-post-title > h1 {
+            width: 100%;
+            font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .date {
+            font-family: "Gentium Book Basic", times, serif;
+            font-style: italic;
+            font-size: 16px;
+            color: #999;
+        }
+    </style>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "ng-blog-post-title",
+        properties: {
+            title: {
+                type: String
+            },
+            date: {
+                type: String
+            }
+        }
+    })
+</script>

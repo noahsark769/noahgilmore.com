@@ -1,0 +1,29 @@
+<link rel="import" href="/blog/bower_components/polymer/polymer.html">
+
+<dom-module id="ng-blog-content">
+    <template>
+        <div class="blog-content">
+            <content></content>
+        </div>
+    </template>
+
+    <style is="custom-style">
+        .blog-content {
+            padding: 60px 0;
+            margin: 0 auto;
+            width: 90%;
+        }
+        @media all and (min-width: 600px) {
+            .blog-content {
+                max-width: 700px;
+                margin: auto;
+            }
+        }
+    </style>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "ng-blog-content"
+    })
+</script>
