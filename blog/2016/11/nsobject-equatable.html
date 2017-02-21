@@ -9,6 +9,11 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
 
+    <script type="text/javascript" src="/blog/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
     <link rel="import" href="/blog/components/ng-nav.html">
     <link rel="import" href="/blog/components/ng-blog-content.html">
     <link rel="import" href="/blog/components/ng-blog-post-title.html">
@@ -16,10 +21,6 @@
     <link rel="import" href="/blog/components/ng-markdown-content.html">
     <link rel="import" href="/blog/components/ng-blog-ga-tracker.html">
     <link rel="import" href="/blog/components/ng-disqus.html">
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
 </head>
 <body>
     <ng-nav></ng-nav>
@@ -48,7 +49,7 @@
             Perhaps surprisingly, it's this:
             ```nohighlight
             true
-            false
+            false // huh?!
             ```
 
             ### Equatable conformance is hard
@@ -96,7 +97,7 @@
             ```
             ```nohighlight
             isEqual for B
-            false // huh?!
+            false
             ```
 
             ### The fix
@@ -139,6 +140,5 @@
         <ng-disqus></ng-disqus>
     </ng-blog-content>
     <ng-blog-ga-tracker></ng-blog-ga-tracker>
-    <script type="text/javascript" src="/blog/bower_components/webcomponentsjs/webcomponents.js"></script>
 </body>
 </html>

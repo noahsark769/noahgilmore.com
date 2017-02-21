@@ -89,28 +89,29 @@
             font-size: 20px;
         }
     </style>
-</dom-module>
-
-<script>
-    Polymer({
-        is: "ng-markdown-content",
-        properties: {
-            format: {
-                type: String
+    <script>
+        Polymer({
+            is: "ng-markdown-content",
+            properties: {
+                format: {
+                    type: String
+                }
+            },
+            ready: function() {
+                this.content = document.createElement("marked-element")
+                    .unindent(
+                        Polymer.dom(this).innerHTML
+                            .replace(new RegExp('&lt;', 'g'), "<")
+                            .replace(new RegExp('&gt;', 'g'), ">")
+                    );
+            },
+            attached: function() {
+                console.log(Polymer.dom(this.root));
+                Polymer.dom(this.root).querySelectorAll("pre code").forEach(function(block, index) {
+                    console.log("FOUND A CODE");
+                    hljs.highlightBlock(block);
+                });
             }
-        },
-        ready: function() {
-            this.content = document.createElement("marked-element")
-                .unindent(
-                    Polymer.dom(this).innerHTML
-                        .replace(new RegExp('&lt;', 'g'), "<")
-                        .replace(new RegExp('&gt;', 'g'), ">")
-                );
-        },
-        attached: function() {
-            Polymer.dom(this.root).querySelectorAll("pre code").forEach(function(block, index) {
-                hljs.highlightBlock(block);
-            });
-        }
-    })
-</script>
+        })
+    </script>
+</dom-module>
