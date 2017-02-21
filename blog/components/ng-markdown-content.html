@@ -4,7 +4,7 @@
 <dom-module id="ng-markdown-content">
     <template>
         <div class$="format-{{format}} markdown-content">
-            <marked-element markdown="{{content}}">
+            <marked-element id="main" markdown="{{content}}">
                 <div class="markdown-html"></div>
             </marked-element>
         </div>
@@ -106,10 +106,10 @@
                     );
             },
             attached: function() {
-                console.log(Polymer.dom(this.root));
-                Polymer.dom(this.root).querySelectorAll("pre code").forEach(function(block, index) {
-                    console.log("FOUND A CODE");
-                    hljs.highlightBlock(block);
+                this.$.main.addEventListener('marked-render-complete', function (e) {
+                    e.target.querySelectorAll("pre code").forEach(function (element, index) {
+                        hljs.highlightBlock(element);
+                    });
                 });
             }
         })
