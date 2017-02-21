@@ -3,7 +3,7 @@
 
 <dom-module id="ng-markdown-content">
     <template>
-        <div class="markdown-content">
+        <div class$="format-{{format}} markdown-content">
             <marked-element markdown="{{content}}">
                 <div class="markdown-html"></div>
             </marked-element>
@@ -11,14 +11,30 @@
     </template>
 
     <style is="custom-style">
+        .format-post-preview p, .format-post-preview li {
+            font-family: "Open Sans", arial, sans-serif;
+            font-size: 14px;
+            line-height: 14px;
+            line-height: 18px;
+            margin-top: 10px;
+            padding-bottom: 10px;
+        }
+        .format-post-preview p + p {
+            margin-top: 0;
+        }
+        .format-post-preview pre > code {
+            font-size: 12px;
+            line-height: 12px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
         p, li {
             font-family: "Gentium Book Basic", times, serif;
             font-size: 21px;
-            line-height: 24px;
+            line-height: 26px;
             color: #333;
             padding-bottom: 15px;
             margin-top: 15px;
-            line-height: 26px;
         }
         a {
             color: #1A3F4B;
@@ -53,6 +69,10 @@
         ol li {
             list-style-type: decimal;
         }
+        ul li {
+            list-style-type: square;
+            margin-left: 40px;
+        }
         h1, h2, h3, h4, h5, h6 {
             width: 100%;
             font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
@@ -74,9 +94,18 @@
 <script>
     Polymer({
         is: "ng-markdown-content",
+        properties: {
+            format: {
+                type: String
+            }
+        },
         ready: function() {
             this.content = document.createElement("marked-element")
-                .unindent(Polymer.dom(this).innerHTML.replace(new RegExp('&lt;', 'g'), "<").replace(new RegExp('&gt;', 'g'), ">"));
+                .unindent(
+                    Polymer.dom(this).innerHTML
+                        .replace(new RegExp('&lt;', 'g'), "<")
+                        .replace(new RegExp('&gt;', 'g'), ">")
+                );
         },
         attached: function() {
             Polymer.dom(this.root).querySelectorAll("pre code").forEach(function(block, index) {

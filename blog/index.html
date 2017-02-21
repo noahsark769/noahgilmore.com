@@ -8,20 +8,88 @@
     <link rel="stylesheet" type="text/css" href="/build/css/fonts.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script type="text/javascript" src="/blog/bower_components/webcomponentsjs/webcomponents.js"></script>
 
     <link rel="import" href="/blog/components/ng-nav.html">
     <link rel="import" href="/blog/components/ng-blog-content.html">
+    <link rel="import" href="/blog/components/ng-blog-ga-tracker.html">
+    <link rel="import" href="/blog/components/ng-post-preview.html">
+    <link rel="import" href="/blog/components/ng-markdown-content.html">
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <style type="text/css">
+        .wrapper {
+            background-color: #fafafa;
+        }
+    </style>
 </head>
 <body>
     <ng-nav></ng-nav>
-    <ng-blog-content>
-        <ng-post-preview name="NSObject Equality is Tricky" date="November 13th, 2016">Swift can be tricky sometimes. Take for example an NSObject where we define equality...</ng-post-preview>
-        <ng-post-preview name="Pyparsing Syntax Trees" date="November 13th, 2016">Swift can be tricky sometimes. Take for example an NSObject where we define equality...</ng-post-preview>
-    </ng-blog-content>
+    <div class="wrapper">
+        <ng-blog-content>
+            <ng-post-preview name="NSObject Equality is Tricky" date="November 13th, 2016" url="/blog/2016/11/nsobject-equatable.html">
+                <ng-markdown-content format="post-preview">
+                Swift can be tricky sometimes. Take for example an NSObject where we define equality:
+
+                ```swift
+                class A: NSObject {
+                    let x: Int
+
+                    init(x: Int) {
+                        self.x = x
+                    }
+                }
+
+                func == (left: A, right: A) {
+                    print("== for A")
+                    return left.x == right.x
+                }
+                ```
+
+                Not too complicated - let's see what happens when we compare them:
+
+                ```swift
+                print(A(x: 1) == A(x: 1))
+                ```
+                ```nohighlight
+                == for A
+                true
+                ```
+
+                Nothing unexpected, the two objects are equal. But not so if they're both in arrays!
+
+                ```swift
+                print([A(x: 1)] == [A(x: 1)])
+                ```
+                </ng-markdown-content>
+            </ng-post-preview>
+            <ng-post-preview name="Simple syntax trees with Pyparsing" date="October 23rd, 2016" url="/blog/2016/10/pyparsing-trees.html">
+                <ng-markdown-content format="post-preview">
+            Let's talk about [syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree). In static analysis, a common operation is to take a character string (e.g. "x = 1") and transform it into well structured data:
+
+            Let's try to do this in python. We'll use [Pyparsing](http://pyparsing.wikispaces.com/) as our tokenization tool - you can use pyparsing's rules to build a grammar, from which you can get back a list of token data.
+
+            ```python
+            from pyparsing import alphas, Word, Literal, nums
+
+            grammar = Literal("var") + Word(alphas) + Literal("=") + Word(nums)
+            ```
+            ```
+            >>> print(grammar.parseString("var x = 1"))
+            ['var', 'x', '=', '1']
+            ```
+
+            This is great, but what if we need a tree instead of an array of tokens?
+
+            For example, let's say we have a language that describes a tree, where each node in the tree can have a number. Each node is represented by a pair of parentheses, and inside is the value followed by the child nodes...
+                </ng-markdown-content>
+            </ng-post-preview>
+        </ng-blog-content>
+    </div>
+    <ng-blog-ga-tracker></ng-blog-ga-tracker>
 </body>
 </html>

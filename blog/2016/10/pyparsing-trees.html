@@ -15,6 +15,8 @@
     <link rel="import" href="/blog/components/ng-blog-post-title.html">
     <link rel="import" href="/blog/components/ng-captioned-image.html">
     <link rel="import" href="/blog/components/ng-markdown-content.html">
+    <link rel="import" href="/blog/components/ng-blog-ga-tracker.html">
+    <link rel="import" href="/blog/components/ng-disqus.html">
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
@@ -22,13 +24,13 @@
 <body>
     <ng-nav></ng-nav>
     <ng-blog-content>
-        <ng-blog-post-title title="Pyparsing syntax trees" date="October 23rd, 2016"></ng-blog-post-title>
+        <ng-blog-post-title title="Simple syntax trees with Pyparsing" date="October 23rd, 2016"></ng-blog-post-title>
         <ng-markdown-content>
-            A common problem in computer science is how to take a character string and transform it into well structured data. This sort of transform has particular applications to static analysis of programming languages, where the objective is to take source code and make it into a [syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+            Let's talk about [syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree). In static analysis, a common operation is to take a character string (e.g. "x = 1") and transform it into well structured data:
         </ng-markdown-content>
-        <ng-captioned-image src="pyparsing-trees-1.png" alt="Simple syntax tree" caption="This is a simple example - even a variable assignment in most languages has a far more complicated grammar." style="width: 100%"></ng-captioned-image>
+        <ng-captioned-image src="pyparsing-trees-1.png" alt="Simple syntax tree" caption="This is a simple example of course." style="width: 100%"></ng-captioned-image>
         <ng-markdown-content>
-            Let's try to do this in python. [Pyparsing](http://pyparsing.wikispaces.com/) is a really easy to use tool. You can use pyparsing's predefined grammar rules to build a grammar, from which you can get back a list of token data.
+            Let's try to do this in python. We'll use [Pyparsing](http://pyparsing.wikispaces.com/) as our tokenization tool - you can use pyparsing's rules to build a grammar, from which you can get back a list of token data.
 
             ```python
             from pyparsing import alphas, Word, Literal, nums
@@ -55,7 +57,7 @@
             2. If we just parse the string as a list, we won't be able to preserve the tree structure.
 
             ### Recursive grammars with pyparsing
-            Pyparsing supports recursive grammars using a grammar component called `Forward`. To define a recursive grammar, you simply create a `pyparsing.Forward()`, then use the shift left operator to set its content:
+            Pyparsing supports recursive grammars using a grammar component called `Forward`. To define a recursive grammar, you create a `pyparsing.Forward()`, then use the shift left operator to set its content:
 
             ```python
             grammar = pyparsing.Forward()
@@ -137,7 +139,7 @@
             grammar.setParseAction(parseAction)
             ```
 
-            Defining a way to print it out and see if it worked:
+            And a way to print it out and see if it worked:
 
             ```python
             def pprint(node, tab=""):
@@ -147,7 +149,7 @@
             ```
 
             ```
-            >>> grammar.parseString("(1 (2 (3)) (4 (5 (6) (7) (8))))")
+            >>> pprint(grammar.parseString("(1 (2 (3)) (4 (5 (6) (7) (8))))"))
             ┗━ 1
                 ┗━ 2
                     ┗━ 3
@@ -158,8 +160,10 @@
                         ┗━ 8
             ```
 
-            Pretty simple: a syntax parser in 7 lines of code.
+            Pretty cool: a simple parser in 7 lines of code.
         </ng-markdown-content>
+        <ng-disqus></ng-disqus>
     </ng-blog-content>
+    <ng-blog-ga-tracker></ng-blog-ga-tracker>
 </body>
 </html>
