@@ -33,38 +33,30 @@
         <ng-blog-content>
             <ng-post-preview name="NSObject Equality is Tricky" date="November 13th, 2016" url="/blog/2016/11/nsobject-equatable.html">
                 <ng-markdown-content format="post-preview">
-                Swift can be tricky sometimes. Take for example an NSObject where we define equality:
+                    Swift can be tricky sometimes. For example, what does the following print?
 
-                ```swift
-                class A: NSObject {
-                    let x: Int
+                    ```swift
+                    class A: NSObject {
+                      let x: Int
 
-                    init(x: Int) {
+                      init(x: Int) {
                         self.x = x
+                      }
                     }
-                }
 
-                func == (left: A, right: A) {
-                    print("== for A")
-                    return left.x == right.x
-                }
-                ```
+                    func ==(left: A, right: A) -> Bool {
+                      return left.x == right.x
+                    }
 
-                Not too complicated - let's see what happens when we compare them:
+                    print(A(x: 1) == A(x: 1))
+                    print([A(x: 1)] == [A(x: 1)])
+                    ```
 
-                ```swift
-                print(A(x: 1) == A(x: 1))
-                ```
-                ```nohighlight
-                == for A
-                true
-                ```
-
-                Nothing unexpected, the two objects are equal. But not so if they're both in arrays!
-
-                ```swift
-                print([A(x: 1)] == [A(x: 1)])
-                ```
+                    Perhaps surprisingly, it's this:
+                    ```nohighlight
+                    true
+                    false
+                    ```
                 </ng-markdown-content>
             </ng-post-preview>
             <ng-post-preview name="Simple syntax trees with Pyparsing" date="October 23rd, 2016" url="/blog/2016/10/pyparsing-trees.html">
