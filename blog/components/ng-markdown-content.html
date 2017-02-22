@@ -4,7 +4,7 @@
 <dom-module id="ng-markdown-content">
     <template>
         <div class$="format-{{format}} markdown-content">
-            <marked-element id="main" markdown="{{content}}">
+            <marked-element class="main" markdown="{{content}}">
                 <div class="markdown-html"></div>
             </marked-element>
         </div>
@@ -104,12 +104,13 @@
                             .replace(new RegExp('&lt;', 'g'), "<")
                             .replace(new RegExp('&gt;', 'g'), ">")
                     );
-            },
-            attached: function() {
-                this.$.main.addEventListener('marked-render-complete', function (e) {
-                    e.target.querySelectorAll("pre code").forEach(function (element, index) {
-                        hljs.highlightBlock(element);
-                    });
+                this.addEventListener('marked-render-complete', function (e) {
+                    var elements = e.target.querySelectorAll("pre code");
+                    // this next line has to be stuck in the 90's
+                    // https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
+                    for (var i = 0; i < elements.length; i++) {
+                        hljs.highlightBlock(elements[i]);
+                    }
                 });
             }
         })

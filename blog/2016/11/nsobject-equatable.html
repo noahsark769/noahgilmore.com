@@ -22,7 +22,7 @@
     <link rel="import" href="/blog/components/ng-blog-ga-tracker.html">
     <link rel="import" href="/blog/components/ng-disqus.html">
 </head>
-<body>
+<body style="display: none">
     <ng-nav></ng-nav>
     <ng-blog-content>
         <ng-blog-post-title title="NSObject Equality is Tricky" date="November 13th, 2016"></ng-blog-post-title>
@@ -140,5 +140,10 @@
         <ng-disqus></ng-disqus>
     </ng-blog-content>
     <ng-blog-ga-tracker></ng-blog-ga-tracker>
+    <script>
+      window.addEventListener('WebComponentsReady', function(e) {
+        document.body.style.display = "block";
+      });
+    </script>
 </body>
 </html>

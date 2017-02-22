@@ -27,7 +27,7 @@
         }
     </style>
 </head>
-<body>
+<body style="display: none">
     <ng-nav></ng-nav>
     <div class="wrapper">
         <ng-blog-content>
@@ -83,5 +83,10 @@
         </ng-blog-content>
     </div>
     <ng-blog-ga-tracker></ng-blog-ga-tracker>
+    <script>
+      window.addEventListener('WebComponentsReady', function(e) {
+        document.body.style.display = "block";
+      });
+    </script>
 </body>
 </html>

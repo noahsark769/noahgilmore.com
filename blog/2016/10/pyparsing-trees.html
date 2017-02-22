@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
 </head>
-<body>
+<body style="display: none">
     <ng-nav></ng-nav>
     <ng-blog-content>
         <ng-blog-post-title title="Simple syntax trees with Pyparsing" date="October 23rd, 2016"></ng-blog-post-title>
@@ -165,5 +165,10 @@
         <ng-disqus></ng-disqus>
     </ng-blog-content>
     <ng-blog-ga-tracker></ng-blog-ga-tracker>
+    <script>
+      window.addEventListener('WebComponentsReady', function(e) {
+        document.body.style.display = "block";
+      });
+    </script>
 </body>
 </html>
