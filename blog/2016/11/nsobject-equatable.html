@@ -131,9 +131,9 @@
             true
             ```
 
-            Of course, if we defined `A` as a `struct` or a regular `class` in the first place, there won't be an NSObject implementation of `==(_:_:)` to call, which means everything will work just fine. Sigh.
+            Of course, if we defined `A` as a `struct` or a regular `class` in the first place, there won't be `==(_:_:)` defined for `[A]`, which means the compiler would catch our mistake instead of falling back to something that might not work correctly.
 
-            Working with NSObject can be tricky.
+            Sigh. Working with NSObject can be tricky.
 
             A working playground with the code from this post can be found [here](https://github.com/noahsark769/code-examples/blob/ed9df41aae709eaeb4e334e3e9a5b1a650deef4d/swift/swift-nsobject-equatable.playground/Contents.swift).
         </ng-markdown-content>
