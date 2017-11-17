@@ -9,5 +9,6 @@ build/*
 blog/bower_components
 blog/build
 new/build/*
-new/build/node_modules
+new/node_modules
+new/.idyll/*
 
