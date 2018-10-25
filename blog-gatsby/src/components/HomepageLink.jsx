@@ -1,14 +1,15 @@
 import React from 'react';
-import { Div } from '../components/div';
+import { Div, A } from '../components/default';
 import styled from "styled-components";
 
-const StyledLink = styled(Div)`
+const StyledLink = styled(A)`
     display: block;
     width: 100%;
     padding: 15px 15px 15px 0;
     background-color: white;
     pointer: cursor;
 
+    font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
     text-align: center;
     font-size: 16px;
     text-transform: uppercase;
