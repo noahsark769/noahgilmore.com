@@ -12,7 +12,7 @@ const Container = styled(Div)`
 const LeftColumn = styled(Div)`
     width: ${960 * 0.4 + "px;"}
     height: 100%;
-    background-image: url("https://berkeleytime-production-static.s3.amazonaws.com/static_media/css/img/berkeley.jpg");
+    background-image: url("https://format-com-cld-res.cloudinary.com/image/private/s--noYGWsqS--/c_limit,g_center,h_65535,w_2500/a_auto,fl_keep_iptc.progressive,q_95/43206-2413999-uc-2.jpg?2500");
     background-size: cover;
     background-position: center center;
     padding-top: 50px;
@@ -48,6 +48,8 @@ const IndexPage = () => (
         <LeftColumn>
             <Title><A href="/">Noah Gilmore</A></Title>
             <Links>
+                <HomepageLink to='/blog'>About</HomepageLink>
+                <HomepageLink to='/blog'>Contact</HomepageLink>
                 <HomepageLink to='/blog'>Blog</HomepageLink>
             </Links>
         </LeftColumn>
