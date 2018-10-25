@@ -43,17 +43,15 @@ const Links = styled(Div)`
 `
 
 const IndexPage = () => (
-    <div>
+    <Container>
         <GlobalStyle />
-        <Container>
-            <LeftColumn>
-                <Title><A href="/">Noah Gilmore</A></Title>
-                <Links>
-                    <HomepageLink to='/blog'>Blog</HomepageLink>
-                </Links>
-            </LeftColumn>
-        </Container>
-    </div>
+        <LeftColumn>
+            <Title><A href="/">Noah Gilmore</A></Title>
+            <Links>
+                <HomepageLink to='/blog'>Blog</HomepageLink>
+            </Links>
+        </LeftColumn>
+    </Container>
 )
 
 export default IndexPage;
