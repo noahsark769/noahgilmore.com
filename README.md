@@ -13,9 +13,4 @@ python scripts/push.py
 ```
 
 ### Blog
-
-To build:
-
-```
-npm install -g idyll
-```
+The new blog is a work in progress. It's in blog-gatsby.
