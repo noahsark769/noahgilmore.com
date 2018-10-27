@@ -15,6 +15,10 @@ export const GlobalStyle = createGlobalStyle`
              url('${bariol_ttf}') format('truetype'),
              url('${bariol_svg}#svgBariolRegular') format('svg');
     }
+
+    * {
+        box-sizing: border-box;
+    }
 `;
 
 export const Div = styled.div`

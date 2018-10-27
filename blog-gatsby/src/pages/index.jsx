@@ -33,7 +33,6 @@ const Title = styled(Div)`
 
     width: 100%;
     text-align: left;
-    margin-bottom: 10px;
     padding: 10px 15px 10px 0;
     background-color: white;
     text-align: right;
