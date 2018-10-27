@@ -27,4 +27,5 @@ module.exports = {
     },
     `gatsby-plugin-styled-components`,
   ],
+  pathPrefix: '/noahgilmore.com'
 }
