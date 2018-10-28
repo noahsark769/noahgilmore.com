@@ -71,6 +71,7 @@ class IndexPage extends React.Component {
         return <Container>
             <GlobalStyle />
             <Helmet>
+                <title>Noah Gilmore</title>
                 <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
             </Helmet>
             <LeftColumn>
