@@ -1,16 +1,13 @@
 # noahgilmore.com
 
 ## Developing
-
-To build scss:
+Everything is in blog-gatsby. I'll move it out soon. To build for development:
 ```
-python scripts/build.py
-```
-
-To deploy to production:
-```
-python scripts/push.py
+cd blog-gatsby
+gatsby develop
 ```
 
-### Blog
-The new blog is a work in progress. It's in blog-gatsby.
+To deploy:
+```
+npm run deploy
+```
