@@ -2,6 +2,7 @@ import React from 'react';
 import { Div, A, GlobalStyle } from '../components/default';
 import styled, { css } from "styled-components";
 import HomepageLink from '../components/HomepageLink';
+import { Helmet } from "react-helmet";
 
 const Container = styled(Div)`
     width: 960px;
@@ -113,6 +114,9 @@ class IndexPage extends React.Component {
     render() {
         return <Container>
             <GlobalStyle />
+            <Helmet>
+                <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+            </Helmet>
             <LeftColumn>
                 <Title><A href="/">Noah Gilmore</A></Title>
                 <Links>
