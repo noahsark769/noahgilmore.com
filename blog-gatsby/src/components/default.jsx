@@ -21,8 +21,16 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
-export const Div = styled.div`
-`
+export const Div = styled.div``;
+export const Nav = styled.nav``;
+export const UL = styled.ul`
+    margin: 0;
+    padding: 0;
+`;
+export const LI = styled.li`
+    margin: 0;
+    padding: 0;
+`;
 
 export const A = styled.a`
     &, &:hover, &:focus {
@@ -30,4 +38,4 @@ export const A = styled.a`
         color: inherit;
         text-decoration: none;
     }
-`
+`;
