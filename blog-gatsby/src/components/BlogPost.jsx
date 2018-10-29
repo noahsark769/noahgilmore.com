@@ -42,6 +42,9 @@ const BlogPost = (props) => {
                 <Heading>{props.title}</Heading>
                 <DateContainer>{props.date}</DateContainer>
             </TitleContainer>
+            <div>
+                {props.children}
+            </div>
         </BlogPostContainer>
     )
 };

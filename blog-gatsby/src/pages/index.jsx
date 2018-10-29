@@ -79,7 +79,7 @@ class IndexPage extends React.Component {
                 <Links>
                     <HomepageLink onClick={() => this.handleContentChange("about")}>About</HomepageLink>
                     <HomepageLink onClick={() => this.handleContentChange("contact")}>Contact</HomepageLink>
-                    <HomepageLink to='https://noahgilmore.svbtle.com/'>Blog</HomepageLink>
+                    <HomepageLink to='https://medium.com/@noahgilmore'>Blog</HomepageLink>
                 </Links>
             </LeftColumn>
             <RightColumn>
