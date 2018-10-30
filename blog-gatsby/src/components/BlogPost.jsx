@@ -1,5 +1,6 @@
 import React from 'react';
 import { Div, A } from '../components/default';
+import Disqus from '../components/disqus';
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 
@@ -34,18 +35,21 @@ const DateContainer = styled.p`
 
 const BlogPost = (props) => {
     return (
-        <BlogPostContainer>
-            <Helmet>
-                <title>{props.title}</title>
-            </Helmet>
-            <TitleContainer>
-                <Heading>{props.title}</Heading>
-                <DateContainer>{props.date}</DateContainer>
-            </TitleContainer>
-            <div>
-                {props.children}
-            </div>
-        </BlogPostContainer>
+        <div>
+            <BlogPostContainer>
+                <Helmet>
+                    <title>{props.title}</title>
+                </Helmet>
+                <TitleContainer>
+                    <Heading>{props.title}</Heading>
+                    <DateContainer>{props.date}</DateContainer>
+                </TitleContainer>
+                <div>
+                    {props.children}
+                </div>
+                <Disqus />
+            </BlogPostContainer>
+        </div>
     )
 };
 
