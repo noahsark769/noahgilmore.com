@@ -50,7 +50,6 @@ const Container = styled.div`
         display: block;
         margin: 0;
         padding: 0;
-        background: none;
         border: 1px solid #ddd;
         border-radius: 2px;
         padding: 10px;
@@ -97,11 +96,6 @@ export default class MarkdownContent extends React.Component {
     render() {
         return (
             <Container>
-                <Helmet>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css" />
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-                </Helmet>
                 <ReactMarkdown source={this.props.source} />
             </Container>
         );
