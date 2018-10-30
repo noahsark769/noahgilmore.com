@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Nav from '../../components/Nav';
 import BlogPost from '../../components/BlogPost';
 import MarkdownContent from '../../components/MarkdownContent';
+import ReactGA from 'react-ga';
 
 const content = (<div>
 
@@ -122,23 +123,30 @@ A working playground with the code from this post can be found [here](https://gi
 
 </div>);
 
-function Page() {
-    return (
-        <div>
-            <GlobalStyle />
-            <Helmet>
-                <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
-                <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-            </Helmet>
-            <Nav />
-            <BlogPost title="NSObject Equality is Tricky" date="November 13th, 2016">
-                {content}
-            </BlogPost>
-        </div>
-    )
+export class Page extends React.Component {
+    render() {
+        return (
+            <div>
+                <GlobalStyle />
+                <Helmet>
+                    <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+                    <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css" />
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+                </Helmet>
+                <Nav />
+                <BlogPost title="NSObject Equality is Tricky" date="November 13th, 2016">
+                    {content}
+                </BlogPost>
+            </div>
+        )
+    }
+
+    componentDidMount() {
+        ReactGA.initialize('UA-35325391-1');
+        ReactGA.pageview(window.location.pathname + window.location.search);
+    }
 }
 
 export default Page;

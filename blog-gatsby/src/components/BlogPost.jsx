@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div, A } from '../components/default';
-import Disqus from '../components/disqus';
+import Disqus from '../components/Disqus';
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 
@@ -33,24 +33,22 @@ const DateContainer = styled.p`
     color: #999;
 `;
 
-const BlogPost = (props) => {
-    return (
-        <div>
+export default class BlogPost extends React.Component {
+    render() {
+        return (
             <BlogPostContainer>
                 <Helmet>
-                    <title>{props.title}</title>
+                    <title>{this.props.title}</title>
                 </Helmet>
                 <TitleContainer>
-                    <Heading>{props.title}</Heading>
-                    <DateContainer>{props.date}</DateContainer>
+                    <Heading>{this.props.title}</Heading>
+                    <DateContainer>{this.props.date}</DateContainer>
                 </TitleContainer>
                 <div>
-                    {props.children}
+                    {this.props.children}
                 </div>
                 <Disqus />
             </BlogPostContainer>
-        </div>
-    )
+        );
+    }
 };
-
-export default BlogPost;

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import HomepageLink from '../components/HomepageLink';
 import { Helmet } from "react-helmet";
 import RightColumnContent from '../components/RightColumnContent';
+import ReactGA from 'react-ga';
 
 const Container = styled(Div)`
     width: 960px;
@@ -86,6 +87,11 @@ class IndexPage extends React.Component {
                 <RightColumnContent component={this.state.component} />
             </RightColumn>
         </Container>
+    }
+
+    componentDidMount() {
+        ReactGA.initialize('UA-35325391-1');
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 }
 
