@@ -31,7 +31,9 @@ print(String(
     data: UserDefaults.standard.data(forKey: "myKey")!,
     encoding: .ascii
 ))
-// Optional("bplist00Ô\u{01}\u{02}\u{03}\u{04}\u{05}\u{08}\n\u{0B}T$topX$objectsX$versionY$archiverÑ\u{06}\u{07}Troot\0¡\tU$null\u{12}\0\u{01} _\u{10}\u{0F}NSKeyedArchiver\u{08}\u{11}\u{16}\u{1F}(25:<>DI\0\0\0\0\0\0\u{01}\u{01}\0\0\0\0\0\0\0\u{0C}\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0[")
+```
+```nohighlight
+Optional("bplist00Ô\u{01}\u{02}\u{03}\u{04}\u{05}\u{08}\n\u{0B}T$topX$objectsX$versionY$archiverÑ\u{06}\u{07}Troot\0¡\tU$null\u{12}\0\u{01} _\u{10}\u{0F}NSKeyedArchiver\u{08}\u{11}\u{16}\u{1F}(25:<>DI\0\0\0\0\0\0\u{01}\u{01}\0\0\0\0\0\0\0\u{0C}\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0[")
 ```
 
 Turns out that we can use PropertyListSerialization to actually print the serialized value of nil:
