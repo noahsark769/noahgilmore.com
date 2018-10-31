@@ -60,7 +60,7 @@ const Container = styled.div`
     }
 
     pre > code.hljs {
-        border: none;
+        
     }
     pre + p {
         margin-top: 30px;
