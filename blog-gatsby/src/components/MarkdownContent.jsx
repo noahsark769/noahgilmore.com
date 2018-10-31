@@ -109,6 +109,9 @@ export default class MarkdownContent extends React.Component {
         console.log("HEYYYY YAAAAAA");
         console.log(elements);
         for (var i = 0; i < elements.length; i++) {
+            // I would love to import the node version of hljs here, but it turns out
+            // this doesn't work due to something in gatsby-mdx's rendering. Oh well,
+            // we just import it in html.js and use the window version here.
             window.hljs.highlightBlock(elements[i]);
         }
     }
