@@ -4,7 +4,6 @@ import { Div, A } from '../components/default';
 import styled, { css } from "styled-components";
 import ReactMarkdown from 'react-markdown';
 import { Helmet } from "react-helmet";
-import hljs from 'highlight.js';
 
 const Container = styled.div`
     .format-post-preview p, .format-post-preview li {
@@ -110,7 +109,7 @@ export default class MarkdownContent extends React.Component {
         console.log("HEYYYY YAAAAAA");
         console.log(elements);
         for (var i = 0; i < elements.length; i++) {
-            hljs.highlightBlock(elements[i]);
+            window.hljs.highlightBlock(elements[i]);
         }
     }
 }
