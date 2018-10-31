@@ -4,7 +4,7 @@ import Disqus from '../components/Disqus';
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 
-const BlogPostContainer = styled.div`
+export const BlogPostContainer = styled.div`
     padding: 60px 0;
     margin: 0 auto;
     width: 90%;
@@ -33,21 +33,28 @@ const DateContainer = styled.p`
     color: #999;
 `;
 
+export const BlogPostMeta = (props) => {
+    return (
+        <div>
+            <Helmet>
+                <title>{props.title}</title>
+            </Helmet>
+            <TitleContainer>
+                <Heading>{props.title}</Heading>
+                <DateContainer>{props.date}</DateContainer>
+            </TitleContainer>
+        </div>
+    );
+};
+
 export default class BlogPost extends React.Component {
     render() {
         return (
             <BlogPostContainer>
-                <Helmet>
-                    <title>{this.props.title}</title>
-                </Helmet>
-                <TitleContainer>
-                    <Heading>{this.props.title}</Heading>
-                    <DateContainer>{this.props.date}</DateContainer>
-                </TitleContainer>
+                <BlogPostMeta title={this.props.title} date={this.props.date} />
                 <div>
                     {this.props.children}
                 </div>
-                <Disqus />
             </BlogPostContainer>
         );
     }

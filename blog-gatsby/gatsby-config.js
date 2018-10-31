@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'Noah Gilmore',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -14,5 +14,13 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-mdx`,
+      options: {
+        defaultLayouts: {
+          default: require.resolve("./src/components/BlogPageLayout.jsx")
+        }
+      }
+    },
   ]
 }

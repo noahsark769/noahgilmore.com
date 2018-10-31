@@ -97,7 +97,7 @@ export default class MarkdownContent extends React.Component {
     render() {
         return (
             <Container>
-                <ReactMarkdown source={this.props.source} />
+                {this.props.children}
             </Container>
         );
     }
@@ -107,6 +107,8 @@ export default class MarkdownContent extends React.Component {
         var elements = node.querySelectorAll("pre code");
         // this next line has to be stuck in the 90's
         // https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
+        console.log("HEYYYY YAAAAAA");
+        console.log(elements);
         for (var i = 0; i < elements.length; i++) {
             hljs.highlightBlock(elements[i]);
         }
