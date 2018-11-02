@@ -55,6 +55,11 @@ const StyledA = styled(A)`
     height: auto;
     color: rgba(128, 165, 177, 1);
 
+    -webkit-transition: 0.2s ease-in-out;
+    -moz-transition: 0.2s ease-in-out;
+    -o-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+
     &:hover {
         color: rgba(151, 195, 210, 1);
     }
@@ -67,7 +72,7 @@ const StyledA = styled(A)`
 const Nav = (props) => {
     return (
         <StyledNav>
-            <Title>NOAH GILMORE</Title>
+            <Title><StyledA href='/'>NOAH GILMORE</StyledA></Title>
             <NavLinks>
                 <NavLink><StyledA href="/">HOME</StyledA></NavLink>
                 <NavLink><StyledA href="/blog/">POSTS</StyledA></NavLink>

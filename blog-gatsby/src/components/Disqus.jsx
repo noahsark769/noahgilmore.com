@@ -1,7 +1,5 @@
 import React from 'react';
-import { Div, A } from '../components/default';
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
 
 const Wrapper = styled.div`
     margin-top: 80px;

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Div, A } from '../components/default';
-import Disqus from '../components/Disqus';
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 

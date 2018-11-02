@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { Div, A, GlobalStyle } from '../../components/default';
-import styled from "styled-components";
+import { GlobalStyle } from '../../components/default';
 import Nav from '../../components/Nav';
 import ReactGA from 'react-ga';
 

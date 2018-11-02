@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { Div, A, GlobalStyle } from './default';
-import styled from "styled-components";
+import { GlobalStyle } from './default';
 import Nav from './Nav';
 import { BlogPostContainer } from './BlogPost';
 import MarkdownContent from './MarkdownContent';

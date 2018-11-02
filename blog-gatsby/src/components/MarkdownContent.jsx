@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Div, A } from '../components/default';
-import styled, { css } from "styled-components";
-import ReactMarkdown from 'react-markdown';
-import { Helmet } from "react-helmet";
+import styled from "styled-components";
 
 const Container = styled.div`
     .format-post-preview p, .format-post-preview li {
@@ -35,6 +32,13 @@ const Container = styled.div`
     }
     a {
         color: #1A3F4B;
+        -webkit-transition: 0.2s ease-in-out;
+        -moz-transition: 0.2s ease-in-out;
+        -o-transition: 0.2s ease-in-out;
+        transition: 0.2s ease-in-out;
+    }
+    a:hover {
+        color: #47656E;
     }
     code {
         font-family: monospace;
@@ -59,9 +63,6 @@ const Container = styled.div`
         white-space: pre-wrap;
     }
 
-    pre > code.hljs {
-        
-    }
     pre + p {
         margin-top: 30px;
     }
