@@ -3,6 +3,14 @@ module.exports = {
     title: 'Noah Gilmore',
   },
   plugins: [
+    {
+      resolve: `gatsby-mdx`,
+      options: {
+        defaultLayouts: {
+          default: require.resolve("./src/components/BlogPageLayout.jsx")
+        }
+      }
+    },
     'gatsby-plugin-react-helmet',
     {
       resolve: `gatsby-source-filesystem`,
@@ -14,13 +22,5 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     `gatsby-plugin-styled-components`,
-    {
-      resolve: `gatsby-mdx`,
-      options: {
-        defaultLayouts: {
-          default: require.resolve("./src/components/BlogPageLayout.jsx")
-        }
-      }
-    },
   ]
 }
