@@ -3,33 +3,43 @@ import { Helmet } from "react-helmet";
 import { GlobalStyle } from '../../components/default';
 import Nav from '../../components/Nav';
 import ReactGA from 'react-ga';
+import { StaticQuery, graphql } from 'gatsby'
 
-class IndexPage extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            component: "home"
-        };
-    }
+const MDXBlogPostsQuery = (props) => (
+  <StaticQuery
+    query={graphql`
+        query MDXQuery {
+          allMdx(sort: { order: DESC, fields: [frontmatter___date]}) {
+            edges {
+              node {
+                parent {
+                  ... on File {
+                    name
+                    relativePath
+                  }
+                }
+                frontmatter {
+                  title
+                  date
+                }
+              }
+            }
+          }
+        }
+    `}
 
-    handleContentChange(section) {
-        this.setState({ component: section })
-    }
+    render={(data) => {
+      return <MDXBlogPosts queryData={data} />
+    }}
+  />
+);
 
-    render() {
-        return <div>
-            <GlobalStyle />
-            <Helmet>
-                <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
-            </Helmet>
-            <Nav />
-        </div>
-    }
+const MDXBlogPosts = (props) => {
+    return (
+        <div>{props.queryData.allMdx.edges.map((edge) => {
+            return <div>{edge.node.frontmatter.title}</div>
+        })}</div>
+    );
+};
 
-    componentDidMount() {
-        ReactGA.initialize('UA-35325391-1');
-        ReactGA.pageview(window.location.pathname + window.location.search);
-    }
-}
-
-export default IndexPage;
+export default MDXBlogPostsQuery;
