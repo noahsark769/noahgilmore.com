@@ -10,6 +10,11 @@ export const BlogPostContainer = styled.div`
         max-width: 700px;
         margin: auto;
     }
+
+    @media all and (max-width: 600px) {
+        width: 100%;
+        padding: 20px 0;
+    }
 `;
 
 const TitleContainer = styled.div`

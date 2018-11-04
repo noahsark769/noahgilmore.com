@@ -3,23 +3,6 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-    .format-post-preview p, .format-post-preview li {
-        font-family: "Open Sans", arial, sans-serif;
-        font-size: 14px;
-        line-height: 14px;
-        line-height: 18px;
-        margin-top: 10px;
-        padding-bottom: 10px;
-    }
-    .format-post-preview p + p {
-        margin-top: 0;
-    }
-    .format-post-preview pre > code {
-        font-size: 12px;
-        line-height: 12px;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
     p, li {
         margin: 0;
         padding: 0;
@@ -29,6 +12,10 @@ const Container = styled.div`
         color: #333;
         padding-bottom: 15px;
         margin-top: 15px;
+        @media all and (max-width: 600px) {
+            width: 90%;
+            margin: 15px auto 0 auto;
+        }
     }
     a {
         color: #1A3F4B;
@@ -49,6 +36,10 @@ const Container = styled.div`
         margin: 0;
         padding: 0;
         background: none;
+        @media all and (max-width: 600px) {
+            width: 100%;
+            margin: 0 auto;
+        }
     }
     pre > code {
         display: block;
@@ -65,6 +56,10 @@ const Container = styled.div`
         @media all and (max-width: 600px) {
             font-size: 19px;
             white-space: pre;
+            border-left: none;
+            border-right: none;
+            padding: 15px 5% 15px 5%;
+            width: 100%;
         }
     }
 
@@ -73,6 +68,10 @@ const Container = styled.div`
     }
     ol {
         margin-left: 30px;
+        @media all and (max-width: 600px) {
+            width: 90%;
+            margin: 0 auto 0 30px;
+        }
     }
     ol li {
         list-style-type: decimal;
@@ -80,12 +79,20 @@ const Container = styled.div`
     ul li {
         list-style-type: square;
         margin-left: 40px;
+        @media all and (max-width: 600px) {
+            width: 90%;
+            margin: 0 auto;
+        }
     }
     h1, h2, h3, h4, h5, h6 {
         width: 100%;
         font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
         margin-bottom: 10px;   
         margin-top: 40px;
+        @media all and (max-width: 600px) {
+            width: 90%;
+            margin: 40px auto 10px auto;
+        }
     }
     h1 {
         font-size: 28px;
