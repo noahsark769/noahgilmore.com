@@ -31,6 +31,10 @@ export const LI = styled.li`
     margin: 0;
     padding: 0;
 `;
+export const P = styled.p`
+    margin: 0;
+    padding: 0;
+`;
 
 export const A = styled.a`
     &, &:hover, &:focus {

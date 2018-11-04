@@ -2,6 +2,9 @@ import React from 'react';
 import { Helmet } from "react-helmet";
 import { GlobalStyle } from '../../components/default';
 import Nav from '../../components/Nav';
+import { BlogPostContainer } from '../../components/BlogPost';
+import BlogPostPreview from '../../components/BlogPostPreview';
+import CaptionedImage from '../../components/CaptionedImage';
 import ReactGA from 'react-ga';
 import { StaticQuery, graphql } from 'gatsby'
 
@@ -18,9 +21,11 @@ const MDXBlogPostsQuery = (props) => (
                     relativePath
                   }
                 }
+                id
                 frontmatter {
                   title
                   date
+                  mdxPreview
                 }
               }
             }
@@ -36,9 +41,19 @@ const MDXBlogPostsQuery = (props) => (
 
 const MDXBlogPosts = (props) => {
     return (
-        <div>{props.queryData.allMdx.edges.map((edge) => {
-            return <div>{edge.node.frontmatter.title}</div>
-        })}</div>
+        <div>
+            <GlobalStyle />
+            <Helmet>
+              <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+              <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+            </Helmet>
+            <Nav />
+            <BlogPostContainer>{props.queryData.allMdx.edges.map((edge) => {
+                const frontmatter = edge.node.frontmatter;
+                console.log(frontmatter.mdxPreview);
+                return <BlogPostPreview key={edge.node.id} url={"/blog/" + edge.node.parent.name} title={frontmatter.title} date={frontmatter.date} mdxPreview={frontmatter.mdxPreview}/>
+            })}</BlogPostContainer>
+        </div>
     );
 };
 

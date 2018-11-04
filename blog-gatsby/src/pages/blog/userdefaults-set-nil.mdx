@@ -1,6 +1,16 @@
 ---
 title: Setting a UserDefaults value to nil
 date: 2018-10-22
+mdxPreview: >
+    To clear a value from UserDefaults, I previously thought it was fine to do something like this:
+
+    ```swift
+
+    UserDefaults.standard.set(nil, forKey: "myKey")
+    
+    ```
+
+    Turns out that this works differently in different iOS versions. Starting in iOS 11, setting nil for a key works as I expected.
 ---
 import { BlogPostMeta } from '../../components/BlogPost';
 

@@ -1,6 +1,26 @@
 ---
 title: NSObject Equality is Tricky
 date: 2016-11-13
+mdxPreview: >
+  Swift can be tricky sometimes. For example, what does the following print?
+
+  ```swift
+
+  class A: NSObject {
+    let x: Int
+
+    init(x: Int) {
+      self.x = x
+    }
+  }
+
+  func ==(left: A, right: A) -> Bool {
+    return left.x == right.x
+  }
+
+  print(A(x: 1) == A(x: 1))
+
+  print([A(x: 1)] == [A(x: 1)])
 ---
 import { BlogPostMeta } from '../../components/BlogPost';
 
