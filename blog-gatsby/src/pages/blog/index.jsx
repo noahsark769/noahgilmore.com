@@ -7,6 +7,7 @@ import BlogPostPreview from '../../components/BlogPostPreview';
 import CaptionedImage from '../../components/CaptionedImage';
 import ReactGA from 'react-ga';
 import { StaticQuery, graphql } from 'gatsby'
+import { formatDateString } from '../../lib/dateFormat';
 
 const MDXBlogPostsQuery = (props) => (
   <StaticQuery
@@ -49,11 +50,12 @@ const MDXBlogPosts = (props) => {
             </Helmet>
             <Nav />
             <BlogPostContainer>{props.queryData.allMdx.edges.map((edge) => {
-                const frontmatter = edge.node.frontmatter;
-                const date = new Date(frontmatter.date);
-                const displayDate = date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'});
-                console.log(frontmatter);
-                return <BlogPostPreview key={edge.node.id} url={"/blog/" + edge.node.parent.name} title={frontmatter.title} date={displayDate} mdxPreview={frontmatter.mdxPreview}/>
+                return <BlogPostPreview
+                  key={edge.node.id}
+                  url={"/blog/" + edge.node.parent.name}
+                  title={edge.node.frontmatter.title}
+                  date={formatDateString(edge.node.frontmatter.date)}
+                  mdxPreview={edge.node.frontmatter.mdxPreview}/>
             })}</BlogPostContainer>
         </div>
     );

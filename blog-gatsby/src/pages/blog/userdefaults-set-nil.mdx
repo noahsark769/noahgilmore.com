@@ -12,10 +12,6 @@ mdxPreview: >
 
     Turns out that this works differently in different iOS versions. Starting in iOS 11, setting nil for a key works as I expected.
 ---
-import { BlogPostMeta } from '../../components/BlogPost';
-
-<BlogPostMeta title="Setting a UserDefaults value to nil might not do what you think it does" date="October 22nd, 2018" />
-
 To clear a value from UserDefaults, I previously thought it was fine to do something like this:
 
 ```swift

@@ -2,14 +2,14 @@ import React from 'react';
 import { Helmet } from "react-helmet";
 import { GlobalStyle } from './default';
 import Nav from './Nav';
-import { BlogPostContainer } from './BlogPost';
+import { BlogPostContainer, BlogPostMeta } from './BlogPost';
 import MarkdownContent from './MarkdownContent';
+import { formatDateString } from '../lib/dateFormat';
 import Disqus from './Disqus';
 import ReactGA from 'react-ga';
 
 export default class BlogPageLayout extends React.Component {
     render() {
-        console.log(this.props.children.props);
         return (
             <div>
               <GlobalStyle />
@@ -19,6 +19,9 @@ export default class BlogPageLayout extends React.Component {
               </Helmet>
               <Nav />
               <BlogPostContainer>
+                <BlogPostMeta
+                    title={this.props.pageContext.frontmatter.title}
+                    date={formatDateString(this.props.pageContext.frontmatter.date)} />
                 <MarkdownContent>
                   {this.props.children}
                 </MarkdownContent>

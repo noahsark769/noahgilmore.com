@@ -54,7 +54,6 @@ export default class BlogPost extends React.Component {
     render() {
         return (
             <BlogPostContainer>
-                <BlogPostMeta title={this.props.title} date={this.props.date} />
                 <div>
                     {this.props.children}
                 </div>
