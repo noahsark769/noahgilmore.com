@@ -61,6 +61,11 @@ const Container = styled.div`
         font-family: monospace;
         font-size: 14px;
         white-space: pre-wrap;
+
+        @media all and (max-width: 600px) {
+            font-size: 19px;
+            white-space: pre;
+        }
     }
 
     pre + p {
@@ -107,8 +112,6 @@ export default class MarkdownContent extends React.Component {
         var elements = node.querySelectorAll("pre code");
         // this next line has to be stuck in the 90's
         // https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
-        console.log("HEYYYY YAAAAAA");
-        console.log(elements);
         for (var i = 0; i < elements.length; i++) {
             // I would love to import the node version of hljs here, but it turns out
             // this doesn't work due to something in gatsby-mdx's rendering. Oh well,

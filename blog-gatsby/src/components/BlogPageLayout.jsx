@@ -9,6 +9,7 @@ import ReactGA from 'react-ga';
 
 export default class BlogPageLayout extends React.Component {
     render() {
+        console.log(this.props.children);
         return (
             <div>
               <GlobalStyle />

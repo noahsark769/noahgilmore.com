@@ -50,8 +50,10 @@ const MDXBlogPosts = (props) => {
             <Nav />
             <BlogPostContainer>{props.queryData.allMdx.edges.map((edge) => {
                 const frontmatter = edge.node.frontmatter;
-                console.log(frontmatter.mdxPreview);
-                return <BlogPostPreview key={edge.node.id} url={"/blog/" + edge.node.parent.name} title={frontmatter.title} date={frontmatter.date} mdxPreview={frontmatter.mdxPreview}/>
+                const date = new Date(frontmatter.date);
+                const displayDate = date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'});
+                console.log(frontmatter);
+                return <BlogPostPreview key={edge.node.id} url={"/blog/" + edge.node.parent.name} title={frontmatter.title} date={displayDate} mdxPreview={frontmatter.mdxPreview}/>
             })}</BlogPostContainer>
         </div>
     );
