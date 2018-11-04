@@ -1,3 +1,18 @@
+scripts/*.pyc
+blog/static
+blog/node_modules
+venv
+notebooks
+.DS_Store
+.ipynb_checkpoints/
+build/*
+blog/bower_components
+blog/build
+new/build/*
+new/node_modules
+new/.idyll/*
+
+# Gatsby stuff:
 # Project dependencies
 .cache
 node_modules
@@ -6,3 +21,4 @@ yarn-error.log
 # Build directory
 /public
 .DS_Store
+

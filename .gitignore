@@ -12,3 +12,13 @@ new/build/*
 new/node_modules
 new/.idyll/*
 
+# Gatsby stuff:
+# Project dependencies
+.cache
+node_modules
+yarn-error.log
+
+# Build directory
+/public
+.DS_Store
+
