@@ -1,7 +1,7 @@
 import React from 'react';
 import { A, UL, LI } from '../components/default';
 import styled from "styled-components";
-import { IoIosHome } from "react-icons/io";
+import { IoIosHome, IoIosAppstore } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 
 const StyledNav = styled.nav`
@@ -29,6 +29,7 @@ const NavLinks = styled(UL)`
     flex-wrap: wrap;
     justify-content: flex-end;
     height: 100%;
+    align-self: center;
 `;
 
 const NavLink = styled(LI)`
@@ -44,6 +45,9 @@ const NavLink = styled(LI)`
 const StyledA = styled(A)`
     height: auto;
     color: rgba(128, 165, 177, 1);
+    display: flex;
+    flex-direction: vertical;
+    align-items: center;
 
     -webkit-transition: 0.2s ease-in-out;
     -moz-transition: 0.2s ease-in-out;
@@ -73,18 +77,11 @@ const Nav = (props) => {
     return (
         <StyledNav>
             <Title><StyledA href={props.blog ? '/blog' : '/'}>NOAH GILMORE</StyledA></Title>
-            <MediaOnlyLarge>
-                <NavLinks>
-                    <NavLink><StyledA href="/blog/">POSTS</StyledA></NavLink>
-                    <NavLink><StyledA href="https://twitter.com/noahsark769">TWITTER</StyledA></NavLink>
-                </NavLinks>
-            </MediaOnlyLarge>
-            <MediaOnlySmall>
-                <NavLinks>
-                    <NavLink><StyledA href="/blog"><IoIosHome color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
-                    <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
-                </NavLinks>
-            </MediaOnlySmall>
+            <NavLinks>
+                <NavLink><StyledA href="/blog"><IoIosHome color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+                <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+                <NavLink><StyledA href="https://appstore.com/trestle"><IoIosAppstore color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+            </NavLinks>
         </StyledNav>
     );
 };
