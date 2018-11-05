@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from "react-helmet";
 import { GlobalStyle } from './default';
 import Nav from './Nav';
+import EndButtons from './EndButtons';
 import { BlogPostContainer, BlogPostMeta } from './BlogPost';
 import MarkdownContent from './MarkdownContent';
 import { formatDateString } from '../lib/dateFormat';
@@ -18,6 +19,7 @@ const NonContent = styled.div`
 
 export default class BlogPageLayout extends React.Component {
     render() {
+      console.log(this.props);
         return (
             <div>
               <GlobalStyle />
@@ -36,6 +38,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={this.props.location.href} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>

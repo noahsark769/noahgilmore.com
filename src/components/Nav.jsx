@@ -1,5 +1,6 @@
 import React from 'react';
 import { A, UL, LI } from '../components/default';
+import { blue, blueHighlight } from '../components/colors';
 import styled from "styled-components";
 import { IoIosHome, IoIosAppstore } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
@@ -44,7 +45,7 @@ const NavLink = styled(LI)`
 
 const StyledA = styled(A)`
     height: auto;
-    color: rgba(128, 165, 177, 1);
+    color: ${blue};
     display: flex;
     flex-direction: vertical;
     align-items: center;
@@ -55,7 +56,7 @@ const StyledA = styled(A)`
     transition: 0.2s ease-in-out;
 
     &:hover {
-        color: rgba(151, 195, 210, 1);
+        color: ${blueHighlight};
     }
 `;
 
@@ -78,9 +79,9 @@ const Nav = (props) => {
         <StyledNav>
             <Title><StyledA href={props.blog ? '/blog' : '/'}>NOAH GILMORE</StyledA></Title>
             <NavLinks>
-                <NavLink><StyledA href="/blog"><IoIosHome color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
-                <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
-                <NavLink><StyledA href="https://appstore.com/trestle"><IoIosAppstore color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+                <NavLink><StyledA href="/blog"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA href="https://appstore.com/trestle"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
             </NavLinks>
         </StyledNav>
     );
