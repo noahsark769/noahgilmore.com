@@ -1,6 +1,8 @@
 import React from 'react';
 import { A, UL, LI } from '../components/default';
 import styled from "styled-components";
+import { IoIosHome } from "react-icons/io";
+import { FaTwitter } from "react-icons/fa";
 
 const StyledNav = styled.nav`
     display: flex;
@@ -10,8 +12,7 @@ const StyledNav = styled.nav`
     border-bottom: 1px solid #ddd;
 
     @media all and (max-width: 600px) {
-        flex-direction: column;
-        padding: 20px 20px 10px 20px;
+        padding: 20px;
     }
 `;
 
@@ -27,28 +28,17 @@ const NavLinks = styled(UL)`
     flex-direction: horizontal;
     flex-wrap: wrap;
     justify-content: flex-end;
-
-    @media all and (max-width: 600px) {
-        justify-content: flex-start;
-    }
+    height: 100%;
 `;
 
 const NavLink = styled(LI)`
     display: flex;
-    flex-direction: horizontal;
+    flex-direction: vertical;
+    align-items: center;
     text-align: center;
     font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 16px;
     padding: 0px 20px;
-
-    @media all and (max-width: 600px) {
-        display: block;
-        width: 100%;
-        font-size: 20px;
-        margin: 5px 0px;
-        padding: 10px 10px;
-        background-color: #eee;
-    }
 `;
 
 const StyledA = styled(A)`
@@ -63,20 +53,38 @@ const StyledA = styled(A)`
     &:hover {
         color: rgba(151, 195, 210, 1);
     }
+`;
 
+const MediaOnlySmall = styled.div`
+    display: none;
     @media all and (max-width: 600px) {
-        width: 100%;
+        display: inline-block;
+    }
+`;
+
+const MediaOnlyLarge = styled.div`
+    display: inline-block;
+    @media all and (max-width: 600px) {
+        display: none;
     }
 `;
 
 const Nav = (props) => {
     return (
         <StyledNav>
-            <Title><StyledA href='/'>NOAH GILMORE</StyledA></Title>
-            <NavLinks>
-                <NavLink><StyledA href="/">HOME</StyledA></NavLink>
-                <NavLink><StyledA href="/blog/">POSTS</StyledA></NavLink>
-            </NavLinks>
+            <Title><StyledA href={props.blog ? '/blog' : '/'}>NOAH GILMORE</StyledA></Title>
+            <MediaOnlyLarge>
+                <NavLinks>
+                    <NavLink><StyledA href="/blog/">POSTS</StyledA></NavLink>
+                    <NavLink><StyledA href="https://twitter.com/noahsark769">TWITTER</StyledA></NavLink>
+                </NavLinks>
+            </MediaOnlyLarge>
+            <MediaOnlySmall>
+                <NavLinks>
+                    <NavLink><StyledA href="/blog"><IoIosHome color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+                    <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color="rgba(128, 165, 177, 1)" size="24" /></StyledA></NavLink>
+                </NavLinks>
+            </MediaOnlySmall>
         </StyledNav>
     );
 };

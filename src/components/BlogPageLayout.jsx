@@ -25,7 +25,7 @@ export default class BlogPageLayout extends React.Component {
                   <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
                   <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
               </Helmet>
-              <Nav />
+              <Nav blog />
               <BlogPostContainer>
                 <NonContent>
                   <BlogPostMeta
