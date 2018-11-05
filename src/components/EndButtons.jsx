@@ -41,7 +41,7 @@ const ButtonStyle = styled.div`
 `;
 const Button = (props) => {
     return (
-        <A href={props.url}><ButtonStyle>{props.children}</ButtonStyle></A>
+        <A href={props.url} target={props.newTab ? '_blank' : null}><ButtonStyle>{props.children}</ButtonStyle></A>
     );
 };
 
@@ -50,7 +50,7 @@ export default class EndButtons extends React.Component {
         const twitterUrl = formatTweetIntentUrl(`Post by @noahsark769: ${this.props.tweetTitle} ${this.props.tweetUrl}`);
         return (
             <Container>
-                <Button url={twitterUrl}><FaTwitter size={24} color='white' /></Button>
+                <Button url={twitterUrl} newTab><FaTwitter size={24} color='white' /></Button>
                 <Button url="/blog"><IoIosHome size={24} color='white' /></Button>
             </Container>
         );

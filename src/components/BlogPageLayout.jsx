@@ -19,6 +19,7 @@ const NonContent = styled.div`
 
 export default class BlogPageLayout extends React.Component {
     render() {
+        const returnHref = () => { return window.location.href }
         return (
             <div>
               <GlobalStyle />
@@ -37,7 +38,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={window.location.href} />
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={returnHref()} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>
