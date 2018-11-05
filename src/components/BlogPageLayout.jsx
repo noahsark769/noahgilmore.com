@@ -20,7 +20,7 @@ const NonContent = styled.div`
 export default class BlogPageLayout extends React.Component {
     constructor() {
         super();
-        this.state = { tweetHref: null }
+        this.state = { tweetHref: "" }
     }
 
     render() {
