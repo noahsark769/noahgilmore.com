@@ -7,6 +7,14 @@ import MarkdownContent from './MarkdownContent';
 import { formatDateString } from '../lib/dateFormat';
 import Disqus from './Disqus';
 import ReactGA from 'react-ga';
+import styled from 'styled-components';
+
+const NonContent = styled.div`
+    @media all and (max-width: 600px) {
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+`;
 
 export default class BlogPageLayout extends React.Component {
     render() {
@@ -19,13 +27,17 @@ export default class BlogPageLayout extends React.Component {
               </Helmet>
               <Nav />
               <BlogPostContainer>
-                <BlogPostMeta
-                    title={this.props.pageContext.frontmatter.title}
-                    date={formatDateString(this.props.pageContext.frontmatter.date)} />
+                <NonContent>
+                  <BlogPostMeta
+                      title={this.props.pageContext.frontmatter.title}
+                      date={formatDateString(this.props.pageContext.frontmatter.date)} />
+                </NonContent>
                 <MarkdownContent>
                   {this.props.children}
                 </MarkdownContent>
-                <Disqus />
+                <NonContent>
+                  <Disqus />
+                </NonContent>
               </BlogPostContainer>
             </div>
         )

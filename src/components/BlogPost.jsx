@@ -14,6 +14,7 @@ export const BlogPostContainer = styled.div`
     @media all and (max-width: 600px) {
         width: 100%;
         padding: 20px 0;
+        ${(props) => props.darkened && 'background-color: #f6f6f6;'}
     }
 `;
 

@@ -4,7 +4,6 @@ import { GlobalStyle } from '../../components/default';
 import Nav from '../../components/Nav';
 import { BlogPostContainer } from '../../components/BlogPost';
 import BlogPostPreview from '../../components/BlogPostPreview';
-import CaptionedImage from '../../components/CaptionedImage';
 import ReactGA from 'react-ga';
 import { StaticQuery, graphql } from 'gatsby'
 import { formatDateString } from '../../lib/dateFormat';
@@ -40,7 +39,8 @@ const MDXBlogPostsQuery = (props) => (
   />
 );
 
-const MDXBlogPosts = (props) => {
+class MDXBlogPosts extends React.Component {
+  render() {
     return (
         <div>
             <GlobalStyle />
@@ -49,7 +49,7 @@ const MDXBlogPosts = (props) => {
               <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
             </Helmet>
             <Nav />
-            <BlogPostContainer>{props.queryData.allMdx.edges.map((edge) => {
+            <BlogPostContainer darkened>{this.props.queryData.allMdx.edges.map((edge) => {
                 return <BlogPostPreview
                   key={edge.node.id}
                   url={"/blog/" + edge.node.parent.name}
@@ -59,6 +59,12 @@ const MDXBlogPosts = (props) => {
             })}</BlogPostContainer>
         </div>
     );
+  }
+
+  componentDidMount() {
+      ReactGA.initialize('UA-35325391-1');
+      ReactGA.pageview(window.location.pathname + window.location.search);
+  }
 };
 
 export default MDXBlogPostsQuery;

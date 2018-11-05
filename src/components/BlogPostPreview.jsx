@@ -19,6 +19,14 @@ const Wrapper = styled.div`
     &:hover {
         border-color: rgba(128, 165, 177, 1);
     }
+
+    @media all and (max-width: 600px) {
+        border-right: none;
+        border-left: none;
+        padding-right: 0;
+        padding-left: 0;
+        background-color: white;
+    }
 `;
 
 const Title = styled.h1`
@@ -45,6 +53,13 @@ const Content = styled.div`
     line-height: 26px;
 `;
 
+const NonContent = styled.div`
+    @media all and (max-width: 600px) {
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+`;
+
 const StyledA = styled(A)`
     &, &:hover {
         color: #1A3F4B;
@@ -63,14 +78,18 @@ export default class BlogPostPreview extends React.Component {
     render() {
         return (
             <Wrapper onClick={() => this.handleClick()}>
-                <Title>{this.props.title}</Title>
-                <StyledDate>{this.props.date}</StyledDate>
+                <NonContent>
+                    <Title>{this.props.title}</Title>
+                    <StyledDate>{this.props.date}</StyledDate>
+                </NonContent>
                 <Content>
                     <MarkdownContent>
                         <ReactMarkdown source={this.props.mdxPreview} />
                     </MarkdownContent>
                 </Content>
-                <P><StyledA href={this.props.url}>Read more</StyledA></P>
+                <NonContent>
+                    <P><StyledA href={this.props.url}>Read more</StyledA></P>
+                </NonContent>
             </Wrapper>
         );
     }

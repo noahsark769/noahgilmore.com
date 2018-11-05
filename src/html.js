@@ -12,9 +12,9 @@ export default class HTML extends React.Component {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/atom-one-light.min.css" />
-          <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-          <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+          <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />
+          <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/highlight.min.js"></script>
+          <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/languages/swift.min.js"></script>
           {this.props.headComponents}
         </head>
         <body {...this.props.bodyAttributes}>
