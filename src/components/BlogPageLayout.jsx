@@ -18,8 +18,12 @@ const NonContent = styled.div`
 `;
 
 export default class BlogPageLayout extends React.Component {
+    constructor() {
+        super();
+        this.state = { tweetHref: null }
+    }
+
     render() {
-        const returnHref = () => { return window.location.href }
         return (
             <div>
               <GlobalStyle />
@@ -38,7 +42,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={returnHref()} />
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={this.state.tweetHref} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>
@@ -49,5 +53,7 @@ export default class BlogPageLayout extends React.Component {
     componentDidMount() {
         ReactGA.initialize('UA-35325391-1');
         ReactGA.pageview(window.location.pathname + window.location.search);
+
+        this.setState({ tweetHref: window.location.href });
     }
 }
