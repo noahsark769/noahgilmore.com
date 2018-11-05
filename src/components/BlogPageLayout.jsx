@@ -37,7 +37,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`noahgilmore.com${this.props.pageResources.page.path}`} />
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={window.location.href} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>
