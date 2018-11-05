@@ -33,7 +33,7 @@ export default class BlogPageLayout extends React.Component {
                   <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
                   <meta name="twitter:card" content="summary" />
                   <meta name="twitter:creator" content="@noahsark769" />
-                  <meta property="og:url" content={`http://noahgilmore.com${this.props.pageResources.page.path}`} />
+                  <meta property="og:url" content={`http://noahgilmore.com${this.props.location.pathname}`} />
                   <meta property="og:title" content={this.props.pageContext.frontmatter.title} />
                   <meta property="og:description" content={this.props.pageContext.frontmatter.staticPreview} />
               </Helmet>
@@ -48,7 +48,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`http://noahgilmore.com${this.props.pageResources.page.path}`} />
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`http://noahgilmore.com${this.props.location.pathname}`} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>
