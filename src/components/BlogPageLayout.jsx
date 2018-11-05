@@ -19,7 +19,6 @@ const NonContent = styled.div`
 
 export default class BlogPageLayout extends React.Component {
     render() {
-      console.log(this.props);
         return (
             <div>
               <GlobalStyle />
