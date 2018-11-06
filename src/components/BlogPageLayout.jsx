@@ -18,13 +18,7 @@ const NonContent = styled.div`
 `;
 
 export default class BlogPageLayout extends React.Component {
-    constructor() {
-        super();
-        this.state = { tweetHref: "" }
-    }
-
     render() {
-        console.log(this.props);
         return (
             <div>
               <GlobalStyle />
@@ -59,7 +53,5 @@ export default class BlogPageLayout extends React.Component {
     componentDidMount() {
         ReactGA.initialize('UA-35325391-1');
         ReactGA.pageview(window.location.pathname + window.location.search);
-
-        this.setState({ tweetHref: window.location.href });
     }
 }
