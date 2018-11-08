@@ -23,11 +23,11 @@ export default class BlogPageLayout extends React.Component {
             <div>
               <GlobalStyle />
               <Helmet>
-                  <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+                  <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
                   <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
                   <meta name="twitter:card" content="summary" />
                   <meta name="twitter:creator" content="@noahsark769" />
-                  <meta property="og:url" content={`http://noahgilmore.com${this.props.location.pathname}`} />
+                  <meta property="og:url" content={`https://noahgilmore.com${this.props.location.pathname}`} />
                   <meta property="og:title" content={this.props.pageContext.frontmatter.title} />
                   <meta property="og:description" content={this.props.pageContext.frontmatter.staticPreview} />
                   <meta name="Description" content={this.props.pageContext.frontmatter.staticPreview} />
@@ -43,7 +43,7 @@ export default class BlogPageLayout extends React.Component {
                   {this.props.children}
                 </MarkdownContent>
                 <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`http://noahgilmore.com${this.props.location.pathname}`} />
+                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
                   <Disqus />
                 </NonContent>
               </BlogPostContainer>
