@@ -21,6 +21,7 @@ const Title = styled.div`
     flex: 2;
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 28px;
+    font-display: swap;
 `;
 
 const NavLinks = styled(UL)`
@@ -79,9 +80,9 @@ const Nav = (props) => {
         <StyledNav>
             <Title><StyledA href={props.blog ? '/blog' : '/'}>NOAH GILMORE</StyledA></Title>
             <NavLinks>
-                <NavLink><StyledA href="/blog"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
-                <NavLink><StyledA href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
-                <NavLink><StyledA href="https://appstore.com/trestle"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA aria-label="Blog Home" href="/blog"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA aria-label="Twitter" href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA aria-label="App Store" href="https://appstore.com/trestle"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
             </NavLinks>
         </StyledNav>
     );

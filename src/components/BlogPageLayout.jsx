@@ -30,6 +30,7 @@ export default class BlogPageLayout extends React.Component {
                   <meta property="og:url" content={`http://noahgilmore.com${this.props.location.pathname}`} />
                   <meta property="og:title" content={this.props.pageContext.frontmatter.title} />
                   <meta property="og:description" content={this.props.pageContext.frontmatter.staticPreview} />
+                  <meta name="Description" content={this.props.pageContext.frontmatter.staticPreview} />
               </Helmet>
               <Nav blog />
               <BlogPostContainer>

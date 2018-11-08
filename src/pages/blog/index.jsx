@@ -45,8 +45,15 @@ class MDXBlogPosts extends React.Component {
         <div>
             <GlobalStyle />
             <Helmet>
+              <title>Blog</title>
               <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
               <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+              <meta name="twitter:card" content="summary" />
+              <meta name="twitter:creator" content="@noahsark769" />
+              <meta property="og:url" content={`http://noahgilmore.com/blog`} />
+              <meta property="og:title" content="Blog - Noah Gilmore" />
+              <meta property="og:description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
+              <meta name="Description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
             </Helmet>
             <Nav />
             <BlogPostContainer darkened>{this.props.queryData.allMdx.edges.map((edge) => {
