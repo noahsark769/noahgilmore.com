@@ -21,7 +21,7 @@ And in your layout component, you can grab the frontmatter:
 const MyPageLayout = (props) => {
     return (
         <div>
-            <h1>{props.frontmatter.title}</h1>
+            <h1>{props.pageContext.frontmatter.title}</h1>
             <div>
                 {props.children}
             </div>
