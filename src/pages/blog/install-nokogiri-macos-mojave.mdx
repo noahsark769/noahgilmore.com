@@ -1,0 +1,13 @@
+---
+title: Installing Nokogiri from a Gemfile on Mojave
+date: 2018-11-14
+staticPreview: Another MacOS and another struggle through installing nokogiri. Most places online recommend using...
+mdxPreview: Another MacOS and another struggle through installing nokogiri. Most places online recommend using...
+---
+Another MacOS and another struggle through installing nokogiri. Most places online recommend using `--with-xml2-include` and `--use-system-libraries` during `gem install`, but if you're installing from a Gemfile using `bundle install`, it can sometimes be a little trickier.
+
+To enable passing args like this to a gem installed from a Gemfile, we can use [Bundler Config](https://bundler.io/v1.16/bundle_config.html). The magic command to run before `bundle install` on Mojave is:
+
+```
+bundle config build.nokogiri --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libxml2   --use-system-libraries
+```
