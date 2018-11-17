@@ -14,11 +14,13 @@ const Container = styled.div`
     margin: 0;
     padding: 0;
     width: 600px;
+    max-width: 100%;
     margin: 0 auto;
     height: 100vh;
     color: white;
     font-family: Helvetica, sans-serif;
-    padding-top: 300px;
+    padding: 300px 50px 0 50px;
+    box-sizing: border-box;
 `;
 
 const Title = styled.h1`

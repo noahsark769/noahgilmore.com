@@ -54,7 +54,7 @@ const Container = styled.div`
         white-space: pre-wrap;
 
         @media all and (max-width: 600px) {
-            font-size: 19px;
+            font-size: 15px;
             white-space: pre;
             border-left: none;
             border-right: none;
