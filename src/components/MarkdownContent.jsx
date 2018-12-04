@@ -51,6 +51,7 @@ const Container = styled.div`
         margin-top: 10px;
         font-family: monospace;
         font-size: 14px;
+        line-height: 17px;
         white-space: pre-wrap;
 
         @media all and (max-width: 600px) {
