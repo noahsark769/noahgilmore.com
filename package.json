@@ -12,6 +12,7 @@
     "gatsby-image": "^2.0.15",
     "gatsby-mdx": "^0.2.2-ci.219",
     "gatsby-plugin-feed": "^2.0.11",
+    "gatsby-plugin-force-trailing-slashes": "^1.0.4",
     "gatsby-plugin-manifest": "^2.0.5",
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
