@@ -61,7 +61,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         for (let entry of pagesByTag.entries()) {
             let [tag, edges] = entry;
-            const pagePath = path.join('/tags', tag);
+            const pagePath = path.join('/blog', 'tags', tag);
             console.log(`Creating page ${pagePath}`);
             createPage({
                 path: pagePath,
