@@ -1,6 +1,70 @@
+function rssFeedPlugin(glob, feedName, title) {
+  return {
+    resolve: `gatsby-plugin-feed`,
+    options: {
+      query: `
+        {
+          site {
+            siteMetadata {
+              title
+              description
+              siteUrl
+              site_url: siteUrl
+            }
+          }
+        }
+      `,
+      feeds: [
+        {
+          serialize: ({ query: { site, allMarkdownRemark } }) => {
+            return allMarkdownRemark.edges.map(edge => {
+              return Object.assign({}, edge.node.frontmatter, {
+                description: edge.node.frontmatter.staticPreview,
+                date: edge.node.frontmatter.date,
+                url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                guid: site.siteMetadata.siteUrl + edge.node.fields.slug
+              })
+            })
+          },
+          query: `
+            {
+              allMdx(
+                limit: 1000,
+                sort: { order: DESC, fields: [frontmatter___date]},
+                filter: {
+                  frontmatter: {
+                    tags: {
+                      glob: "${glob}"
+                    }
+                  }
+                }
+              ) {
+                edges {
+                  node {
+                    fields { slug }
+                    frontmatter {
+                      title
+                      date
+                      staticPreview
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          output: feedName,
+          title: title,
+        },
+      ],
+    },
+  }
+}
+
 module.exports = {
   siteMetadata: {
     title: 'Noah Gilmore',
+    description: "Noah Gilmore's Development Blog",
+    siteUrl: "https://noahgilmore.com"
   },
   plugins: [
     {
@@ -29,5 +93,8 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     `gatsby-plugin-styled-components`,
+    rssFeedPlugin("*ios*", '/ios.xml', "Noah Gilmore's Development Blog: iOS"),
+    rssFeedPlugin("*web*", '/web.xml', "Noah Gilmore's Development Blog: Web"),
+    rssFeedPlugin("*", '/rss.xml', "Noah Gilmore's Development Blog")
   ]
 }
