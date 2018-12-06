@@ -16,13 +16,13 @@ function rssFeedPlugin(glob, feedName, title) {
       `,
       feeds: [
         {
-          serialize: ({ query: { site, allMarkdownRemark } }) => {
-            return allMarkdownRemark.edges.map(edge => {
+          serialize: ({ query: { site, allMdx } }) => {
+            return allMdx.edges.map(edge => {
               return Object.assign({}, edge.node.frontmatter, {
                 description: edge.node.frontmatter.staticPreview,
                 date: edge.node.frontmatter.date,
-                url: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                guid: site.siteMetadata.siteUrl + edge.node.fields.slug
+                url: site.siteMetadata.siteUrl + edge.node.parent.name,
+                guid: site.siteMetadata.siteUrl + edge.node.parent.name,
               })
             })
           },
@@ -41,7 +41,12 @@ function rssFeedPlugin(glob, feedName, title) {
               ) {
                 edges {
                   node {
-                    fields { slug }
+                    parent {
+                      ... on File {
+                        name
+                        relativePath 
+                      }
+                    }
                     frontmatter {
                       title
                       date
@@ -93,8 +98,8 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     `gatsby-plugin-styled-components`,
-    rssFeedPlugin("*ios*", '/ios.xml', "Noah Gilmore's Development Blog: iOS"),
-    rssFeedPlugin("*web*", '/web.xml', "Noah Gilmore's Development Blog: Web"),
-    rssFeedPlugin("*", '/rss.xml', "Noah Gilmore's Development Blog")
+    rssFeedPlugin("*ios*", '/blog/ios.xml', "Noah Gilmore's Development Blog: iOS"),
+    rssFeedPlugin("*web*", '/blog/web.xml', "Noah Gilmore's Development Blog: Web"),
+    rssFeedPlugin("*", '/blog/rss.xml', "Noah Gilmore's Development Blog")
   ]
 }
