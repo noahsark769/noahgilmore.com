@@ -104,6 +104,14 @@ const Container = styled.div`
     h3 {
         font-size: 20px;
     }
+
+    em {
+        font-style: italic;
+    }
+
+    strong {
+        font-weight: bold;
+    }
 `;
 
 export default class MarkdownContent extends React.Component {
