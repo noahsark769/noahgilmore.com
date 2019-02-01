@@ -17,6 +17,20 @@ const Container = styled.div`
             margin: 15px auto 0 auto;
         }
     }
+
+    blockquote {
+        background-color: #faf9f7;
+        border-left: 4px solid #e5e4e1;
+        padding: 20px;
+        font-style: italic;
+
+        p {
+            margin: 0;
+            padding: 0;
+            color: #555;
+        }
+    }
+
     a {
         color: #1A3F4B;
         -webkit-transition: 0.2s ease-in-out;

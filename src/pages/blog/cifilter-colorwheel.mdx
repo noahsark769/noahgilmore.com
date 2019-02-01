@@ -12,9 +12,11 @@ After struggling for some time with [CIFilter](https://developer.apple.com/docum
 There are several open source projects implementing color wheels on iOS, and StackOverflow has a [few answers](https://stackoverflow.com/questions/5108921/how-to-draw-a-color-wheel-in-objective-c) which mostly recommend drawing the color wheel image yourself by iterating over the [Hue-Saturation-Lightness](https://en.wikipedia.org/wiki/HSL_and_HSV) color representation. However, I managed to find [this post](http://www.chibicode.org/?p=62) about new CIFilters in iOS 10, which included a description of `CIHueSaturationValueGradient`, and realized we can use this filter to generate a color wheel much more easily.
 
 ## CoreImage Has Color Wheels Built In
-The description of `CIHueSaturationValueGradient` is "Generates a color wheel that shows hues and saturations for a specified value".
+The description of `CIHueSaturationValueGradient` is:
 
-For a given value of lightness (dark/light), this filter's output image will be a wheel of all the hues and saturations for that lightness in a given color space. Code that looks like this:
+> Generates a color wheel that shows hues and saturations for a specified value.
+
+For a given value of lightness (0 is dark, 1 is light), this filter's output image will be a wheel of all the hues and saturations for that lightness in a given color space. Code that looks like this:
 
 ```swift
 let filter = CIFilter(name: "CIHueSaturationValueGradient", parameters: [
@@ -27,7 +29,7 @@ let filter = CIFilter(name: "CIHueSaturationValueGradient", parameters: [
 let image = UIImage(ciImage: filter.outputImage!)
 ```
 
-And the output image looks like this:
+Generates an output image that looks like this:
 
 <CaptionedImage filename="cifilter-colorwheel-1.png" alt="Color wheel" caption="" />
 
