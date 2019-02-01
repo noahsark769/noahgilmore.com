@@ -32,21 +32,21 @@ And the output image looks like this:
 <CaptionedImage filename="cifilter-colorwheel-1.png" alt="Color wheel" caption="" />
 
 ## Details
-The filter takes four parameters:
+The filter takes five parameters:
 
-inputColorSpace: This is a `CGColorSpaceRef` representing the color space in which to generate the wheel. Generally, you're going to want to use `CGColorSpaceCreateDeviceRGB()` for this, which will generate a wheel in the current device's color space.
+`inputColorSpace`: This is a `CGColorSpaceRef` representing the color space in which to generate the wheel. Generally, you're going to want to use `CGColorSpaceCreateDeviceRGB()` for this, which will generate a wheel in the current device's color space.
 
-inputDither: The amount of [dither](https://en.wikipedia.org/wiki/Dither) to apply to the wheel. I'm not exactly sure what this is useful for, but it can be fun to play around with. I also don't really know the units of this value, but I think it's pixels (if you can confirm, [let me know](https://twitter.com/noahsark769)). For example, here's a color wheel with `inputDither` as 300:
+`inputDither`: The amount of [dither](https://en.wikipedia.org/wiki/Dither) to apply to the wheel. I'm not exactly sure what this is useful for, but it can be fun to play around with. I also don't really know the units of this value, but I think it's pixels (if you can confirm, [let me know](https://twitter.com/noahsark769)). For example, here's a color wheel with `inputDither` as 300:
 
 <CaptionedImage filename="cifilter-colorwheel-2.png" alt="Color wheel with dither" caption="" />
 
-inputRadius: The value, _in points_, of the radius of the wheel. A radius of 160 creates an image which is 320x320 points square (640x640 pixels on a device with 2x screen scale).
+`inputRadius`: The value, _in points_, of the radius of the wheel. A radius of 160 creates an image which is 320x320 points square (640x640 pixels on a device with 2x screen scale).
 
-inputSoftness: Specifies a softness value to smooth the gradient. A value of 0 means no smoothing, which is probably what you want for a color wheel. I'm also pretty sure the units here are pixels. Here's a color wheel with `inputSoftness` as 4:
+`inputSoftness`: Specifies a softness value to smooth the gradient. A value of 0 means no smoothing, which is probably what you want for a color wheel. I'm also pretty sure the units here are pixels. Here's a color wheel with `inputSoftness` as 4:
 
 <CaptionedImage filename="cifilter-colorwheel-3.png" alt="Color wheel" caption="" />
 
-inputValue: The lightness value. 0 creates a black wheel, 1 means full lightness. Here's a color wheel with `inputValue` as 0.5:
+`inputValue`: The lightness value. 0 creates a black wheel, 1 means full lightness. Here's a color wheel with `inputValue` as 0.5:
 
 <CaptionedImage filename="cifilter-colorwheel-4.png" alt="Color wheel" caption="" />
 

@@ -26,7 +26,7 @@ const TitleContainer = styled.div`
 const Heading = styled.h1`
     width: 100%;
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    font-size: 28px;
+    font-size: 34px;
     margin-bottom: 10px;
 `;
 

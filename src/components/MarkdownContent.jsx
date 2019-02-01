@@ -8,7 +8,7 @@ const Container = styled.div`
         padding: 0;
         font-family: "Gentium Book Basic", times, serif;
         font-size: 21px;
-        line-height: 26px;
+        line-height: 29px;
         color: #333;
         padding-bottom: 15px;
         margin-top: 15px;
@@ -29,7 +29,15 @@ const Container = styled.div`
     }
     code {
         font-family: monospace;
-        font-size: 16px; 
+        font-size: 16px;
+        background-color: #faf9f7;
+        border: 1px solid #e5e4e1;
+        padding: 3px 5px;
+        margin: 0px 2px;
+        color: #555;
+    }
+    code:first-child {
+        margin-left: 0;
     }
     pre {
         display: block;
@@ -45,7 +53,7 @@ const Container = styled.div`
         display: block;
         margin: 0;
         padding: 0;
-        border: 1px solid #ddd;
+        border: 1px solid #e5e4e1;
         border-radius: 2px;
         padding: 10px;
         margin-top: 10px;
