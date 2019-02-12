@@ -1,0 +1,88 @@
+---
+title: Dead Simple Dependency Injection in Swift
+date: 2019-01-28
+tags: ios, swift
+staticPreview: After struggling for some time with CIFilter documentation at work, I've been working on an app which can apply filters interactively for various inputs...
+mdxPreview: After struggling for some time with CIFilter documentation at work, I've been [working on an app](https://twitter.com/noahsark769/status/1080580341973348352) which can apply filters interactively for various inputs...
+---
+At the most recent [Swift Language User Group](https://www.meetup.com/swift-language/) meetup, [Patrick Barry](https://twitter.com/patbarry) presented a [great talk](https://www.youtube.com/watch?v=dA9rGQRwHGs) about how Lyft implements dependency injection. I'd highly recommend watching the video - I was impressed by how clean and functional the solution they came up with is. I was going to write up a summary for my coworkers, but figured I might as well put it here for the benefit of anyone who's interested.
+
+## Dependency Injection
+I won't go into detail on what dependency injection is, since there's a fair amount of time in the talk dedicated to it. Instead, let's think about an example.
+
+Say we're writing an app to display info of cats. We have an API to fetch a cat by name:
+
+```
+GET /cat?name=Maggie
+{
+    success: true,
+    data: {
+        "name": "Maggie",
+        "color": "gray",
+        "image": "https://placekitten.com/200/200"
+    }
+}
+```
+
+Let's say that if no cat with that name is found, we still return a 200 HTTP response, but with a different data structure. Although not the most typically RESTful interface, I've had to with with an API like this multiple times at different jobs:
+
+```
+GET /cat?name=hjklsadgf
+{
+    success: false,
+    error: "No cat named hjklsadgf exists"
+}
+```
+
+From an architectural point of view, let's say we want to extract this into two different parts:
+
+1. A `NetworkService` which makes the requests
+2. A `CatService` which exposes a `getCat(named:)` method (which calls into the network service)
+
+TODO: image
+
+## Testability
+There's a clear [seam] between the `NetworkService` and `CatService` that we can use to test `CatService`. Let's extract the network's functionality into an interface:
+
+```swift
+protocol NetworkServiceInterface {
+    func request(url: URL, completion: (Result<Cat, Error>) -> void)
+}
+```
+
+The general way to inject a `NetworkInterface` into the `CatService` would be using initializer injection, which is described in-depth in the video:
+
+```
+class CatService: CatServiceInterface {
+    private let network: NetworkInterface
+
+    init(network: NetworkInterface) {
+        self.network = network
+    }
+
+    func getCat(named: String, completion: (Result<Cat, Error>) -> Void) {
+        self.network.request(URL(string: "https://myapi.com/cat?name=\(name)")!) { result in
+            // ...
+        }
+    }
+```
+
+This is fine, but with enough dependencies, passing instances into initializers becomes unsustainable (more details in the talk about why).
+
+## An Easier Way
+What if there was a magical function which would return us an injectable instance of `NetworkServiceInterface`? Let's call it `getNetworkService()`:
+
+```
+class CatService: CatServiceInterface {
+    func getCat(named: String, completion: (Result<Cat, Error>) -> Void) {
+        getNetworkService().request(URL(string: "https://myapi.com/cat?name=\(name)")!) { result in
+            // ...
+        }
+    }
+```
+
+We can define it using a special function called `bind`:
+
+```swift
+let getNetworkService = SimpleDI.bind(NetworkInterface.self) { NetworkService.shared }
+```
