@@ -1,11 +1,15 @@
 ---
 title: Dead Simple Dependency Injection in Swift
-date: 2019-01-28
+date: 2019-02-15
 tags: ios, swift
 staticPreview: After struggling for some time with CIFilter documentation at work, I've been working on an app which can apply filters interactively for various inputs...
 mdxPreview: After struggling for some time with CIFilter documentation at work, I've been [working on an app](https://twitter.com/noahsark769/status/1080580341973348352) which can apply filters interactively for various inputs...
 ---
+TODO: confirm result types (do they take two generic params?)
+
 At the most recent [Swift Language User Group](https://www.meetup.com/swift-language/) meetup, [Patrick Barry](https://twitter.com/patbarry) presented a [great talk](https://www.youtube.com/watch?v=dA9rGQRwHGs) about how Lyft implements dependency injection. I'd highly recommend watching the video - I was impressed by how clean and functional the solution they came up with is. I was going to write up a summary for my coworkers, but figured I might as well put it here for the benefit of anyone who's interested.
+
+This post describes the very simple approach to dependency injection presented in this talk, using new functions `bind` and `mock`.
 
 ## Dependency Injection
 I won't go into detail on what dependency injection is, since there's a fair amount of time in the talk dedicated to it. Instead, let's think about an example.
@@ -24,65 +28,141 @@ GET /cat?name=Maggie
 }
 ```
 
-Let's say that if no cat with that name is found, we still return a 200 HTTP response, but with a different data structure. Although not the most typically RESTful interface, I've had to with with an API like this multiple times at different jobs:
-
-```
-GET /cat?name=hjklsadgf
-{
-    success: false,
-    error: "No cat named hjklsadgf exists"
-}
-```
-
-From an architectural point of view, let's say we want to extract this into two different parts:
+From an architectural point of view, we want to extract this into two different parts:
 
 1. A `NetworkService` which makes the requests
-2. A `CatService` which exposes a `getCat(named:)` method (which calls into the network service)
+2. A `CatService` which exposes a `getCat(named:)` method (this calls into the network service)
 
-TODO: image
-
-## Testability
+## Binding
 There's a clear [seam] between the `NetworkService` and `CatService` that we can use to test `CatService`. Let's extract the network's functionality into an interface:
 
 ```swift
-protocol NetworkServiceInterface {
-    func request(url: URL, completion: (Result<Cat, Error>) -> void)
+protocol NetworkInterface {
+    func makeRequest(url: URL, completion: @escaping (Result<Data>) -> Void)
 }
 ```
 
-The general way to inject a `NetworkInterface` into the `CatService` would be using initializer injection, which is described in-depth in the video:
+And the concrete implementation:
 
 ```
-class CatService: CatServiceInterface {
-    private let network: NetworkInterface
-
-    init(network: NetworkInterface) {
-        self.network = network
+private class NetworkService: NetworkInterface {
+    func makeRequest(url: URL, completion: @escaping (Result<Data>) -> Void) {
+        // Use URLSession, etc
     }
-
-    func getCat(named: String, completion: (Result<Cat, Error>) -> Void) {
-        self.network.request(URL(string: "https://myapi.com/cat?name=\(name)")!) { result in
-            // ...
-        }
-    }
+}
 ```
 
-This is fine, but with enough dependencies, passing instances into initializers becomes unsustainable (more details in the talk about why).
-
-## An Easier Way
-What if there was a magical function which would return us an injectable instance of `NetworkServiceInterface`? Let's call it `getNetworkService()`:
-
-```
-class CatService: CatServiceInterface {
-    func getCat(named: String, completion: (Result<Cat, Error>) -> Void) {
-        getNetworkService().request(URL(string: "https://myapi.com/cat?name=\(name)")!) { result in
-            // ...
-        }
-    }
-```
-
-We can define it using a special function called `bind`:
+And now for the really interesting part - `NetworkService` will *expose itself using a special function called bind* (I've added the "SimpleDI" namespace here):
 
 ```swift
-let getNetworkService = SimpleDI.bind(NetworkInterface.self) { NetworkService.shared }
+let getNetwork = SimpleDI.bind(NetworkInterface.self) { NetworkService() }
 ```
+
+We define `getNetwork` as a function which can be called to get a concrete implementation of the `NetworkInterface` protocol, and `CatService` can then call `getNetwork` to get access to the network:
+
+```
+class CatService {
+    func getCat(named: String, completion: @escaping (Result<Cat>) -> Void) {
+        let network = getNetwork()
+        network.makeRequest(/* ... */)
+    }
+}
+```
+
+## Implementation
+
+Before we talk about why `bind` is useful, let's discuss the implementation. It returns a function which takes no parameters and returns a type of `NetworkInterface`, but it also takes a closure which will be used to generate the concrete implementation.
+
+`bind`'s body looks like this (I've done a bit of paraphrasing from the talk, here):
+
+```swift
+private var instantiators: [String: Any] = [:]
+
+enum SimpleDI {
+    static func bind<T>(_ interfaceType: T.Type, instantiator: @escaping () -> T) -> () -> T {
+        instantiators[String(describing: interfaceType)] = instantiator
+        return self.instance
+    }
+
+    private static func instance<T>() -> T {
+        let key = String(describing: T.self)
+        let instantiator = instantiators[key] as! () -> T
+        return instantiator()
+    }
+}
+```
+
+We take the closure that we're passed and save it in a dictionary[1], then return a function which accesses and calls the closure we provided. Though we have to do some force casting, we're guaranteed that the closure we need will be there when `getNetworkInterface` is called, since we put it into `instantiators` before returning from `bind`.
+
+## Testability
+
+Using `bind` adds a level of indirection at the seam between `NetworkService` and `CatService`. Having this indirection allows us to stub in a mock in tests, but in order to do that we need to define `mock` as well, and add a bit of more infrastructure:
+
+```swift
+private var instantiators: [String: Any] = [:]
+private var mockInstantiators: [String: Any] = [:]
+
+enum SimpleDI {
+    static var isTestEnvironment = false
+
+    static func bind<T>(_ interfaceType: T.Type, instantiator: @escaping () -> T) -> () -> T {
+        instantiators[String(describing: interfaceType)] = instantiator
+        return self.instance
+    }
+
+    private static func instance<T>() -> T {
+        if self.isTestEnvironment {
+            guard let mockInstantiator = mockInstantiators[String(describing: T.self)] as? () -> T else {
+                fatalError("Type \(String(describing: T.self)) unmocked in test!")
+            }
+            return mockInstantiator()
+        }
+        let key = String(describing: T.self)
+        let instantiator = instantiators[key] as! () -> T
+        return instantiator()
+    }
+
+    static func mock<T>(_ interfaceType: T.Type, instantiator: @escaping () -> T) {
+        mockInstantiators[String(describing: interfaceType)] = instantiator
+    }
+}
+```
+
+This code isn't very pretty - in fact, vars like `isTestEnvironment` are generally a code smell that mean you should refactor how the class works to avoid the check. However, this enables us to write tests very easily: all we have to do is set `isTestEnvironment = true`, and we'll be able to stub in a mock immediately using `mock`. For example, let's say we want to write a test which makes sure CatService reports an error when the underlying network errors:
+
+```
+class NetworkThatAlwaysErrors: NetworkInterface {
+    func makeRequest(url: URL, completion: @escaping (Result<Data>) -> Void) {
+        completion(.error(error: NSError(domain: "", code: 0, userInfo: nil)))
+    }
+}
+
+class CatServiceTestCase: XCTestCase {
+    func testCatServiceReportsError() {
+        SimpleDI.isTestEnvironment = true
+        SimpleDI.mock(NetworkInterface.self) { NetworkThatAlwaysErrors() }
+
+        let expecation = self.expectation(description: "Should return error")
+        let service = CatService()
+        service.getCatImage(named: "Maggie", completion: { result in
+            if case .error = result {
+                expecation.fulfill()
+            }
+        })
+        self.waitForExpectations(timeout: 0.2)
+    }
+}
+```
+
+`bind` and `mock` take the dirty work of setting up the DI/mocking infrastructure and hide it under the rug, allowing us to write more expressive tests more easily. Some interesting things to note:
+
+1. Many people who've worked with DI have horror stories of passing 10/15+ dependencies into an initializer so they can be mocked in tests. `bind` brings the argument count down to 0 without sacrificing testability, and makes both the service and the test more elegant.
+2. `bind` will error if you forget to mock out an interface in a test, so you're never accidentally calling deeper into dependencies than you mean to.
+3. Dictionary is not thread safe, so if you want to use `bind` and `mock` on multiple threads you'll need to implement something similar to an atomic box (the talk mentions this).
+
+## Conclusion
+It was really interesting to see how Lyft was able to come up with such a simple solution 
+
+
+[1] TODO about needing atomic
+[2] TODO about putting mock func in your test target
