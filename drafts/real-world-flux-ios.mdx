@@ -1,0 +1,14 @@
+Talk about flux in the real world
+
+Implementing stores/dispatchers/actions
+
+What to do:
+- Works great with table views
+- What should subscribe for arbitrarily nested views? Should the subview subscribe, or should the superview do it and pass data down?
+  - Generally if the data is a list of objects in the parent, parent should pass down?
+  - The child should subscribe if the parent's object is "too hard to diff"
+  - If children subscribe when the state changes, how do we get subscription processing to only happen when their part of the state changes? We need some sort of NestedPropertySubscriptionProviderType...or something? I want to say `.subscribe(state.something.a.b.c.myComponentsRelevantState.isToggledOn)` for example
+- What about actions that modify global state not encapsulated in the state? E.g. saving an image to disk?
+- What about actions that have a delayed effect? What about actions that have an effect that takes place on another thread?
+- What's the equivalent of mapStateToProps in iOS land?
+- What's the recommended way to handle a tap which presents a view controller?
