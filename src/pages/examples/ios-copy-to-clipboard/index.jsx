@@ -22,7 +22,7 @@ function iosCopyToClipboard(el) {
     el.contentEditable = oldContentEditable;
     el.readOnly = oldReadOnly;
 
-    document.execCommand('copy');
+    return document.execCommand('copy');
 }
 
 const Container = styled.div`
@@ -31,22 +31,42 @@ const Container = styled.div`
     margin: 0 auto;
 `;
 
-class IndexPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.myRef = React.createRef();
-    }
-
+class TrackingLink extends React.Component {
     handleOnClick() {
-        let element = this.myRef.current;
-        console.log(element);
+        let element = document.createElement("input");
+        let data = {
+            timestamp: Date.now(),
+            ...this.props.data
+        }
+        let json = JSON.stringify(data);
+        let encoded = btoa(json)
+        let toAppend;
+        if (this.props.href.includes("?")) {
+            toAppend = "&ed=" + encoded
+        } else {
+            toAppend = "?ed=" + encoded
+        }
+        element.value = this.props.href + toAppend;
+        element.style = "position: absolute; opacity: 0.0"
+        document.body.appendChild(element);
         iosCopyToClipboard(element);
     }
 
     render() {
+        return (
+            <a href={this.props.href} onClick={this.handleOnClick.bind(this)}>{this.props.children}</a>
+        );
+    }
+};
+
+class IndexPage extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
         return <Container>
-            <input id="ye" ref={this.myRef} />
-            <a onClick={this.handleOnClick.bind(this)}>This is the link</a>
+            <TrackingLink data={{"referrer": "pasteboard-blog-post"}} href="https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8">This is the link</TrackingLink>
         </Container>
     }
 
