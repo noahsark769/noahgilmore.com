@@ -11,6 +11,7 @@ const Image = (props) => (
             node {
               relativePath
               name
+              publicURL
               childImageSharp {
                 sizes(maxWidth: 600) {
                   ...GatsbyImageSharpSizes
@@ -24,12 +25,18 @@ const Image = (props) => (
 
     render={(data) => {
       const image = data.images.edges.find(n => {
-        return n.node.relativePath.includes(props.filename);
+        console.log(n.node.relativePath);
+        return n.node.relativePath == props.filename;
       });
+
       if (!image) {
         return null;
       }
-      
+
+      const childImageSharp = image.node.childImageSharp;
+      if (!childImageSharp) {
+        return (<img style={{width: "100%"}} alt={props.alt} src={image.node.publicURL} />);
+      }
       const imageSizes = image.node.childImageSharp.sizes;
       return (
         <Img
