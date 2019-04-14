@@ -33,7 +33,7 @@ export default class RightColumnContent extends React.Component {
         } else if (this.props.component === "about") {
             return (
                 <RightColumnSection>
-                    <p>Hi, I'm Noah. I'm a software engineer, recent Berkeley grad, and migrant to the SF Bay Area. You can read my blog posts <a href="/blog">here</a>.</p>
+                    <p>Hi, I'm Noah. I'm a software developer based in the San Francisco bay area. You can read my blog posts <a href="/blog">here</a>.</p>
                 </RightColumnSection>
             )
         } else if (this.props.component === "contact") {
