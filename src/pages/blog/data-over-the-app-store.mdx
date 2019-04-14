@@ -36,7 +36,7 @@ The general approach looks like this:
 <CaptionedImage filename="pasteboard-diagram.png" alt="Diagram showing Safari connected with Trestle over the app store via UIPasteboard" caption="" />
 
 ## Step 1: Copying a link (Javascript)
-In Javascript (depending on your browser) it's possible to programmatically copy to the clipboard using `document.execCommand("copy")` (see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand)). The API is a little finnicky - you have to construct a DOM element and fill it with the content you want to copy, and you can only use `input` and `textarea` elements, but it works! I tested this on iOS 11 and 12, but according to [caniuse](https://caniuse.com/#feat=clipboard) it looks like it's supported as far back as iOS 10. It even works on mobile Chrome (note though - it won't work in the iOS simulator).
+In Javascript (depending on your browser) it's possible to programmatically copy to the clipboard using `document.execCommand("copy")` (see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand)). The API is a little finicky - you have to construct a DOM element and fill it with the content you want to copy, and you can only use `input` and `textarea` elements, but it works! I tested this on iOS 11 and 12, but according to [caniuse](https://caniuse.com/#feat=clipboard) it looks like it's supported as far back as iOS 10. It even works on mobile Chrome (note though - it won't work in the iOS simulator).
 
 Here's the code to copy a string to the pasteboard (thanks in part to [this stackoverflow post](https://stackoverflow.com/questions/34045777/copy-to-clipboard-using-javascript-in-ios)):
 
@@ -214,13 +214,13 @@ extension AppDelegate: AppStoreBridgeDelegate {
 # UX considerations
 There are a couple of user experience issues to keep in mind here:
 
-1. Using this technique clobbers whatever's in the user's pasteboard currently. Usually this won't be a problem, because users should understand the pasteboard is emphemeral, but you might not want to do this if copying and pasting in your web app is a common use case (text editor, etc).
+1. Using this technique clobbers whatever's in the user's pasteboard currently. Usually this won't be a problem, because users should understand the pasteboard is ephemeral, but you might not want to do this if copying and pasting in your web app is a common use case (text editor, etc).
 2. It's important to remember, on your call to `didTriggerCampaignLink`, to save some sort of flag locally so as not to accidentally trigger the referral link the next time the user opens the app. Trestle uses UserDefaults for this, which is probably as good a store as any.
 
 # Security considerations
 We should always consider approaches like this with security in mind, and this technique warrants a few very important considerations:
 
-1. If you take any action from the `AppStoreBridge`, assume that _anyone_ can trigger that action _at any time_. This means you don't want to take actions that expose private data, make payments, etc. Consider your `AppStoreBridge` functionality as publically exposed, since an attacker could pre-populate the pasteboard with anything they want to trigger the `AppStoreBridge` logic.
+1. If you take any action from the `AppStoreBridge`, assume that _anyone_ can trigger that action _at any time_. This means you don't want to take actions that expose private data, make payments, etc. Consider your `AppStoreBridge` functionality as publicly exposed, since an attacker could pre-populate the pasteboard with anything they want to trigger the `AppStoreBridge` logic.
 2. Don't expose any private information via the `DataLink`, _especially_ not user session tokens. Other apps can read the pasteboard too, so assume that all data encoded in a `DataLink` will be publicly available to anyone. Don't include anything in a data link that could be associated with a user's PII (personally identifiable information) including emails, locations, etc.
 
 # Will this get my app rejected?
