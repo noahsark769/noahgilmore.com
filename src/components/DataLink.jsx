@@ -36,11 +36,14 @@ export default class DataLink extends React.Component {
             toAppend = "?ed=" + encoded
         }
         iosCopyToClipboard(this.props.href + toAppend);
+        document.querySelectorAll("a.data-link").forEach(function(el) {
+            el.href = el.href + "&retry=1"
+        });
     }
 
     render() {
         return (
-            <a href={this.props.href} onClick={this.handleOnClick.bind(this)}>{this.props.children}</a>
+            <a className={"data-link"} href={this.props.href} onClick={this.handleOnClick.bind(this)}>{this.props.children}</a>
         );
     }
 };
