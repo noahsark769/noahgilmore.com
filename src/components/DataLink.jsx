@@ -1,9 +1,11 @@
 import React from 'react';
 
-function iosCopyToClipboard(el) {
-    var oldContentEditable = el.contentEditable,
-        oldReadOnly = el.readOnly,
-        range = document.createRange();
+function iosCopyToClipboard(string) {
+    let el = document.createElement("input");
+    el.value = string;
+    el.style = "position: absolute; opacity: 0.0";
+    document.body.appendChild(el);
+    let range = document.createRange();
 
     el.contentEditable = true;
     el.readOnly = false;
@@ -12,20 +14,15 @@ function iosCopyToClipboard(el) {
     var s = window.getSelection();
     s.removeAllRanges();
     s.addRange(range);
-    console.log(range);
-    console.log(s);
 
-    el.setSelectionRange(0, 999999); // A big number, to cover anything that could be inside the element.
-
-    el.contentEditable = oldContentEditable;
-    el.readOnly = oldReadOnly;
+    // A big number, to cover anything that could be inside the element.
+    el.setSelectionRange(0, 999999);
 
     return document.execCommand('copy');
 }
 
 export default class DataLink extends React.Component {
     handleOnClick() {
-        let element = document.createElement("input");
         let data = {
             timestamp: Date.now(),
             ...this.props.data
@@ -38,10 +35,7 @@ export default class DataLink extends React.Component {
         } else {
             toAppend = "?ed=" + encoded
         }
-        element.value = this.props.href + toAppend;
-        element.style = "position: absolute; opacity: 0.0"
-        document.body.appendChild(element);
-        iosCopyToClipboard(element);
+        iosCopyToClipboard(this.props.href + toAppend);
     }
 
     render() {
