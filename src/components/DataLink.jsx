@@ -3,7 +3,7 @@ import React from 'react';
 function iosCopyToClipboard(string) {
     let el = document.createElement("input");
     el.value = string;
-    el.style = "position: absolute; opacity: 0.0";
+    el.style = "position: absolute; top: 0; left: 0; opacity: 0.0";
     document.body.appendChild(el);
     let range = document.createRange();
 
