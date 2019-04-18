@@ -21,8 +21,8 @@ function rssFeedPlugin(glob, feedName, title) {
               return Object.assign({}, edge.node.frontmatter, {
                 description: edge.node.frontmatter.staticPreview,
                 date: edge.node.frontmatter.date,
-                url: site.siteMetadata.siteUrl + edge.node.parent.name,
-                guid: site.siteMetadata.siteUrl + edge.node.parent.name,
+                url: site.siteMetadata.siteUrl + "/" + edge.node.parent.name,
+                guid: site.siteMetadata.siteUrl + "/" + edge.node.parent.name,
               })
             })
           },
