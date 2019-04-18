@@ -25,7 +25,6 @@ const Image = (props) => (
 
     render={(data) => {
       const image = data.images.edges.find(n => {
-        console.log(n.node.relativePath);
         return n.node.relativePath == props.filename;
       });
 
