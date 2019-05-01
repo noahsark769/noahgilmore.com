@@ -11,6 +11,8 @@ At the most recent [Swift Language User Group](https://www.meetup.com/swift-lang
 
 This post describes the very simple approach to dependency injection presented in the talk, using new functions `bind` and `mock`. I'll paraphrase some code in this write up, but the concepts and function names will match the talk.
 
+_Edit (4/30/2019): This post describes a nice Swift implementation of a pattern similar to the [Service Locator Pattern](https://en.wikipedia.org/wiki/Service_locator_pattern), considered by many to be a strong anti-pattern. Like Singletons, you should use Service Locator carefully - I've added a [section](#downsides) at the end about drawbacks of this approach._
+
 ## Dependency Injection
 I won't go into detail on what dependency injection is, since there's a fair amount of time in the talk dedicated to it. Instead, let's think about an example.
 
@@ -188,8 +190,17 @@ Some interesting things to note:
 1. Many people who've worked with DI have horror stories of passing 10/15+ dependencies into an initializer so they can be mocked in tests. `bind` brings the argument count down to 0 without sacrificing testability, and makes both the service and the test more elegant.
 2. `bind` will error if you forget to mock out an interface in a test, so you're never accidentally calling deeper into dependencies than you mean to.
 
+<a name="downsides"></a>
+
+## Downsides
+This approach is very similar to the [Service Locator Pattern](https://en.wikipedia.org/wiki/Service_locator_pattern), which is commonly criticized. I really enjoyed [this article](https://badootech.badoo.com/singleton-service-locator-and-tests-in-ios-d69484e88944) about Service Locator in iOS, and there are a few downsides that I should mention:
+
+1. Using a service locator registry like `bind` means you have implicit instead of explicit dependencies. Instead of knowing explicitly that `CatService` depends on `NetworkService`, you have to look for the call to `getNetwork`. There's a tradeoff between the simplicity of using a service locator and the fact that it can make services with many dependencies more complex to reason about.
+2. With `bind`, it can be tough to recognize that you can update a test when a dependency of a service is removed. If `CatService` stopped calling out to the network, it's wouldn't be immediately apparent that `NetworkThatAlwaysErrors` could be deleted. This can lead to unnessary cognitive overhead in tests.
+3. When calling `mock`, you have to be _very_ careful to set up your testing framework such that all the mocks get cleared after every test. Otherwise, you might have different behavior based on the order the tests are run, which can lead to flakes.
+
 ## Conclusion
-It was really interesting to see how Lyft was able to come up with such a simple solution to a complex problem. I'm hoping to implement this in personal projects and do some more thinking on what the pros and cons to this approach are. I'd really recommend watching [the talk](https://www.youtube.com/watch?v=dA9rGQRwHGs) if you're interested in dependency injection and testing. If you'd like to see a working example of `bind` and `mock`, I've put one [here](https://github.com/noahsark769/NGSimpleDIExample) (it has a few differences from the code in this post in order to demonstrate an actual working request and test).
+It was really interesting to see how Lyft was able to come up with such a simple solution to a complex problem. I'd really recommend watching [the talk](https://www.youtube.com/watch?v=dA9rGQRwHGs) if you're interested in dependency injection and testing. If you'd like to see a working example of `bind` and `mock`, I've put one [here](https://github.com/noahsark769/NGSimpleDIExample) (it has a few differences from the code in this post in order to demonstrate an actual working request and test).
 
 ## Footnotes
 1. <a name="dictionary-atomic"></a>Dictionary is not thread safe, so if you want to use `bind` and `mock` on multiple threads you'll need to implement something similar to an [atomic box](https://www.objc.io/blog/2018/12/18/atomic-variables/) (the talk mentions this).
