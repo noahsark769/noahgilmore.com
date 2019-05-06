@@ -8,6 +8,7 @@ mdxPreview: >
     CIFilter.io is a project I've been working on for the last few months, and today it's [open source](https://github.com/noahsark769/cifilter.io/). It has two parts...
 ---
 import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
 
 Pop quiz: in a `UIButton`, how do you set a padding of 10pt between the image and the title?
 
@@ -27,3 +28,10 @@ To understand why adding image-title padding is hard, we have to look at UIButto
 - Negative values contract the button towards its content
 
 With negative `contentEdgeInsets`, it's possible to get the image and text to draw outside of the button's bounds.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="content-top.gif" alt="contentEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="content-left.gif" alt="contentEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="content-bottom.gif" alt="contentEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="content-right.gif" alt="contentEdgeInsets right" caption="Right" />
+</FlowGrid>
