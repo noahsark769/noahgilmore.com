@@ -1,7 +1,0 @@
-Unfortunately the title and content insets for UIButton work in a weird way (see https://stackoverflow.com/questions/17800288/autolayout-intrinsic-size-of-uibutton-does-not-include-title-insets) - generally positive means "toward the center of the button" and negative means "away from the center of the button", but it's a little tricky because contentEdgeInsets is taken into account in the button's intrinsicContentSize, but titleEdgeInsets is not.
-
-Basically, contentEdgeInsets adds outside padding to the button, but titleEdgeInsets moves the drawing box of the text.
-
-In this case, we want to have 10pt padding between the image and the text, so we offset the titleEdgeInsets toward the center of the button (aka, to the right, away from the image) by 10pt. However, we also have to offset -10pt to the right, otherwise we're shrinking the text's drawing box and the text gets cut off. This is also why we have to add sidePadding + imageTextPadding to the content insets - the imageTextPadding is to account for the -imageTextPadding in titleEdgeInsets, and sidePadding is just the regular padding. Since the contentEdgeInsets are taken into account for intrinsicContentSize, it just magically works.
-
-This whole system is really hard to understand, tbh. I want to write a whole blog post about just how to put padding between the image and the text lol
