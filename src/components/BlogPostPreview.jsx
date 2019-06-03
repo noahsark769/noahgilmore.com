@@ -16,6 +16,10 @@ const Wrapper = styled.div`
     transition: 0.2s ease-in-out;
     background-color: white;
 
+    @media (prefers-color-scheme: dark) {
+        background-color: #333;
+    }
+
     &:hover {
         border-color: rgba(128, 165, 177, 1);
     }
@@ -33,6 +37,10 @@ const Title = styled.h1`
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 20px;
     margin-bottom: 5px;
+
+    @media (prefers-color-scheme: dark) {
+        color: #fff;
+    }
 `;
 
 const StyledDate = styled.div`
@@ -67,6 +75,10 @@ const StyledA = styled(A)`
         font-family: "Gentium Book Basic", times, serif;
         font-size: 16px;
         line-height: 18px;
+
+        @media (prefers-color-scheme: dark) {
+            color: #60b5d1;
+        }
     }
 `;
 

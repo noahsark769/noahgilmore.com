@@ -16,6 +16,10 @@ const Container = styled.div`
             width: 90%;
             margin: 15px auto 0 auto;
         }
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+        }
     }
 
     blockquote {
@@ -37,11 +41,19 @@ const Container = styled.div`
         -moz-transition: 0.2s ease-in-out;
         -o-transition: 0.2s ease-in-out;
         transition: 0.2s ease-in-out;
+
+        @media (prefers-color-scheme: dark) {
+            color: #60b5d1;
+        }
     }
     a:hover {
         color: #47656E;
+
+        @media (prefers-color-scheme: dark) {
+            color: #6bcfef;
+        }
     }
-    code {
+    code:not(pre code) {
         font-family: monospace;
         font-size: 16px;
         background-color: #faf9f7;
@@ -95,6 +107,10 @@ const Container = styled.div`
             width: 90%;
             margin: 0 auto 0 30px;
         }
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+        }
     }
     ol li {
         list-style-type: decimal;
@@ -106,6 +122,10 @@ const Container = styled.div`
             width: 90%;
             margin: 0 auto;
         }
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+        }
     }
     h1, h2, h3, h4, h5, h6 {
         width: 100%;
@@ -115,6 +135,10 @@ const Container = styled.div`
         @media all and (max-width: 600px) {
             width: 90%;
             margin: 40px auto 10px auto;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
         }
     }
     h1 {

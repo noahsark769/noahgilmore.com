@@ -13,7 +13,6 @@ export default class HTML extends React.Component {
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
           <link rel="stylesheet" href='https://meyerweb.com/eric/tools/css/reset/reset.css' />
-          <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />
           <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/highlight.min.js"></script>
           <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/languages/swift.min.js"></script>
           {this.props.headComponents}

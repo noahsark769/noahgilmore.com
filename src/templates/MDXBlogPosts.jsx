@@ -7,12 +7,18 @@ import BlogPostPreview from '../components/BlogPostPreview';
 import ReactGA from 'react-ga';
 import { StaticQuery, graphql } from 'gatsby'
 import { formatDateString } from '../lib/dateFormat';
+import styled from 'styled-components';
 
+const Container = styled.div`
+  @media (prefers-color-scheme: dark) {
+    background-color: #2b2c2f;
+  }
+`;
 
 class MDXBlogPosts extends React.Component {
   render() {
     return (
-        <div>
+        <Container>
             <GlobalStyle />
             <Helmet>
               <title>{this.props.pageContext.tag + " | "}Noah Gilmore</title>
@@ -34,7 +40,7 @@ class MDXBlogPosts extends React.Component {
                   date={formatDateString(edge.node.frontmatter.date)}
                   mdxPreview={edge.node.frontmatter.mdxPreview}/>
             })}</BlogPostContainer>
-        </div>
+        </Container>
     );
   }
 

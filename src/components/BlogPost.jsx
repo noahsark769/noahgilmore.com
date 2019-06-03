@@ -28,6 +28,10 @@ const Heading = styled.h1`
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 34px;
     margin-bottom: 10px;
+
+    @media (prefers-color-scheme: dark) {
+        color: #fff;
+    }
 `;
 
 const DateContainer = styled.p`

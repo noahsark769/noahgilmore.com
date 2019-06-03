@@ -7,6 +7,13 @@ import BlogPostPreview from '../../components/BlogPostPreview';
 import ReactGA from 'react-ga';
 import { StaticQuery, graphql } from 'gatsby'
 import { formatDateString } from '../../lib/dateFormat';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    @media (prefers-color-scheme: dark) {
+        background-color: #2b2c2f;
+    }
+`;
 
 const MDXBlogPostsQuery = (props) => (
   <StaticQuery
@@ -41,13 +48,16 @@ const MDXBlogPostsQuery = (props) => (
 
 class MDXBlogPosts extends React.Component {
   render() {
+    let isDarkMode = (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches);
     return (
-        <div>
+        <Container>
             <GlobalStyle />
             <Helmet>
               <title>Blog</title>
               <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
               <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+                {!isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />}
+                {isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css" />}
               <meta name="twitter:card" content="summary" />
               <meta name="twitter:creator" content="@noahsark769" />
               <meta property="og:url" content={`https://noahgilmore.com/blog`} />
@@ -64,7 +74,7 @@ class MDXBlogPosts extends React.Component {
                   date={formatDateString(edge.node.frontmatter.date)}
                   mdxPreview={edge.node.frontmatter.mdxPreview}/>
             })}</BlogPostContainer>
-        </div>
+        </Container>
     );
   }
 

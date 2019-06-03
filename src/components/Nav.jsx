@@ -15,6 +15,10 @@ const StyledNav = styled.nav`
     @media all and (max-width: 600px) {
         padding: 20px;
     }
+
+    @media (prefers-color-scheme: dark) {
+        border-color: #777;
+    }
 `;
 
 const Title = styled.div`
@@ -22,6 +26,10 @@ const Title = styled.div`
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 28px;
     font-display: swap;
+
+    @media (prefers-color-scheme: dark) {
+        color: #fff;
+    }
 `;
 
 const NavLinks = styled(UL)`
