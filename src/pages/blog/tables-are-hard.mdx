@@ -59,7 +59,7 @@ When I came across this situation in a project I was working on, I expected the 
 ## Non-normativity
 It turns out that this part of the HTML specification is actually non-normative. It’s called the [automatic table layout algorithm](https://www.w3.org/TR/CSS21/tables.html#auto-table-layout). Basically, this applies to tables (elements with `display: table` or `display: inline-table`) with `table-layout: auto`. [See end note.] From the spec:
 
-> "UAs are not required to implement this algorithm to determine the table layout in the case that ‘table-layout’ is ‘auto’; they can use any other algorithm even if it results in different behavior.""
+> "UAs are not required to implement this algorithm to determine the table layout in the case that ‘table-layout’ is ‘auto’; they can use any other algorithm even if it results in different behavior."
 
 So, this is what really happens: the browser doesn’t know what to do when there are two columns that have to have automatically distributed width, so it makes its own decision.
 

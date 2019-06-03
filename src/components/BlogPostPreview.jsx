@@ -29,7 +29,6 @@ const Wrapper = styled.div`
         border-left: none;
         padding-right: 0;
         padding-left: 0;
-        background-color: white;
     }
 `;
 

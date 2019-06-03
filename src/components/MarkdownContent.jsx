@@ -28,10 +28,18 @@ const Container = styled.div`
         padding: 20px;
         font-style: italic;
 
+        @media (prefers-color-scheme: dark) {
+            background-color: #3f3f3f;
+        }
+
         p {
             margin: 0;
             padding: 0;
             color: #555;
+
+            @media (prefers-color-scheme: dark) {
+                color: #fff;
+            }
         }
     }
 
@@ -61,6 +69,11 @@ const Container = styled.div`
         padding: 3px 5px;
         margin: 0px 2px;
         color: #555;
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+            background-color: #3f3f3f;
+        }
     }
     code:first-child {
         margin-left: 0;
@@ -95,6 +108,13 @@ const Container = styled.div`
             border-right: none;
             padding: 15px 5% 15px 5%;
             width: 100%;
+        }
+    }
+
+    pre > code.language-nohighlight {
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+            background-color: #3f3f3f;
         }
     }
 

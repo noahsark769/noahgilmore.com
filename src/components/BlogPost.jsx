@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Helmet } from "react-helmet";
 
 export const BlogPostContainer = styled.div`
@@ -14,7 +14,12 @@ export const BlogPostContainer = styled.div`
     @media all and (max-width: 600px) {
         width: 100%;
         padding: 20px 0;
-        ${(props) => props.darkened && 'background-color: #f6f6f6;'}
+        ${(props) => props.darkened && css`
+            background-color: #f6f6f6;
+            @media (prefers-color-scheme: dark) {
+                background-color: inherit;
+            }
+        `}
     }
 `;
 

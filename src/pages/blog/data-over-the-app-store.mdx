@@ -118,7 +118,10 @@ For <TrestleBlogPostLink>Trestle</TrestleBlogPostLink>, I decided to encapsulate
 
 ```swift
 protocol AppStoreBridgeDelegate: class {
-    func appStoreBridge(_ bridge: AppStoreBridge, didTriggerCampaignLinkReferrer: String)
+    func appStoreBridge(
+        _ bridge: AppStoreBridge,
+        didTriggerCampaignLinkReferrer: String
+    )
 }
 
 final class AppStoreBridge {
