@@ -42,4 +42,38 @@ label.textColor = ColorCompatibility.label
 ```
 
 ## Generating system colors
-I wrote a [small app]()
+I wrote a [small app](https://github.com/noahsark769/NGSystemColorComparison) (with SwiftUI, no less!) which displays all the system colors in the current color scheme.
+
+TODO: image here
+
+Once we have the `UIColor`s, it's easy enough to generate the implementation of `ColorCompatibility` that we want:
+
+```swift
+enum ColorCompatibility {
+    static var label: UIColor {
+        if #available(iOS 13, *) {
+            return .label
+        }
+        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    }
+    static var secondaryLabel: UIColor {
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.6)
+    }
+    // ... 34 more definitions: full code at the bottom of this post
+}
+```
+
+> Note: we can't use `@available` for these checks, since it doesn't provide a way to check if the current environment is _less_ than a specific app version.
+
+Once we have `ColorCompatibility`, we can use it to set any colors we need. Note a few things:
+
+1. This code will compile on iOS 13+, iOS 12 and earlier, and UIKitForMac ✅
+2. Since everything is a computed `var`, we never store colors until we need them, which means that when the user switches color scheme, our app will automatically adapt as the trait collection changes 👍
+3. When we drop iOS 12 support, cleaning this up will be as simple as replacing every instance of `ColorCompatibility` and `UILabel` 🎉
+
+## Table of system colors
+
+## ColorCompatibility full code
