@@ -23,7 +23,9 @@ But in Dark Mode, the background will also be black, which means the text won't 
 label.textColor = UIColor.label
 ```
 
-But `label` is only one example: there are 36 new color scheme agnostic `UIColor`s available in iOS 13+, organized into [Element Colors](https://developer.apple.com/documentation/uikit/uicolor/ui_element_colors) (e.g. `label`) and [Standard Colors](https://developer.apple.com/documentation/uikit/uicolor/standard_colors) (`systemBlue`, `systemGray3`, etc).
+`label` is only one example: there are 36 new color scheme agnostic `UIColor`s available in iOS 13+, organized into [Element Colors](https://developer.apple.com/documentation/uikit/uicolor/ui_element_colors) (e.g. `label`) and [Standard Colors](https://developer.apple.com/documentation/uikit/uicolor/standard_colors) (`systemBlue`, `systemGray3`, etc).
+
+(Skip to the bottom if you'd like to see a list of the new colors.)
 
 ## Compatibility
 That's all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this:
@@ -36,7 +38,7 @@ if #available(iOS 13, *) {
 }
 ```
 
-It's a workable solution, but it necessitates changing a lot of code - an `if` statement for every non-system label or background color!! For [CIFilter.io](/blog/cifilterio), I wondered if there was a better way. What if, instead of the `if #available`, there was a way to abstract the color choice down one level, so we could do something like this?
+It's a workable solution, but it necessitates changing a lot of code - an `if` statement for every non-system label or background color! For [CIFilter.io](/blog/cifilterio), I wondered if there was a better way. What if, instead of the `if #available`, there was a way to abstract the color choice down one level, so we could do something like this?
 
 ```swift
 label.textColor = ColorCompatibility.label
@@ -70,9 +72,11 @@ enum ColorCompatibility {
 }
 ```
 
+Once we have `ColorCompatibility`, we can use it to set any colors we need.
+
 > Note: we can't use `@available` for these checks, since it doesn't provide a way to check if the current environment is _less_ than a specific app version.
 
-Once we have `ColorCompatibility`, we can use it to set any colors we need. Note a few things:
+This approach has some great advantages:
 
 1. This code will compile on iOS 13+, iOS 12 and earlier, and UIKitForMac ✅
 2. Since everything is a computed `var`, we never store colors until we need them, which means that when the user switches color scheme, our app will automatically adapt as the trait collection changes 👍
