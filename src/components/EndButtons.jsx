@@ -1,7 +1,6 @@
 import React from 'react';
 import { A } from '../components/default';
 import styled, { css } from "styled-components";
-import Image from "../components/Image";
 import { IoIosHome } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 import { blue, blueHighlight } from '../components/colors';

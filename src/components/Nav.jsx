@@ -69,20 +69,6 @@ const StyledA = styled(A)`
     }
 `;
 
-const MediaOnlySmall = styled.div`
-    display: none;
-    @media all and (max-width: 600px) {
-        display: inline-block;
-    }
-`;
-
-const MediaOnlyLarge = styled.div`
-    display: inline-block;
-    @media all and (max-width: 600px) {
-        display: none;
-    }
-`;
-
 const Nav = (props) => {
     return (
         <StyledNav>

@@ -7,10 +7,11 @@ mdxPreview: >
     At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk [Implementing Dark Mode on iOS](https://developer.apple.com/videos/play/wwdc2019/214/) which I'd highly recommend watching...
 ---
 import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
 
 At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk [Implementing Dark Mode on iOS](https://developer.apple.com/videos/play/wwdc2019/214/) which I'd highly recommend watching.
 
-One of the changes that makes adopting Dark Mode so easy is the new system colors api from `UIColor`. On iOS 12 and older, you might have a label you want to make black, and it would work just fine:
+One of the changes that makes adopting Dark Mode so easy is the new system colors API from `UIColor`. On iOS 12 and older, you might have a label you want to make black, and it would work just fine:
 
 ```swift
 label.textColor = UIColor.black
@@ -22,7 +23,7 @@ But in Dark Mode, the background will also be black, which means the text won't 
 label.textColor = UIColor.label
 ```
 
-`label` is only one example: there are 36 new color scheme agnostic `UIColor`s available in iOS 13+, organized into [Element Colors](https://developer.apple.com/documentation/uikit/uicolor/ui_element_colors) (e.g. `label`) and [Standard Colors](https://developer.apple.com/documentation/uikit/uicolor/standard_colors) (`systemBlue`, `systemGray3`, etc).
+But `label` is only one example: there are 36 new color scheme agnostic `UIColor`s available in iOS 13+, organized into [Element Colors](https://developer.apple.com/documentation/uikit/uicolor/ui_element_colors) (e.g. `label`) and [Standard Colors](https://developer.apple.com/documentation/uikit/uicolor/standard_colors) (`systemBlue`, `systemGray3`, etc).
 
 ## Compatibility
 That's all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this:
@@ -44,7 +45,10 @@ label.textColor = ColorCompatibility.label
 ## Generating system colors
 I wrote a [small app](https://github.com/noahsark769/NGSystemColorComparison) (with SwiftUI, no less!) which displays all the system colors in the current color scheme.
 
-TODO: image here
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="systemcolors-light.png" alt="System colors (light mode)" caption="Light mode" />
+    <CaptionedImage max={300} filename="systemcolors-dark.png" alt="System colors (dark mode)" caption="Dark mode" />
+</FlowGrid>
 
 Once we have the `UIColor`s, it's easy enough to generate the implementation of `ColorCompatibility` that we want:
 

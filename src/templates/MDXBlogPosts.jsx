@@ -5,7 +5,6 @@ import Nav from '../components/Nav';
 import { BlogPostContainer } from '../components/BlogPost';
 import BlogPostPreview from '../components/BlogPostPreview';
 import ReactGA from 'react-ga';
-import { StaticQuery, graphql } from 'gatsby'
 import { formatDateString } from '../lib/dateFormat';
 import styled from 'styled-components';
 

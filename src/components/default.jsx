@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
 import bariol_eot from '../fonts/Bariol-Regular.eot';

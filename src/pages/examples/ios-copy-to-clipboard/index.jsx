@@ -60,10 +60,6 @@ class TrackingLink extends React.Component {
 };
 
 class IndexPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return <Container>
             <TrackingLink data={{"referrer": "pasteboard-blog-post"}} href="https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8">This is the link</TrackingLink>
