@@ -32,7 +32,7 @@ label.textColor = UIColor.label
 (Skip to the bottom if you'd like to see a list of the new colors.)
 
 ## Compatibility
-These new colors are all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this:
+These new colors are all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this, using [Swift's #available syntax](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html):
 
 ```swift
 if #available(iOS 13, *) {
@@ -56,7 +56,7 @@ I wrote a [small app](https://github.com/noahsark769/NGSystemColorComparison) (w
     <CaptionedImage max={300} filename="systemcolors-dark.png" alt="System colors (dark mode)" caption="Dark mode" />
 </FlowGrid>
 
-Once we have the `UIColor`s, it's easy enough to generate the implementation of `ColorCompatibility` that we want:
+This app collects all the `UIColor` objects - once we have those, we can use their red/green/blue/alpha components to [generate the implementation](https://github.com/noahsark769/NGSystemColorComparison/blob/master/NGSystemColorComparison/SystemColors.swift#L102) of `ColorCompatibility` that we want:
 
 ```swift
 enum ColorCompatibility {
@@ -66,25 +66,29 @@ enum ColorCompatibility {
         }
         return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
+
     static var secondaryLabel: UIColor {
         if #available(iOS 13, *) {
             return .secondaryLabel
         }
         return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.6)
     }
+
     // ... 34 more definitions: full code at the bottom of this post
 }
 ```
 
-Once we have `ColorCompatibility`, we can use it to set any colors we need.
+We can then use `ColorCompatibility` it to set any colors we need.
 
 > Note: we can't use `@available` for these checks, since it doesn't provide a way to check if the current environment is _less_ than a specific app version.
+
+## Conclusion
 
 This approach has some great advantages:
 
 1. This code will compile on iOS 13+, iOS 12 and earlier, and UIKitForMac ✅
 2. Since everything is a computed `var`, we never pre-store colors, which means that when the user switches color scheme, our app will automatically adapt as the trait collection changes 👍
-3. When we drop iOS 12 support, cleaning this up will be as simple as replacing every instance of `ColorCompatibility` and `UILabel` 🎉
+3. When we drop iOS 12 support, cleaning this up will be as simple as replacing every instance of `ColorCompatibility` with `UIColor` 🎉
 
 Hopefully this makes your app's transition to dark mode easier!
 
