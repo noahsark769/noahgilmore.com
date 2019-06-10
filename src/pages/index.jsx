@@ -60,7 +60,7 @@ class IndexPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            component: "home"
+            component: "about"
         };
     }
 

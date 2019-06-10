@@ -24,13 +24,7 @@ const P = styled(Div)`
 
 export default class RightColumnContent extends React.Component {
     render() {
-        if (this.props.component === "home") {
-            return (
-                <RightColumnSection intro>
-                    a college graduate, developer, musician. Sometimes witty.
-                </RightColumnSection>
-            )
-        } else if (this.props.component === "about") {
+        if (this.props.component === "about") {
             return (
                 <RightColumnSection>
                     <p>Hi, I'm Noah. I'm a software developer based in the San Francisco bay area. You can read my blog posts <a href="/blog">here</a>.</p>
