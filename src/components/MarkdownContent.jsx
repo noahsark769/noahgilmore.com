@@ -61,6 +61,20 @@ const Container = styled.div`
             color: #6bcfef;
         }
     }
+    code {
+        font-family: monospace;
+        font-size: 16px;
+        background-color: #faf9f7;
+        border: 1px solid #e5e4e1;
+        padding: 3px 5px;
+        margin: 0px 2px;
+        color: #555;
+
+        @media (prefers-color-scheme: dark) {
+            color: #fff;
+            background-color: #3f3f3f;
+        }
+    }
     code:not(pre code) {
         font-family: monospace;
         font-size: 16px;
