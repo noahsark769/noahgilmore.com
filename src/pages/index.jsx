@@ -10,10 +10,6 @@ const Container = styled(Div)`
     width: 960px;
     height: 100vh;
     margin: 0 auto;
-
-    @media (prefers-color-scheme: dark) {
-        background-color: #2b2c2f;
-    }
 `;
 
 const leftRightMargin = 70;
