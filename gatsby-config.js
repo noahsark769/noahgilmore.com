@@ -104,6 +104,7 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     `gatsby-plugin-styled-components`,
+    `gatsby-plugin-sitemap`,
     rssFeedPlugin("*ios*", '/blog/ios.xml', "Noah Gilmore's Development Blog: iOS"),
     rssFeedPlugin("*web*", '/blog/web.xml', "Noah Gilmore's Development Blog: Web"),
     rssFeedPlugin("*", '/blog/rss.xml', "Noah Gilmore's Development Blog")
