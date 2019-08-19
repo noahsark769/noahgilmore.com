@@ -1,0 +1,31 @@
+---
+title: Popovers, UINavigationController, and preferredContentSize
+date: 2019-08-19
+tags: ios, swift, popover, uinavigationcontroller, preferredcontentsize
+staticPreview: TODO
+mdxPreview: >
+    TODO
+---
+import CaptionedImage from '../../components/CaptionedImage';
+
+UIKit is the kind of framework which has a lot of subtleties that you don't run into unless you've been using UIKit for a long time. At work, we do a fair amount of presenting view controllers as popovers to add context or more data to our existing iPad view. A common flow is the following:
+
+1. Present a small popover to add more context to something the user tapped
+2. When the user taps on a button in that popover, push on a new view controller with more information
+
+Seems easy enough, but the kicker is when _the two view controllers are different sizes_. Surprisingly, this is tricky to implement in UIKit. In this post we're going to discuss how to use UINavigationController to make a flow that looks like this:
+
+<CaptionedImage max={400} filename="popover-finished.gif" alt="Finished presentation of UIViewControllers with different content sizes inside a popover" caption="" />
+
+# Background
+
+## Popovers
+## preferredContentSize
+## preferredContentSize + autolayout
+## UINavigationController animations
+
+# Wrapping the nav controller
+
+## Alternatives
+
+# Conclusion

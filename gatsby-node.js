@@ -39,6 +39,7 @@ exports.createPages = ({ graphql, actions }) => {
         }
 
         let pagesByTag = new Map();
+        console.log(`Oy, about to run this forEach thing.`);
         console.log(result.data.allMdx.edges.node);
         result.data.allMdx.edges.forEach((edge) => {
             const tagsString = edge.node.frontmatter.tags;
