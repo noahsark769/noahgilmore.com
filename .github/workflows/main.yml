@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Setup Git Config
+      run: |
+        git config --global user.email "ci@noahgilmore.com"
+        git config --global user.name "Automated Deployment"
     - name: NPM install
       run: npm install
     - name: Deploy
