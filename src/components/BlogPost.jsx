@@ -33,6 +33,7 @@ const Heading = styled.h1`
     font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 34px;
     margin-bottom: 10px;
+    line-height: 1.2em;
 
     @media (prefers-color-scheme: dark) {
         color: #fff;
