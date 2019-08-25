@@ -93,7 +93,10 @@ Assuming we've implemented the same thing in our green view controller (with dif
 # UINavigationController animations
 It seems that `UINavigationController` queues the animations for pushing on a new view controller and setting its own `preferredContentSize` based off of the controller being pushed, so the push animation and the resize animation happen in series. This looks a little weird though - ideally we'd like them to happen simultaneously.
 
-After quite a bit of spelunking online, I realized that `UINavigationController` just doesn't support this use case. However, I stumbled across TODO GIT REPO by TODO, which noted that you can get the resize to happen at the same time if you encapsulate the `UINavigationController` in a parent view controller!
+After quite a bit of spelunking online, I realized that `UINavigationController` just doesn't support this use case. However, I stumbled across TODO GIT REPO by TODO, which noted that you can get the resize to happen at the same time if you encapsulate the `UINavigationController` in a parent view controller! The flow looks like this:
+
+1. We have a parent `UIViewController` wrapping our `UINavigationController`.
+2. When
 
 TODO This section should specify about how UINavigationController does some funky shit with its push animation. And also that if you go back, the height doesn't update
 
