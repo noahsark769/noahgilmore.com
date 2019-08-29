@@ -11,24 +11,24 @@ import FlowGrid from '../../components/FlowGrid';
 
 In this post we'll look at a very specific but tricky interaction in UIKit, one which took me multiple days to work out how to implement.
 
-It's two view controllers of different sizes, pushed on a `UINavigationController`, which is presented as a popover. The view controllers have different sizes (defined by autolayout), only one of them displays a nav bar, and the popover animates when their sizes change, including when they get pushed onto the nav stack, where the resize animation happens at the same time as the push:
+It's two view controllers of different sizes, pushed on a `UINavigationController`, which is presented as a popover. The view controllers have different sizes (defined by autolayout), only one of them displays a nav bar, and the popover animates when their sizes change - including when they get pushed onto the nav stack, where the resize animation happens at the same time as the push:
 
-<CaptionedImage max={400} filename="popover-finished.gif" alt="Finished presentation of UIViewControllers with different content sizes inside a popover" caption="" />
+<CaptionedImage max={500} filename="popover-finished.gif" alt="Finished presentation of UIViewControllers with different content sizes inside a popover" caption="" />
 
 Surprisingly this is very tricky to implement in UIKit, and it ties together a lot of concepts that I wasn't really familiar with until I ran into this case.
 
-> The finished code for this interaction is available at TODO. If you're looking for the relevant `UINavigationController` wrapper, it's at the bottom.
+> The finished code for this interaction is available at TODO. If you're looking for the relevant `UINavigationController` wrapper, it's at the bottom of this post.
 
 # Motivation
 
 At work, we do a fair amount of presenting view controllers as popovers to add context or more data to our existing iPad view. A common flow is the following:
 
-1. Present a small popover to add more context to something the user tapped
-2. When the user taps on a button in that popover, push on a new view controller with more information
+1. Present a small popover to add more context to something the user tapped.
+2. When the user taps on a button in that popover, push on a new view controller with more information.
 
 Seems easy enough, but the kicker is when _the two view controllers are different sizes_.
 
-Let's assume we have two view controllers to present: one 300x300 with a red background and no navigation bar content, and one 600x400 with a green background and a nav bar title:
+Let's assume we have two view controllers to present: one 300x300 with a red background and no navigation bar content, and one 600x400 with a green background and a nav bar title. Here's what we want them to look like:
 
 <CaptionedImage max={300} filename="red-controller.png" alt="Red view controller" caption="SmallViewControllerNoNavBar" />
 <CaptionedImage max={500} filename="green-controller.png" alt="Green view controller" caption="LargeViewControllerWithNavBar" />
@@ -96,19 +96,115 @@ It seems that `UINavigationController` queues the animations for pushing on a ne
 After quite a bit of spelunking online, I realized that `UINavigationController` just doesn't support this use case. However, I stumbled across TODO GIT REPO by TODO, which noted that you can get the resize to happen at the same time if you encapsulate the `UINavigationController` in a parent view controller! The flow looks like this:
 
 1. We have a parent `UIViewController` wrapping our `UINavigationController`.
-2. When
-
-TODO This section should specify about how UINavigationController does some funky shit with its push animation. And also that if you go back, the height doesn't update
+2. When the navigation controller is about to show a new view controller, we'll set the wrapper view controller's `preferredContentSize` to mirror the child's `preferredContentSize`.
 
 ## Wrapping the nav controller
-TODO this section is about implementing a wrapper but no updates when the preferredcontentsize changes without push
+Our wrapper controller looks like this:
+
+```swift
+final class PopoverPushController: UIViewController {
+    private let wrappedNavigationController: PopoverPushNavigationController
+
+    init(rootViewController: UIViewController) {
+        self.wrappedNavigationController = PopoverPushNavigationController(
+            rootViewController: rootViewController
+        )
+        super.init(nibName: nil, bundle: nil)
+        self.wrappedNavigationController.delegate = self
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        wrappedNavigationController.willMove(toParent: self)
+        self.addChild(wrappedNavigationController)
+        self.view.addSubview(wrappedNavigationController.view)
+    }
+
+    // ...
+}
+```
+
+When our container controller's view loads, we simply add the navigation controller's view as a subview, after using `willMove(toParent:)` and `addChild()` to add the navigation controller as a child view controller. TODO docs links for these
+
+We also need the implementation of `UINavigationControllerDelegate` to respond to when the navigation controller is about to show a new view controller. `UINavigationControllerDelegate`'s methods are all optional, but we want to implement `willShow`:
+
+```swift
+extension PopoverPushController: UINavigationControllerDelegate {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController, animated: Bool
+    ) {
+        self.preferredContentSize = viewController.preferredContentSize
+    }
+}
+```
+
+And finally, we'll change our presentation code to present the `PopoverPushController` wrapper instead of the regular navigation controller:
+
+```swift
+let containerController = PopoverPushController(rootViewController: firstVC)
+containerController.modalPresentationStyle = .popover
+// ... set the sourceView, sourceRect, etc
+self.present(containerController, animated: true)
+```
+
+Where does this get us? Well, we have the simultaneous animation we want:
+
+<CaptionedImage max={500} filename="popover-animation-2.gif" alt="Red view controller transitioning to green view controller with size animating at the same time as the push animation." caption="🎉" />
 
 ## Updating the size
-TODO this section is about how to animate the content size without push, but it only works outwardly
+Everything's well and good now, so we can implement the last part of the interaction: resizing the green controller on button tap. Our code isn't particularly complicated, but we'll use the same autolayout technique from the red controller:
 
-## preferredContentSizeDidChange
-TODO this section is about implementing the nav controller subclass so that shit works out and the controller contracts and expands correctly
+```swift
+func setPreferredContentSizeFromAutolayout() {
+    self.preferredContentSize = self.view.systemLayoutSizeFitting(
+        UIView.layoutFittingCompressedSize
+    )
+}
 
-# Caveats
+var isExpanded: Bool = false {
+    didSet {
+        let constant = self.isExpanded ? 600 : 400
+        self.heightConstraint.constant = constant
+        self.setPreferredContentSizeFromAutolayout()
+    }
+}
+
+@objc private func didTap() {
+    self.isExpanded = !self.isExpanded
+}
+```
+
+But now we've got a new problem: the popover size doesn't animate!
+
+<CaptionedImage max={500} filename="popover-animation-3.gif" alt="Green view controller updating height, but without animation." caption="We were expecting a smooth animation" />
+
+## Informing the presented view controller
+The issue we have here is that our green view controller is changing its `preferredContentSize`, but _the popover view controller doesn't know it changed_. In an ideal world, we'd have `PopoverPushController` respond to the green controller's content size change, and _update its own `preferredContentSize`_ in response - since the `PopoverPushController` is the one presented as a popover, this change will trigger the animation.
+
+The question is how to get access to the `PopoverPushController`, and the answer is simple: it's the `presentedViewController` of our `popoverPresentationController`! All we have to do is update it when our size changes:
+
+```swift
+func setPreferredContentSizeFromAutolayout() {
+    let contentSize = self.view.systemLayoutSizeFitting(
+        UIView.layoutFittingCompressedSize
+    )
+    self.preferredContentSize = contentSize
+    self.popoverPresentationController?
+        .presentedViewController
+        .preferredContentSize = contentSize
+}
+```
+
+Now our interaction finally works as expected!
+
+<CaptionedImage max={500} filename="popover-finished.gif" alt="Finished presentation of UIViewControllers with different content sizes inside a popover" caption="🎉🎉" />
 
 # Conclusion
+Hopefully this was a helpful look into the world of `preferredContentSize`, view controller wrapping, and UIKit popovers. Though this solution takes some time to explain, it has a few advantages which I really like:
+
+1. No `UINavigationController` subclass
+2. No need to implement `UINavigationControllerDelegate` - you can even modify `PopoverPushController` to accept your own navigation controller, along with your own delegate
+3. No need to set `preferredContentSize` unecessarily
+
+With more plumbing, it's possible to implement the same interaction without having to call into `self.popoverPresentationController` - you can have a 
