@@ -24,7 +24,7 @@ It's two view controllers of different sizes, pushed on a `UINavigationControlle
 
 Surprisingly this is very tricky to implement in UIKit, and it ties together a lot of concepts that I wasn't really familiar with until I ran into this case.
 
-> The finished code for this interaction is available at [NGPopoverForceResizeTest](https://github.com/noahsark769/NGPopoverForceResizeTest). If you're looking for the relevant `UINavigationController` wrapper, it's at the bottom of this post.
+> The finished code for this interaction is available at [NGPopoverForceResizeTest](https://github.com/noahsark769/NGPopoverForceResizeTest). There's also a summary at the bottom of this post.
 
 # Motivation
 
@@ -80,7 +80,7 @@ Unfortunately, this doesn't exactly produce the effect we're going for:
 <CaptionedImage max={500} filename="red-controller-1.png" alt="Red view controller displaying in a popover with the wrong height and width" caption="Interesting" />
 
 ## preferredContentSize + autolayout
-Our red view controller doesn't have the right size because when `UIViewController`s are presented as popovers, the popover's size is [determined by the controller's `preferredContentSize`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621476-preferredcontentsize). Since we haven't set `self.preferredContentSize` in our controller, the system uses the default: on iOS 12 with a 12.9 inch iPad, for example this is 375x636.
+Our red view controller doesn't have the right size because when `UIViewController`s are presented as popovers, the popover's size is [determined by the controller's `preferredContentSize`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621476-preferredcontentsize). Since we haven't set `self.preferredContentSize` in our controller, the system uses the default: on iOS 12 with a 12.9 inch iPad, this is 375x636 points.
 
 To fix this, we have to trigger a layout pass to determine our autolayout-defined size, and we can set that as our preferred size, as many posts online [have](https://useyourloaf.com/blog/self-sizing-child-views/) [detailed](https://stackoverflow.com/questions/29128271/autolayout-and-uipopovercontroller):
 
@@ -100,14 +100,14 @@ Unfortunately, the animation is a little weird - our green controller starts out
 <CaptionedImage max={500} filename="popover-animation-1.gif" alt="Red view controller with the right size, pushing on a green view controller, whose size starts the same as the red controller but expands when finished pushing." caption="Also interesting" />
 
 # UINavigationController animations
-It seems that `UINavigationController` queues the animations for pushing on a new view controller and setting its own `preferredContentSize` based on the controller being pushed, so the push animation and the resize animation happen in series. Ideally, we'd like these animations to happen simultaneously.
+Apparently, `UINavigationController` queues the animations for pushing on a new view controller and setting its own `preferredContentSize` based on the controller being pushed, so the push animation and the resize animation happen in series. Ideally, we'd like these animations to happen simultaneously.
 
 After quite a bit of spelunking online, I realized that `UINavigationController` just doesn't support this use case. However, I stumbled across [this example](https://github.com/fatuhoku/Resize-Popover-with-embedded-UINavigationController) by [Hok Shun Poon](http://hokshunpoon.me/), which noted that you can get the resize to happen at the same time if you encapsulate the `UINavigationController` in a parent view controller!
 
 The flow looks like this:
 
 1. We have a parent `UIViewController` [wrapping](https://useyourloaf.com/blog/container-view-controllers/) our `UINavigationController`.
-2. When the navigation controller is about to show a new view controller, we'll set the wrapper view controller's `preferredContentSize` to mirror the child's `preferredContentSize`.
+2. When the new controller appears, we'll set the wrapper view controller's `preferredContentSize` to mirror the child's `preferredContentSize` using `popoverPresentationController`.
 
 ## Wrapping the nav controller
 Our wrapper controller looks like this:
@@ -135,18 +135,20 @@ final class PopoverPushController: UIViewController {
 }
 ```
 
-When our container controller's view loads, we simply add the navigation controller's view as a subview, after using `willMove(toParent:)` and `addChild()` to add the navigation controller as a child view controller. TODO docs links for these
+When our container controller's view loads, we simply add the navigation controller's view as a subview, after using `willMove(toParent:)` and `addChild()` to [add the navigation controller as a child view controller](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621381-willmove).
 
-We also need the implementation of `UINavigationControllerDelegate` to respond to when the navigation controller is about to show a new view controller. `UINavigationControllerDelegate`'s methods are all optional, but we want to implement `willShow`:
+We also need the implementation of `viewWillAppear` to set the wrapper controller's content size. Luckily we can access the wrapper controller using `popoverPresentationController`'s `presentedViewController`, even though it's two levels up:
 
 ```swift
-extension PopoverPushController: UINavigationControllerDelegate {
-    func navigationController(
-        _ navigationController: UINavigationController,
-        willShow viewController: UIViewController, animated: Bool
-    ) {
-        self.preferredContentSize = viewController.preferredContentSize
-    }
+override func viewWillAppear(_ animated: Bool) {
+    // ...
+    let contentSize = self.view.systemLayoutSizeFitting(
+        UIView.layoutFittingCompressedSize
+    )
+    self.preferredContentSize = contentSize
+    self.popoverPresentationController?
+        .presentedViewController
+        .preferredContentSize = contentSize
 }
 ```
 
@@ -159,7 +161,7 @@ containerController.modalPresentationStyle = .popover
 self.present(containerController, animated: true)
 ```
 
-Where does this get us? Well, we have the simultaneous animation we want:
+No we have the simultaneous animation we want!
 
 <CaptionedImage max={500} filename="popover-animation-2.gif" alt="Red view controller transitioning to green view controller with size animating at the same time as the push animation." caption="🎉" />
 
@@ -191,9 +193,7 @@ But now we've got a new problem: the popover size doesn't animate!
 <CaptionedImage max={500} filename="popover-animation-3.gif" alt="Green view controller updating height, but without animation." caption="We were expecting a smooth animation" />
 
 ## Informing the presented view controller
-The issue we have here is that our green view controller is changing its `preferredContentSize`, but _the popover view controller doesn't know it changed_. In an ideal world, we'd have `PopoverPushController` respond to the green controller's content size change, and _update its own `preferredContentSize`_ in response - since the `PopoverPushController` is the one presented as a popover, this change will trigger the animation.
-
-The question is how to get access to the `PopoverPushController`, and the answer is simple: it's the `presentedViewController` of our `popoverPresentationController`! All we have to do is update it when our size changes:
+The issue we have here is that our green view controller is changing its `preferredContentSize`, but _the popover view controller doesn't know it changed_. We'll use the same technique that we used for setting the popover view controller's content size when the green view initially appeared (using `popoverPresentationController`):
 
 ```swift
 func setPreferredContentSizeFromAutolayout() {
@@ -227,10 +227,10 @@ Though this solution takes some time to explain, I think it ends up being pretty
 
 With more plumbing, it's possible to implement the same interaction without having to call into `self.popoverPresentationController` - you can have a `UINavigationController` subclass implement `preferredContentSizeWillChange`, and have it set the navgation controller's content size, which will be intercepted by `PopoverPushController`'s `preferredContentSizeWillChange`. You can also provide a `UINavigationControllerDelegate` to avoid setting the popover controller's content size in `viewWillAppear`.
 
-Ultimately, it's better to do whatever feels more workable for your use case. I prefer using the `popoverPresentationController` because it feels cleaner to me, but if you think differently, [let me know] TODO link.
+Ultimately though, it's better to do whatever feels more workable for your use case. I prefer using the `popoverPresentationController` because it feels cleaner to me, but if you think differently, [let me know](https://twitter.com/noahsark769).
 
 ## Code
-All the code is available at TODO.
+All the code is available at NGPopoverForceResizeTest](https://github.com/noahsark769/NGPopoverForceResizeTest).
 
 Here's the full implementation of the nav controller wrapper:
 
