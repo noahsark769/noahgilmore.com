@@ -14,8 +14,6 @@ function iosCopyToClipboard(el) {
     var s = window.getSelection();
     s.removeAllRanges();
     s.addRange(range);
-    console.log(range);
-    console.log(s);
 
     el.setSelectionRange(0, 999999); // A big number, to cover anything that could be inside the element.
 

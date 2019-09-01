@@ -44,7 +44,6 @@ exports.createPages = ({ graphql, actions }) => {
             if (!tagsString) { return }
 
             const tags = tagsString.split(",");
-            console.log(`Tags: ${tags}`);
             tags.map((tag) => tag.trim()).forEach((tag) => {
                 if (!pagesByTag.has(tag)) {
                     pagesByTag.set(tag, []);
@@ -55,13 +54,9 @@ exports.createPages = ({ graphql, actions }) => {
             });
         });
 
-        console.log(`pagesByTag: `);
-        console.log(pagesByTag);
-
         for (let entry of pagesByTag.entries()) {
             let [tag, edges] = entry;
             const pagePath = path.join('/blog', 'tags', tag, '/');
-            console.log(`Creating page ${pagePath}`);
             createPage({
                 path: pagePath,
                 component: postsTemplate,
