@@ -216,7 +216,7 @@ Hopefully this was a helpful look into the world of `preferredContentSize`, view
 
 1. To define the size of your popover with autolayout, set `preferredContentSize` to the result of `systemLayoutSizeFitting`
 2. To animate popover size updates at the same time as navigation controller animations, wrap your `UINavigationController` in a `PopoverPushController` (see code below)
-3. When you change your controller's `preferredContentSize`, be sure to change the `preferredContentSize` of your controller's `popoverPresentationController?.presentedViewController` as well
+3. When you change your controller's `preferredContentSize`, be sure to change the `preferredContentSize` of your controller's `popoverPresentationController`'s `presentedViewController` as well
 
 Though this solution takes some time to explain, I think it ends up being pretty clean:
 
@@ -230,7 +230,7 @@ With more plumbing, it's possible to implement the same interaction without havi
 Ultimately though, it's better to do whatever feels more workable for your use case. I prefer using the `popoverPresentationController` because it feels cleaner to me, but if you think differently, [let me know](https://twitter.com/noahsark769).
 
 ## Code
-All the code is available at NGPopoverForceResizeTest](https://github.com/noahsark769/NGPopoverForceResizeTest).
+All the code is available at [NGPopoverForceResizeTest](https://github.com/noahsark769/NGPopoverForceResizeTest).
 
 Here's the full implementation of the nav controller wrapper:
 
