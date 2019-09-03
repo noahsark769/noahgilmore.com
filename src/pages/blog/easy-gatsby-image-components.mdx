@@ -72,7 +72,7 @@ Error: BabelPluginRemoveGraphQL: String interpolations are not allowed in graphq
 
 This behavior is [documented](https://www.gatsbyjs.org/docs/static-query/) by Gatsby, and that documentation notes that the alternative is to use a page query. I didn't want to put a query on every page with images though, so I started investigating other options.
 
-I came across [this post](https://medium.freecodecamp.org/how-i-made-my-portfolio-website-blazing-fast-with-gatsby-82ccddc2f671) by someone who had been doing some fancier image querying with Gatsby - she had the foresight to *query all the images upfront* by using the `allFile` query, and filter them down with props later. Based on that, I implemented the following component, which works great and includes all the fun functionality that [gatsby-image](https://www.gatsbyjs.org/packages/gatsby-image/) offers:
+I came across [this post](https://medium.freecodecamp.org/how-i-made-my-portfolio-website-blazing-fast-with-gatsby-82ccddc2f671) by someone who had been doing some fancier image querying with Gatsby - they had the foresight to *query all the images upfront* by using the `allFile` query, and filter them down with props later. Based on that, I implemented the following component, which works great and includes all the fun functionality that [gatsby-image](https://www.gatsbyjs.org/packages/gatsby-image/) offers:
 
 ```jsx
 import Img from 'gatsby-image'
