@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -200,18 +199,5 @@ export default class MarkdownContent extends React.Component {
                 {this.props.children}
             </Container>
         );
-    }
-
-    componentDidMount() {
-        const node = ReactDOM.findDOMNode(this);
-        var elements = node.querySelectorAll("pre code");
-        // this next line has to be stuck in the 90's
-        // https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
-        for (var i = 0; i < elements.length; i++) {
-            // I would love to import the node version of hljs here, but it turns out
-            // this doesn't work due to something in gatsby-mdx's rendering. Oh well,
-            // we just import it in html.js and use the window version here.
-            // window.hljs && window.hljs.highlightBlock(elements[i]);
-        }
     }
 }
