@@ -22,5 +22,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
         FOLDER: public
-        BUILD_SCRIPT: gatsby build --prefix-paths
+        BUILD_SCRIPT: npm run gatsby-build
         CNAME: noahgilmore.com
