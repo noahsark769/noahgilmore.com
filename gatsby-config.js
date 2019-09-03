@@ -89,7 +89,21 @@ module.exports = {
       options: {
         defaultLayouts: {
           default: require.resolve("./src/components/BlogPageLayout.jsx")
-        }
+        },
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-vscode`,
+            // All options are optional. Defaults shown here.
+            options: {
+              colorTheme: {
+                defaultTheme: 'Dark+ (default dark)',    // Required
+                // prefersDarkTheme: 'Monokai', // Optional: used with `prefers-color-scheme: dark`
+                // prefersLightTheme: 'Solarized Light'    // Optional: used with `prefers-color-scheme: light`
+              },
+              injectStyles: false,
+            }
+          }
+        ],
       }
     },
     `gatsby-plugin-force-trailing-slashes`,

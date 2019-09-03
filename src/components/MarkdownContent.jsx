@@ -61,21 +61,20 @@ const Container = styled.div`
             color: #6bcfef;
         }
     }
+
     code {
         font-family: monospace;
         font-size: 16px;
-        background-color: #faf9f7;
-        border: 1px solid #e5e4e1;
         padding: 3px 5px;
         margin: 0px 2px;
-        color: #555;
 
         @media (prefers-color-scheme: dark) {
             color: #fff;
-            background-color: #3f3f3f;
         }
     }
-    code:not(pre code) {
+
+    // For inline markdown (one-backtick) code
+    code:not(.vscode-highlight-code) {
         font-family: monospace;
         font-size: 16px;
         background-color: #faf9f7;
@@ -96,20 +95,22 @@ const Container = styled.div`
         display: block;
         margin: 0;
         padding: 0;
-        background: none;
+        margin-top: 10px;
+        border: 1px solid #e5e4e1;
+        border-radius: 2px;
         @media all and (max-width: 600px) {
             width: 100%;
-            margin: 0 auto;
+            margin: 10px auto 0 auto;
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+            overflow-x: scroll;
         }
     }
     pre > code {
         display: block;
         margin: 0;
-        padding: 0;
-        border: 1px solid #e5e4e1;
-        border-radius: 2px;
         padding: 10px;
-        margin-top: 10px;
         font-family: monospace;
         font-size: 14px;
         line-height: 17px;
@@ -118,19 +119,17 @@ const Container = styled.div`
         @media all and (max-width: 600px) {
             font-size: 15px;
             white-space: pre;
-            border-left: none;
-            border-right: none;
             padding: 15px 5% 15px 5%;
             width: 100%;
         }
     }
 
-    pre > code.language-nohighlight {
-        @media (prefers-color-scheme: dark) {
-            color: #fff;
-            background-color: #3f3f3f;
-        }
-    }
+    // pre > code.language-nohighlight {
+    //     @media (prefers-color-scheme: dark) {
+    //         color: #fff;
+    //         background-color: #3f3f3f;
+    //     }
+    // }
 
     pre + p {
         margin-top: 30px;
@@ -212,7 +211,7 @@ export default class MarkdownContent extends React.Component {
             // I would love to import the node version of hljs here, but it turns out
             // this doesn't work due to something in gatsby-mdx's rendering. Oh well,
             // we just import it in html.js and use the window version here.
-            window.hljs && window.hljs.highlightBlock(elements[i]);
+            // window.hljs && window.hljs.highlightBlock(elements[i]);
         }
     }
 }
