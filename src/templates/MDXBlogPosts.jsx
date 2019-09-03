@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { GlobalStyle } from '../components/default';
+import { BlogGlobalStyle } from '../components/default';
 import Nav from '../components/Nav';
 import { BlogPostContainer } from '../components/BlogPost';
 import BlogPostPreview from '../components/BlogPostPreview';
@@ -18,7 +18,7 @@ class MDXBlogPosts extends React.Component {
   render() {
     return (
         <Container>
-            <GlobalStyle />
+            <BlogGlobalStyle />
             <Helmet>
               <title>{this.props.pageContext.tag + " | "}Noah Gilmore</title>
               <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />

@@ -25,6 +25,34 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
+// Some styles are duplicated here because including two createGlobalStyle components in
+// the same component tree doesn't seem to work...
+export const BlogGlobalStyle = createGlobalStyle`
+    @font-face {
+        font-family: 'Bariol';
+        src: url('${bariol_eot}');
+        src: url('${bariol_eot}?#iefix') format('embedded-opentype'),
+            url('${bariol_woff}') format('woff'),
+            url('${bariol_ttf}') format('truetype'),
+            url('${bariol_svg}#svgBariolRegular') format('svg');
+    }
+
+    * {
+        box-sizing: border-box !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html, body {
+            background-color: #2b2c2f;
+        }
+    }
+`;
+
 export const Div = styled.div``;
 export const Nav = styled.nav``;
 export const UL = styled.ul`

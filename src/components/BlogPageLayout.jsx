@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { GlobalStyle } from './default';
+import { BlogGlobalStyle } from './default';
 import Nav from './Nav';
 import EndButtons from './EndButtons';
 import { BlogPostContainer, BlogPostMeta } from './BlogPost';
@@ -28,7 +28,7 @@ export default class BlogPageLayout extends React.Component {
       let isDarkMode = (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches);
         return (
             <Container>
-              <GlobalStyle />
+              <BlogGlobalStyle />
               <Helmet>
                   <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
                   <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
