@@ -19,3 +19,5 @@ Anyways, the magic fix is to kill CoreSimulatorBridge: in 99% of cases, this has
 ```
 killall -9 CoreSimulatorBridge
 ```
+
+> Note: in a few instances, I've had this not work. Usually, erasing the simulator (Hardware > Erase All Content And Settings) then killing the CoreSimulatorBridge again seems to help.
