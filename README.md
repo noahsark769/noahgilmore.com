@@ -12,10 +12,4 @@ make develop
 
 This will set up a hotreloading environment at localhost:8000.
 
-To deploy:
-
-```
-make deploy
-```
-
-This takes care of everything with gh-pages.
+Deployments happen automatically from the master branch via GitHub Actions.
