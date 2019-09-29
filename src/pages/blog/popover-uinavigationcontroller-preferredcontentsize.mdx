@@ -33,7 +33,7 @@ At work, we do a fair amount of presenting view controllers as popovers to add c
 1. Present a small popover to add more context to something the user tapped.
 2. When the user taps on a button in that popover, push on a new view controller with more information.
 
-Seems easy enough, but the kicker is when _the two view controllers are different sizes_.
+UIKit provides the building blocks for this out of the box, but the kicker is when _the two view controllers are different sizes_.
 
 Let's assume we have two view controllers to present: one 300x300 with a red background and no navigation bar content, and one 600x400 with a green background and a nav bar title. Here's what we want them to look like:
 
@@ -43,7 +43,7 @@ Let's assume we have two view controllers to present: one 300x300 with a red bac
 # preferredContentSize
 Let's start with the red controller.
 
-Setting up the width and height is easy enough with autolayout (or so you might think):
+Setting up the width and height is doable with autolayout:
 
 ```swift
 override func viewDidLoad() {
@@ -93,7 +93,7 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
-Assuming we've implemented the same thing in our green view controller (with different height and width, of course), we now get our controllers displaying their correct sizes! 
+Assuming we've implemented the same thing in our green view controller (with different height and width), we now get our controllers displaying their correct sizes! 
 
 Unfortunately, the animation is a little weird - our green controller starts out 300x300, _then_ transitions to 600x400:
 
@@ -135,7 +135,7 @@ final class PopoverPushController: UIViewController {
 }
 ```
 
-When our container controller's view loads, we simply add the navigation controller's view as a subview, after using `willMove(toParent:)` and `addChild()` to [add the navigation controller as a child view controller](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621381-willmove).
+When our container controller's view loads, we add the navigation controller's view as a subview, after using `willMove(toParent:)` and `addChild()` to [add the navigation controller as a child view controller](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621381-willmove).
 
 We also need the implementation of `viewWillAppear` to set the wrapper controller's content size. Luckily we can access the wrapper controller using `popoverPresentationController`'s `presentedViewController`, even though it's two levels up:
 

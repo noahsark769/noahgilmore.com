@@ -64,7 +64,7 @@ function iosCopyToClipboard(string) {
 
 (You might notice the odd CSS on this element - we have to make it the whole width of the page or else Safari might zoom to it before opening the link, and we have to make it opaque and font-size 0 in order to avoid showing an iOS selection UI.)
 
-Once we've got this working, it's easy enough to take some data, base64 encode it, and copy it to the clipboard in addition to the link's href. We'll add a custom parameter to the copied url (I've called the parameter `ed` for "encoded data"). Note that we include a timestamp of when the link was clicked - we'll need this for later. I'm using React here, but other frameworks or even [vanilla JS](http://vanilla-js.com/) should be similar:
+Once we've got this working, it's we can implement a function to take some data, base64 encode it, and copy it to the clipboard in addition to the link's href. We'll add a custom parameter to the copied url (I've called the parameter `ed` for "encoded data"). Note that we include a timestamp of when the link was clicked - we'll need this for later. I'm using React here, but other frameworks or even [vanilla JS](http://vanilla-js.com/) should be similar:
 
 ```jsx
 class DataLink extends React.Component {

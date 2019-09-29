@@ -12,7 +12,7 @@ import CaptionedImage from '../../components/CaptionedImage';
 
 Let's talk about [syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree). In static analysis, a common operation is to take a character string (e.g. "x = 1") and transform it into well structured data:
 
-<CaptionedImage filename="pyparsing-trees-1.png" alt="Simple syntax tree" caption="This is a simple example of course." />
+<CaptionedImage filename="pyparsing-trees-1.png" alt="Simple syntax tree" caption="" />
 
 Let's try to do this in python. We'll use [Pyparsing](http://pyparsing.wikispaces.com/) as our tokenization tool - you can use pyparsing's rules to build a grammar, from which you can get back a list of token data.
 
@@ -38,7 +38,7 @@ How could we write a parser for this? It differs in a couple of ways from the fi
    ```nohighlight
    node := (value[, node, node, node, ...])
    ```
-2. If we just parse the string as a list, we won't be able to preserve the tree structure.
+2. If we parse the string as a list, we won't be able to preserve the tree structure.
 
 ### Recursive grammars with pyparsing
 Pyparsing supports recursive grammars using a grammar component called `Forward`. To define a recursive grammar, you create a `pyparsing.Forward()`, then use the shift left operator to set its content:

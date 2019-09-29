@@ -5,7 +5,7 @@ tags: ios, swift, coreimage
 staticPreview: For my current side project, I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's Codable...
 mdxPreview: For my current [side project](https://twitter.com/noahsark769/status/1102318232025718785), I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's `Codable`...
 ---
-For my current [side project](https://twitter.com/noahsark769/status/1102318232025718785), I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's `Codable`. `CIColor` is easy enough to encode and decode, but `CIVector` (which represents an arbitrary length list of `CGFloats`) is trickier.
+For my current [side project](https://twitter.com/noahsark769/status/1102318232025718785), I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's `Codable`. `CIColor` works well with `Codable` out of the box, but `CIVector` (which represents an arbitrary length list of `CGFloats`) is trickier.
 
 Thought I'd share a wrapper type which I use to encode and decode `CIVector`:
 

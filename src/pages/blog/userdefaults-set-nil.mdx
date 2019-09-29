@@ -87,7 +87,7 @@ This will work just fine on iOS 11+, but throw an error on iOS 10.
 
 Here’s an [example project](https://github.com/noahsark769/userdefaults-set-nil-example) which demonstrates this behavior. I ended up finding one stackoverflow post about it, but as far as I can tell this isn’t documented anywhere. If you have any more info about it, [let me know](https://twitter.com/noahsark769) 👋
 
-Lesson learned — setting nil isn’t a good way to clear a UserDefaults value. Instead, just use the recommended approach:
+Lesson learned — setting nil isn’t a good way to clear a UserDefaults value. Instead, use the recommended approach:
 
 ```swift
 UserDefaults.standard.removeObject(forKey: "myKey")
