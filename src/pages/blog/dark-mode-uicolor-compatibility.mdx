@@ -18,6 +18,8 @@ import IOS13SystemColorTable from '../../components/IOS13SystemColorTable';
 
 > Update (10/5/2019): In order to better support bug reporting on ColorCompatibility, I've released it as a library. The code now lives in [this GitHub repo](https://github.com/noahsark769/ColorCompatibility). You can read more about it [here](/blog/color-compatibility-pod).
 
+> Update (10/17/2019): A previous version of this post included the wrong color values in one of the example code blocks. This has now been fixed, but I'd recommend looking at the [ColorCompatibility library](https://github.com/noahsark769/ColorCompatibility) if you're interested in using it in your own projects.
+
 At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk [Implementing Dark Mode on iOS](https://developer.apple.com/videos/play/wwdc2019/214/) which I'd highly recommend watching.
 
 One of the changes that makes adopting Dark Mode so easy is the new system colors API from `UIColor`. On iOS 12 and older, you might have a label you want to make black, and it would work just fine - in fact, black was the default color for `UILabel`s.
@@ -76,17 +78,16 @@ enum ColorCompatibility {
         if #available(iOS 13, *) {
             return .label
         }
-        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
     }
-
     static var secondaryLabel: UIColor {
         if #available(iOS 13, *) {
             return .secondaryLabel
         }
-        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.6)
+        return UIColor(red: 0.23529411764705882, green: 0.23529411764705882, blue: 0.2627450980392157, alpha: 0.6)
     }
 
-    // ... 21 more definitions: full code at the bottom of this post
+    // ... 21 more definitions: full code in the link at the bottom
 }
 ```
 
