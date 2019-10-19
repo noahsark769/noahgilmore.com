@@ -12,19 +12,18 @@ In the wild world of 2019 SwiftUI development, lots of things aren't documented.
 
 `RelativeDateTimeFormatter` is a new formatter which is available in iOS 13+ and macOS 10.15+. Though it's [not documented at the time of writing](https://developer.apple.com/documentation/foundation/relativedatetimeformatter) (just like [14.6% of Foundation](https://nooverviewavailable.com/foundation/)), there have been a [fair](https://nshipster.com/formatter/#relativedatetimeformatter) [amount](https://david.y4ng.fr/relativedatetimeformatter-and-listformatter/) of folks online writing about it. This formatter formats dates relative each other as well as relative `DateComponents` - its output looks like "one minute ago" or "two minutes from now".
 
+Most blog posts about `RelativeDateTimeFormatter` show its usage like this:
+
+```swift
+let formatter = RelativeDateTimeFormatter()
+formatter.localizedString(from: DateComponents(day: -1)) // "1 day ago"
+```
+
 # SwiftUI, date formatters, and string interpolation
 SwiftUI declares a custom string interpolation ([which is a new feature in Swift 5](https://www.hackingwithswift.com/articles/163/how-to-use-custom-string-interpolation-in-swift)) called `LocalizedStringKey.StringInterpolation` (also [undocumented at the time of writing](https://developer.apple.com/documentation/swiftui/localizedstringkey/stringinterpolation), like [59.4% of SwiftUI](https://nooverviewavailable.com/swiftui/)) which allows you to write `Text` views with formatters like so:
 
-```
+```swift
 Text("My String \(myVariable, formatter: myFormatter)")
-```
-
-# RelativeDateTimeFormatter and Text
-Fair enough, I thought - most blog posts about `RelativeDateTimeFormatter` show its usage like this:
-
-```
-let formatter = RelativeDateTimeFormatter()
-formatter.localizedString(from: DateComponents(day: -1)) // "1 day ago"
 ```
 
 Let's assume I want to show the relative time from the [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time) until now. I'll just write a `Text` the same way, right?
@@ -50,7 +49,7 @@ struct ContentView: View {
 }
 ```
 
-Unfortunately this doesn't work: the middle text doesn't show up:
+Unfortunately this doesn't work - the middle text doesn't show up:
 
 <CaptionedImage filename="relativedatetime-1.png" alt="Screenshot of the app showing no content in the second Text view" caption="Interesting" />
 
@@ -69,14 +68,14 @@ returned `nil` when invoked with <NSDateComponents: 0x6000026b4450> {
 # The Tricky Part
 As far as I can tell, the reason this happens is because `RelativeDateTimeFormatter` has a few different methods, with different signatures, for formatting its relative dates:
 
-```
+```swift
 func localizedString(for: Date, relativeTo: Date) -> String
 func localizedString(from: DateComponents) -> String
 func localizedString(fromTimeInterval: TimeInterval) -> String
 func string(for: Any?) -> String?
 ```
 
-However, only one of those matches the [Formatter](https://developer.apple.com/documentation/foundation/formatter) superclass definition that SwiftUI's string interpolation uses. I'm guessing that `RelativeDateTimeFormatter`'s `string(for:)` method doesn't call into the same code that `localizedString(from:)` uses.
+However, only one of those matches the [Formatter](https://developer.apple.com/documentation/foundation/formatter) superclass definition that SwiftUI's string interpolation uses. I'm guessing that `RelativeDateTimeFormatter`'s `string(for:)` method doesn't call into the same code that `localizedString(from:)` uses - it seems like `string(for:)` handles the `Date` case, but not the `DateComponents` case.
 
 Hopefully this changes in a future version of iOS, but for now, we can solve the problem in a couple of ways: 
 
@@ -102,6 +101,8 @@ struct ContentView: View {
 This gets us the result we want:
 
 <CaptionedImage filename="relativedatetime-2.png" alt="Screenshot of the app showing the correct relative time" caption="Note: if you want minutes, seconds, etc, set the formatter's dateTimeStyle and unitStyle" />
+
+Also note: even though nothing at the surface level is calling `localizedString`, the string will be properly localized as long as you set the formatter's `locale`.
 
 ## Solution #2
 We can also ignore the string interpolation entirely, and just call the formatter's `localizedString`:
