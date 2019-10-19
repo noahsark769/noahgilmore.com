@@ -75,12 +75,12 @@ func localizedString(fromTimeInterval: TimeInterval) -> String
 func string(for: Any?) -> String?
 ```
 
-However, only one of those matches the [Formatter](https://developer.apple.com/documentation/foundation/formatter) superclass definition that SwiftUI's string interpolation uses. I'm guessing that `RelativeDateTimeFormatter`'s `string(for:)` method doesn't call into the same code that `localizedString(from:)` uses - it seems like `string(for:)` handles the `Date` case, but not the `DateComponents` case.
+Only one of those matches the [Formatter](https://developer.apple.com/documentation/foundation/formatter) superclass definition that SwiftUI's string interpolation uses. I'm guessing that `RelativeDateTimeFormatter`'s `string(for:)` method doesn't call into the same code that `localizedString(from:)` uses - it seems like `string(for:)` handles the `Date` case, but not the `DateComponents` case.
 
 Hopefully this changes in a future version of iOS, but for now, we can solve the problem in a couple of ways: 
 
 ## Solution #1
-Since we need the date relative to right now, we can take advantage of the fact that that's the default behavior of `RelativeDateTimeFormatter` and just pass in `epochTime`:
+Since what we want is the date relative to _right now_, and that's the default behavior of `RelativeDateTimeFormatter`, we can just pass in `epochTime`:
 
 ```swift
 struct ContentView: View {
@@ -105,7 +105,7 @@ This gets us the result we want:
 Also note: even though nothing at the surface level is calling `localizedString`, the string will be properly localized as long as you set the formatter's `locale`.
 
 ## Solution #2
-We can also ignore the string interpolation entirely, and just call the formatter's `localizedString`:
+We can also ignore the custom string interpolation, and just call the formatter's `localizedString`:
 
 ```swift
 struct ContentView: View {
@@ -133,4 +133,4 @@ struct ContentView: View {
 # Conclusion
 Either of the solutions above would work for this specific issue, though if you want to output the relative time between two dates (instead of between one date and now) with the `formatter:` string interpolation, looks like you're out of luck.
 
-Sample code for this post is available [on GitHub at NGSwiftUIRelativeDateTimeFormatterExample](https://github.com/noahsark769/NGSwiftUIRelativeDateTimeFormatterExample).
+Sample code for this post is available [on GitHub   ](https://github.com/noahsark769/NGSwiftUIRelativeDateTimeFormatterExample).
