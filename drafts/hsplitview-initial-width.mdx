@@ -1,0 +1,11 @@
+Talk about the `.frame(maxWidth: !self.hasAppearedYet ? 300 : .infinity)`,
+
+```
+.onAppear {
+            DispatchQueue.main.async {
+                self.hasAppearedYet = true
+            }
+        }
+```
+
+hack to set the initial width of a view in an HSplitView
