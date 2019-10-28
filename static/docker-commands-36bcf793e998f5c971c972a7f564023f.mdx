@@ -1,0 +1,27 @@
+---
+title: Docker Commands I Can Never Remember
+date: 2019-06-14
+tags: docker
+staticPreview: I'm a Docker noob, and for whatever reason, I can never remember the best way to do things with Docker, whether it's checking which containers are running or starting/stopping them. Putting some common commands here mostly for personal reference. List containers...
+mdxPreview: >
+    I'm a Docker noob, and for whatever reason, I can never remember the best way to do things with Docker, whether it's checking which containers are running or starting/stopping them. Putting some common commands here mostly for personal reference. List containers...
+---
+I'm a Docker noob, and for whatever reason, I can never remember the best way to do things with Docker, whether it's checking which containers are running or starting/stopping them. Putting some common commands here mostly for personal reference.
+
+List containers:
+
+```
+docker ps -a
+```
+
+Check container status:
+
+```
+docker inspect ID | jq .[0].State
+```
+
+Start container:
+
+```
+docker container start ID
+```

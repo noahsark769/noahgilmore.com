@@ -1,0 +1,23 @@
+---
+title: "The application's CFBundleVersion is invalid"
+date: 2019-08-22
+tags: ios, swift, xcode
+staticPreview: For some reason lately, I've been having a lot of trouble installing apps and running tests in the iOS simulator on Xcode 10 (non-beta). The error message looks like this...
+mdxPreview: >
+    For some reason lately, I've been having a lot of trouble installing apps and running tests in the iOS simulator on Xcode 10 (non-beta). The error message looks like this...
+---
+For some reason lately, I've been having a lot of trouble installing apps and running tests in the iOS simulator on Xcode 10 (non-beta). The error message looks like this:
+
+> Failed to install the requested application
+
+> The application's CFBundleVersion is invalid
+
+To be completely honest, I'm not super sure what causes this error, but it might be related to the fact that I'm using non-semver version numbers (they include a sub-patch number) and [the Xcode 11 simulator treats CFBundleVersion numbers differently](https://forums.developer.apple.com/thread/117322). For what it's worth, this started happening when installing the Xcode 11 beta and running it in parallel with Xcode 10.
+
+Anyways, the magic fix is to kill CoreSimulatorBridge: in 99% of cases, this has fixed the error for me! 🎉
+
+```
+killall -9 CoreSimulatorBridge
+```
+
+> Note: in a few instances, I've had this not work. Usually, erasing the simulator (Hardware > Erase All Content And Settings) then killing the CoreSimulatorBridge again seems to help.

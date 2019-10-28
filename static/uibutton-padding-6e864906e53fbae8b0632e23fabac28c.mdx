@@ -1,0 +1,117 @@
+---
+title: "UIButton: Padding Between Image and Text"
+date: 2019-05-06
+tags: ios, swift, uikit, uibutton
+staticPreview: "Pop quiz: in a UIButton, how do you set a padding of 10pt between the image and the title? I had to do this at work recently, and I was surprised at how hard it was to reason about. There are several posts talking about this topic (including this one which uses edge insets to flip the title and image!), but the answer for my use case was pretty hard to find..."
+mdxPreview: >
+    Pop quiz: in a `UIButton`, how do you set a padding of 10pt between the image and the title? I had to do this at work recently, and I was surprised at how hard it was to reason about. There are several posts talking about this topic (including [this one](https://medium.com/short-swift-stories/using-uiedgeinsets-to-layout-a-uibutton-44ba04dd085c) which uses edge insets to flip the title and image!), but the answer for my use case was pretty hard to find...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
+
+Pop quiz: in a `UIButton`, how do you set a padding of 10pt between the image and the title?
+
+<CaptionedImage max={200} filename="uibutton-padding-1.png" alt="Image showing 10pt padding between title and image of a UIButton" caption="If you're looking for a code snippet, skip to the bottom :)" />
+
+I had to do this at work recently, and I was surprised at how hard it was to reason about. There are several posts talking about this topic (including [this one](https://medium.com/short-swift-stories/using-uiedgeinsets-to-layout-a-uibutton-44ba04dd085c) which uses edge insets to flip the title and image!), but the answer for my use case was pretty hard to find.
+
+Adding image-title padding is possible, but takes some trickiness with `contentEdgeInsets`, `titleEdgeInsets`, and `imageEdgeInsets`.
+
+# UIButton Insets
+To understand why adding image-title padding is hard, we have to look at UIButton's various insets properties, which control how the UIButton is drawn (in different ways).
+
+## contentEdgeInsets
+`contentEdgeInsets` is probably the easiest insets property to reason about. The insets apply padding to the content of the button, and they're taken into account in the button's `instrinsicContentSize` (which was what I expected).
+
+- Positive values expand the button away from its content
+- Negative values contract the button towards its content
+
+With negative `contentEdgeInsets`, it's possible to get the image and text to draw outside of the button's bounds.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="content-top.gif" alt="contentEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="content-left.gif" alt="contentEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="content-bottom.gif" alt="contentEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="content-right.gif" alt="contentEdgeInsets right" caption="Right" />
+</FlowGrid>
+
+`contentEdgeInsets` is the closest thing available to "padding" within UIButton.
+
+## imageEdgeInsets
+`imageEdgeInsets` affects the drawing rect of the button's image, and does *not* figure into the button's `intrinsicContentSize` (this is different than `contentEdgeInsets`, which contributes to the `intrinsicContentSize`).
+
+- Positive values contract the drawing rect towards the image's center
+- Negative values expand the drawing rect away from the image's center
+
+Because `imageEdgeInsets` modifies the drawing rect, setting positive values can result in a squished image - with correct insets, you can actually flip the image! Negative values have the effect of translating the image, they expand the drawing rect back instead of contracting it.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="image-top.gif" alt="imageEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="image-left.gif" alt="imageEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="image-bottom.gif" alt="imageEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="image-right.gif" alt="imageEdgeInsets right" caption="Right" />
+</FlowGrid>
+
+Interestingly, `UIButton` seems to have some issues with positive left and right edge insets - if you have an idea of why, please [let me know](https://twitter.com/noahsark769).
+
+Also interestingly, negative values of equal magnitudes cancel each other out!
+
+<CaptionedImage max={300} filename="uibutton-cancellout.png" alt="With all insets the same negative value, the button looks the same" caption="" />
+
+## titleEdgeInsets
+`titleEdgeInsets` affects the drawing rect of the button's title, and like `imageEdgeInsets` does *not* contribute to the button's `intrinsicContentSize`.
+
+- Positive values contract the drawing rect towards the center of the title
+- Negative values expand the drawing rect away from the center of the title
+
+As the title's drawing rect compresses (i.e., as positive insets are added), letters get cut off with [ellipses](https://twitter.com/noahsark769/status/1125608257806979073). As with `imageEdgeInsets`, negative values translate the text without otherwise affecting the button's layout.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="title-top.gif" alt="titleEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="title-left.gif" alt="titleEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="title-bottom.gif" alt="titleEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="title-right.gif" alt="titleEdgeInsets right" caption="Right" />
+</FlowGrid>
+
+## Image-title padding
+Though there's no built in way to put padding between the image and the title of a `UIButton`, we can fake it by using what we know about the various inset properties. Let's assume we want a button with 10pt padding around the content and 10pt padding between the image and the title. We'll:
+
+1. Add 10pt to all edges of the `contentEdgeInsets`
+2. Add 10pt to the left edge of the `titleEdgeInsets` to shift the button to the right
+3. Add *negative* 10pt to the *right* edge of the `titleEdgeInsets` since we have to make sure the button doesn't get cut off by ellipsis - adding this negative padding preserves the text's original drawing rect
+4. Add 10pt *more* to the right edge of the `contentEdgeInsets` to account for the button being moved 10pt to the right
+
+The final product ends up looking like this:
+
+<CaptionedImage max={300} filename="uibutton-wireframe.png" alt="Wireframe explaining the incantation required to add padding between the image and title of a UIButton" caption="Magic incantation" />
+
+Once we know how to do this, we can extract it to a method:
+
+```swift
+extension UIButton {
+    func setInsets(
+        forContentPadding contentPadding: UIEdgeInsets,
+        imageTitlePadding: CGFloat
+    ) {
+        self.contentEdgeInsets = UIEdgeInsets(
+            top: contentPadding.top,
+            left: contentPadding.left,
+            bottom: contentPadding.bottom,
+            right: contentPadding.right + imageTitlePadding
+        )
+        self.titleEdgeInsets = UIEdgeInsets(
+            top: 0,
+            left: imageTitlePadding,
+            bottom: 0,
+            right: -imageTitlePadding
+        )
+    }
+}
+```
+
+## Conclusion
+Hopefully this post helps some folks wrap their heads around a [weird](https://twitter.com/noahsark769/status/1123798154082758656) UIKit API. If you're looking for a truly customizable `UIButton`, don't forget that you can subclass `UIControl` directly and use your own layout entirely - I did this for [Trestle](https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8) and it worked well, even when I needed SVGs (!) inside the button.
+
+The code for all the examples in this post can be found at [NGUIButtonInsetsExample](https://github.com/noahsark769/NGUIButtonInsetsExample).
+
+<CaptionedImage max={300} filename="uibutton-final.png" alt="Screenshot of the sample app displaying a UIButton with image-title padding." caption="" />
