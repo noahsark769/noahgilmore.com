@@ -1,0 +1,322 @@
+---
+title: Backwards compatibility for iOS 13 system colors
+date: 2019-06-09
+tags: ios, swift, ios 13, darkmode, uicolor
+staticPreview: At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk Implementing Dark Mode on iOS which I'd highly recommend watching...
+mdxPreview: >
+    At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk [Implementing Dark Mode on iOS](https://developer.apple.com/videos/play/wwdc2019/214/) which I'd highly recommend watching...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
+import IOS13SystemColorTable from '../../components/IOS13SystemColorTable';
+
+At WWDC 2019, Apple announced that Dark Mode would be supported on iOS 13. There are some significant changes to UIKit in order to support this - many of them are detailed in the talk [Implementing Dark Mode on iOS](https://developer.apple.com/videos/play/wwdc2019/214/) which I'd highly recommend watching.
+
+One of the changes that makes adopting Dark Mode so easy is the new system colors API from `UIColor`. On iOS 12 and older, you might have a label you want to make black, and it would work just fine - in fact, black was the default color for `UILabel`s.
+
+```swift
+label.textColor = UIColor.black
+```
+
+But in Dark Mode, the background will also be black, which means the text won't be visible. In iOS 13+, it's better to use the new system color which will respect the user's color scheme preference:
+
+```swift
+label.textColor = UIColor.label
+```
+
+`label` is only one example: there are 36 new color scheme agnostic `UIColor`s available in iOS 13+, organized into two groups:
+
+1. [Element Colors](https://developer.apple.com/documentation/uikit/uicolor/ui_element_colors) (e.g. `label`)
+2. [Standard Colors](https://developer.apple.com/documentation/uikit/uicolor/standard_colors) (`systemBlue`, `systemGray3`, etc).
+
+(Skip to the bottom if you'd like to see a list of the new colors.)
+
+## Compatibility
+These new colors are all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this:
+
+```swift
+if #available(iOS 13, *) {
+    label.textColor = .label
+} else {
+    label.textColor = .black
+}
+```
+
+It's a workable solution, but it necessitates changing a lot of code - an `if` statement for every custom label or background color! For [CIFilter.io](/blog/cifilterio), I wondered if there was a better way. What if, instead of the `if #available`, there was a way to abstract the color choice down one level, so we could do something like this?
+
+```swift
+label.textColor = ColorCompatibility.label
+```
+
+## Generating system colors
+I wrote a [small app](https://github.com/noahsark769/NGSystemColorComparison) (with SwiftUI, no less!) which displays all the system colors in the current color scheme.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="systemcolors-light.png" alt="System colors (light mode)" caption="Light mode" />
+    <CaptionedImage max={300} filename="systemcolors-dark.png" alt="System colors (dark mode)" caption="Dark mode" />
+</FlowGrid>
+
+This app collects all the `UIColor` objects - once we have those, we can use their red/green/blue/alpha components to generate the implementation of `ColorCompatibility` that we want, using [Swift's #available syntax](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html):
+
+```swift
+enum ColorCompatibility {
+    static var label: UIColor {
+        if #available(iOS 13, *) {
+            return .label
+        }
+        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    }
+
+    static var secondaryLabel: UIColor {
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.6)
+    }
+
+    // ... 34 more definitions: full code at the bottom of this post
+}
+```
+
+We can then use `ColorCompatibility` it to set any colors we need.
+
+> Note: we can't use `@available` for these checks, since it doesn't provide a way to check if the current environment is _less_ than a specific app version.
+
+## Conclusion
+
+This approach has some great advantages:
+
+1. This code will compile on iOS 13+, iOS 12 and earlier, and UIKitForMac ✅
+2. Since everything is a computed `var`, we never pre-store colors, which means that when the user switches color scheme, our app will automatically adapt as the trait collection changes 👍
+3. When we drop iOS 12 support, cleaning this up will be as simple as replacing every instance of `ColorCompatibility` with `UIColor` 🎉
+
+Hopefully this makes your app's transition to dark mode easier!
+
+## Table of system colors
+For those interested in iOS 13+ system colors but not wanting (or not able) to compile the sample app, here's a list of the system colors in light and dark mode, with their hex codes and RGBA values:
+
+<IOS13SystemColorTable />
+
+## ColorCompatibility full code
+Here's the full, generated implementation of `ColorCompatibility` - this will be used by [CIFilter.io](/blog/cifilterio) when iOS 13 is out of beta.
+
+```swift
+enum ColorCompatibility {
+    static var label: UIColor {
+        if #available(iOS 13, *) {
+            return .label
+        }
+        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    }
+    static var secondaryLabel: UIColor {
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.6)
+    }
+    static var tertiaryLabel: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiaryLabel
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.3)
+    }
+    static var quaternaryLabel: UIColor {
+        if #available(iOS 13, *) {
+            return .quaternaryLabel
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.16)
+    }
+    static var systemFill: UIColor {
+        if #available(iOS 13, *) {
+            return .systemFill
+        }
+        return UIColor(red: 0.47058823529411764, green: 0.47058823529411764, blue: 0.5019607843137255, alpha: 0.36)
+    }
+    static var secondarySystemFill: UIColor {
+        if #available(iOS 13, *) {
+            return .secondarySystemFill
+        }
+        return UIColor(red: 0.47058823529411764, green: 0.47058823529411764, blue: 0.5019607843137255, alpha: 0.32)
+    }
+    static var tertiarySystemFill: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiarySystemFill
+        }
+        return UIColor(red: 0.4627450980392157, green: 0.4627450980392157, blue: 0.5019607843137255, alpha: 0.24)
+    }
+    static var quaternarySystemFill: UIColor {
+        if #available(iOS 13, *) {
+            return .quaternarySystemFill
+        }
+        return UIColor(red: 0.4627450980392157, green: 0.4627450980392157, blue: 0.5019607843137255, alpha: 0.18)
+    }
+    static var placeholderText: UIColor {
+        if #available(iOS 13, *) {
+            return .placeholderText
+        }
+        return UIColor(red: 0.9215686274509803, green: 0.9215686274509803, blue: 0.9607843137254902, alpha: 0.3)
+    }
+    static var systemBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemBackground
+        }
+        return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    }
+    static var secondarySystemBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .secondarySystemBackground
+        }
+        return UIColor(red: 0.10980392156862745, green: 0.10980392156862745, blue: 0.11764705882352941, alpha: 1.0)
+    }
+    static var tertiarySystemBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiarySystemBackground
+        }
+        return UIColor(red: 0.17254901960784313, green: 0.17254901960784313, blue: 0.1803921568627451, alpha: 1.0)
+    }
+    static var systemGroupedBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGroupedBackground
+        }
+        return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    }
+    static var secondarySystemGroupedBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .secondarySystemGroupedBackground
+        }
+        return UIColor(red: 0.10980392156862745, green: 0.10980392156862745, blue: 0.11764705882352941, alpha: 1.0)
+    }
+    static var tertiarySystemGroupedBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiarySystemGroupedBackground
+        }
+        return UIColor(red: 0.17254901960784313, green: 0.17254901960784313, blue: 0.1803921568627451, alpha: 1.0)
+    }
+    static var separator: UIColor {
+        if #available(iOS 13, *) {
+            return .separator
+        }
+        return UIColor(red: 0.32941176470588235, green: 0.32941176470588235, blue: 0.34509803921568627, alpha: 0.6)
+    }
+    static var opaqueSeparator: UIColor {
+        if #available(iOS 13, *) {
+            return .opaqueSeparator
+        }
+        return UIColor(red: 0.2196078431372549, green: 0.2196078431372549, blue: 0.22745098039215686, alpha: 1.0)
+    }
+    static var link: UIColor {
+        if #available(iOS 13, *) {
+            return .link
+        }
+        return UIColor(red: 0.03529411764705882, green: 0.5176470588235295, blue: 1.0, alpha: 1.0)
+    }
+    static var darkText: UIColor {
+        if #available(iOS 13, *) {
+            return .darkText
+        }
+        return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    }
+    static var lightText: UIColor {
+        if #available(iOS 13, *) {
+            return .lightText
+        }
+        return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
+    }
+    static var systemBlue: UIColor {
+        if #available(iOS 13, *) {
+            return .systemBlue
+        }
+        return UIColor(red: 0.0392156862745098, green: 0.5176470588235295, blue: 1.0, alpha: 1.0)
+    }
+    static var systemBrown: UIColor {
+        if #available(iOS 13, *) {
+            return .systemBrown
+        }
+        return UIColor(red: 0.6745098039215687, green: 0.5568627450980392, blue: 0.40784313725490196, alpha: 1.0)
+    }
+    static var systemGreen: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGreen
+        }
+        return UIColor(red: 0.18823529411764706, green: 0.8196078431372549, blue: 0.34509803921568627, alpha: 1.0)
+    }
+    static var systemIndigo: UIColor {
+        if #available(iOS 13, *) {
+            return .systemIndigo
+        }
+        return UIColor(red: 0.34509803921568627, green: 0.33725490196078434, blue: 0.8392156862745098, alpha: 1.0)
+    }
+    static var systemOrange: UIColor {
+        if #available(iOS 13, *) {
+            return .systemOrange
+        }
+        return UIColor(red: 1.0, green: 0.6235294117647059, blue: 0.0392156862745098, alpha: 1.0)
+    }
+    static var systemPink: UIColor {
+        if #available(iOS 13, *) {
+            return .systemPink
+        }
+        return UIColor(red: 1.0, green: 0.21568627450980393, blue: 0.37254901960784315, alpha: 1.0)
+    }
+    static var systemPurple: UIColor {
+        if #available(iOS 13, *) {
+            return .systemPurple
+        }
+        return UIColor(red: 0.7490196078431373, green: 0.35294117647058826, blue: 0.9490196078431372, alpha: 1.0)
+    }
+    static var systemRed: UIColor {
+        if #available(iOS 13, *) {
+            return .systemRed
+        }
+        return UIColor(red: 1.0, green: 0.27058823529411763, blue: 0.22745098039215686, alpha: 1.0)
+    }
+    static var systemTeal: UIColor {
+        if #available(iOS 13, *) {
+            return .systemTeal
+        }
+        return UIColor(red: 0.35294117647058826, green: 0.7843137254901961, blue: 0.9803921568627451, alpha: 1.0)
+    }
+    static var systemYellow: UIColor {
+        if #available(iOS 13, *) {
+            return .systemYellow
+        }
+        return UIColor(red: 1.0, green: 0.8392156862745098, blue: 0.0392156862745098, alpha: 1.0)
+    }
+    static var systemGray: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray
+        }
+        return UIColor(red: 0.5568627450980392, green: 0.5568627450980392, blue: 0.5764705882352941, alpha: 1.0)
+    }
+    static var systemGray2: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray2
+        }
+        return UIColor(red: 0.38823529411764707, green: 0.38823529411764707, blue: 0.4, alpha: 1.0)
+    }
+    static var systemGray3: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray3
+        }
+        return UIColor(red: 0.2823529411764706, green: 0.2823529411764706, blue: 0.2901960784313726, alpha: 1.0)
+    }
+    static var systemGray4: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray4
+        }
+        return UIColor(red: 0.22745098039215686, green: 0.22745098039215686, blue: 0.23529411764705882, alpha: 1.0)
+    }
+    static var systemGray5: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray5
+        }
+        return UIColor(red: 0.17254901960784313, green: 0.17254901960784313, blue: 0.1803921568627451, alpha: 1.0)
+    }
+    static var systemGray6: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray6
+        }
+        return UIColor(red: 0.10980392156862745, green: 0.10980392156862745, blue: 0.11764705882352941, alpha: 1.0)
+    }
+}
+```

@@ -1,0 +1,229 @@
+---
+title: Passing data through the App Store with UIPasteboard
+date: 2019-03-07
+tags: ios, swift
+staticPreview: Hi
+mdxPreview: Hi
+---
+import { TrestleBlogPostLink } from "../../components/DataLink";
+
+About a year ago I wrote a puzzle game called <TrestleBlogPostLink>Trestle</TrestleBlogPostLink>. If you download it using <TrestleBlogPostLink>this link</TrestleBlogPostLink> or any of the links in this post (by clicking on them on your iOS device), you'll get a nice Easter egg and two of the (normally paid) level sets enabled for free.
+
+In this post, I'm going to describe the technique behind how I implemented this referral link without a backend or third party service, using `UIPasteboard`.
+
+_Disclaimer: I'm not recommending you use this in production to power your business-critical flows, since it's a non-standard use of an API and a few things could change that would break it. It might be tenable in small use cases, but might also be grounds for App Store rejection. Use at your own risk._
+
+# Background
+
+It's common in iOS development, especially when you have a mobile web version of a product along with an app, to want to take action on first app launch based on how the user was interacting with your product before.
+
+As an example, imagine you're Facebook and the user is viewing a profile in Safari, then decides to download the app - you'd ideally open that profile when the app launches. I like to call this "passing data over the app store", and Apple doesn't provide an official API for it.
+
+There are tricky ways to hack around this restriction - one of the most common is called "fingerprinting", where you use a variety of signals to try to link a user's web session to their app session. With this technique, you collect data about the user's browser (IP address, etc) beforehand, and make a call to your server on app launch to try to give your app data about what flow to present, if any.
+
+This approach is involved and usually implemented by a third party company like [Branch](https://branch.io/), or with your own backend if you're a big enough operation. I'm going to describe a simpler method which requires no backend, using [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard).
+
+The general approach looks like this:
+
+1. Write a link on your website which, on click, both opens the url and copies it into the pasteboard with data encoded as a url parameter
+2. On `didFinishLaunchingWithOptions`, read the pasteboard, decode the data, and use it to take action
+
+# Copying a link (website)
+In javascript (depending on your browser) it's possible to programmatically copy to the clipboard using `document.execCommand("copy")` (see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand)). The API is a little finnicky - you have to construct a DOM element and fill it with the content you want to copy, and you can only use `input` and `textarea` elements, but it works! I tested this on iOS 11 and 12, but according to [caniuse](https://caniuse.com/#feat=clipboard) it looks like it's supported as far back as iOS 10. It even works on mobile Chrome (note though - it won't work in the iOS simulator).
+
+Here's the code to copy a string to the pasteboard (thanks in part to [this stackoverflow post](https://stackoverflow.com/questions/34045777/copy-to-clipboard-using-javascript-in-ios)):
+
+```javascript
+function iosCopyToClipboard(string) {
+    let el = document.createElement("input");
+    el.contentEditable = true;
+    el.readOnly = false;
+    el.value = string;
+    el.style = "position: absolute; opacity: 0.0";
+    document.body.appendChild(el);
+
+    let range = document.createRange();
+    range.selectNodeContents(el);
+    let s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(range);
+
+    // A big number, to cover anything that could be inside the element.
+    el.setSelectionRange(0, 999999);
+
+    return document.execCommand('copy');
+}
+```
+
+Once we've got this working, it's easy enough to take some data, base64 encode it, and copy it to the clipboard in addition to the link's url parameter (I've called the parameter `ed` for "encoded data"). Note that we include a timestamp of when the link was clicked - we'll need this for later. I'm using React here, but other frameworks or vanilla JS should be similar:
+
+```jsx
+class DataLink extends React.Component {
+    handleOnClick() {
+        let data = {
+            timestamp: Date.now(),
+            ...this.props.data
+        }
+        let json = JSON.stringify(data);
+        let encoded = btoa(json)
+        let toAppend;
+        if (this.props.href.includes("?")) {
+            toAppend = "&ed=" + encoded
+        } else {
+            toAppend = "?ed=" + encoded
+        }
+        iosCopyToClipboard(this.props.href + toAppend);
+    }
+
+    render() {
+        return (
+            <a href={this.props.href} onClick={this.handleOnClick.bind(this)}>{
+                this.props.children}
+            </a>
+        );
+    }
+};
+```
+
+Now, let's construct a link with JSON data that we want to pass to our app:
+
+```jsx
+const TrestleBlogPostLink = (props) => {
+    let data = {"referrer": "pasteboard-blog-post"};
+    return (
+        <DataLink
+            data={data}
+            href={"https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8"}
+        >
+            {props.children}
+        </DataLink>);
+};
+```
+
+When the user clicks on this link they'll be redirected to the app store, with the modified link in their pasteboard.
+
+# Reading the link (app)
+From the app side, we'll hook into [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard), a UIKit class which allows your app to integrate with iOS's copy and paste functionality. You can access the current contents of the general pasteboard (the one that gets updated when the user copies and pastes) using `UIPasteboard.general` - `UIPasteboard.general.strings` gives you the current text contents (pasteboard can also hold images, colors, etc).
+
+For <TrestleBlogPostLink>Trestle</TrestleBlogPostLink>, I decided to encapsulate this functionality into an `AppStoreBridge` class - this class will have the responsibility of checking the pasteboard and reporting to its delegate if it sees a referral link.
+
+```swift
+protocol AppStoreBridgeDelegate: class {
+    func appStoreBridge(_ bridge: AppStoreBridge, didTriggerCampaignLinkReferrer: String)
+}
+
+final class AppStoreBridge {
+    static let shared = AppStoreBridge()
+
+    weak var delegate: AppStoreBridgeDelegate?
+
+    func checkForReferralLinks() {
+        // Check the UIPasteboard here...
+    }
+}
+```
+
+To fill in the body of `checkForReferralLinks`, let's first define the referral data we're looking for:
+
+```swift
+struct ReferralData: Codable {
+    let timestamp: TimeInterval
+    let referrer: String
+}
+```
+
+Now we'll iterate through all the strings in the pasteboard, and check them (using a wall of `guard` statements) to see the URL we're expecting: 
+
+```swift
+let pasteboard = UIPasteboard.general
+guard let strings = pasteboard.strings else { return }
+for string in strings {
+    if string.contains("id1300230302") {
+        guard let url = URL(string: string) else { return }
+        guard let components = URLComponents(
+            url: url,
+            resolvingAgainstBaseURL: false
+        ) else { return }
+        guard let queryItems = components.queryItems else { return }
+        guard let value = queryItems.filter(
+            { $0.name == "ed" }
+        ).first?.value else { return }
+        guard let data = Data(base64Encoded: value) else { return }
+        let decoder = JSONDecoder()
+        guard let referral = try? decoder.decode(
+            ReferralData.self,
+            from: data
+        ) else { return }
+        /// Use the referral object...
+    }
+}
+```
+
+Note here that we use a string that we know will be in the URL (`"id1300230302"`) to quickly filter out any other pasteboard items.
+
+Now all that's left is to report the referral! However, we probably only want to take action if the user recently clicked the link - I used a timeout of 5 minutes here:
+
+```swift
+let referralClickDate = Date(timeIntervalSince1970: referral.timestamp)
+let currentDate = Date()
+if currentDate.minutes(from: referralClickDate) < 5 {
+    self.delegate?.appStoreBridge(
+        self,
+        didTriggerCampaignLinkReferrer: referral.referrer
+    )
+    return
+}
+```
+
+The small Date extension to make this possible looks like:
+
+```swift
+extension Date {
+    func minutes(from date: Date) -> Int {
+        return Calendar.current.dateComponents(
+            [.minute],
+            from: date,
+            to: self
+        ).minute ?? 0
+    }
+}
+```
+
+And we're done! Our app store bridge tells the app delegate that it noticed a referral, and we can then take any action we want!
+
+```swift
+extension AppDelegate: AppStoreBridgeDelegate {
+    func appStoreBridge(
+        _ bridge: AppStoreBridge,
+        didTriggerCampaignLink referrer: String
+    ) {
+        if referrer == "pasteboard-blog-post" {
+            // Show an easter egg, unlock level sets, etc...
+        }
+    }
+}
+```
+
+# UX considerations
+There are a couple of user experience issues to keep in mind here:
+
+1. Using this technique clobbers whatever's in the user's pasteboard currently. Usually this won't be a problem, because users should understand the pasteboard is emphemeral, but you might not want to do this if copying and pasting in your web app is a common use case (text editor, etc).
+2. It's important to remember, on your call to `didTriggerCampaignLink`, to save some sort of flag locally so as not to accidentally trigger the referral link the next time the user opens the app. Trestle uses UserDefaults for this, which is probably as good a store as any.
+
+# Security considerations
+We should always consider approaches like this with security in mind, and this technique warrants a few very important considerations:
+
+1. If you take any action from the `AppStoreBridge`, assume that _anyone_ can trigger that action _at any time_. This means you don't want to take actions that expose private data, make payments, etc. Consider your `AppStoreBridge` functionality as publically exposed, since an attacker could pre-populate the pasteboard with anything they want to trigger the `AppStoreBridge` logic.
+2. Don't expose any private information via the `DataLink`, _especially_ not user session tokens. Other apps can read the pasteboard too, so assume that all data encoded in a `DataLink` will be publicly available to anyone. Don't include anything in a data link that could be associated with a user's PII (personally identifiable information) including emails, locations, etc.
+
+# Will this get my app rejected?
+[Section 2.5.1 of the App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/#software-requirements) says the following:
+
+> Apps should use APIs and frameworks for their intended purposes and indicate that integration in their app description.
+
+Though this is probably referring more to frameworks like HomeKit (mentioned as an example), using `UIPasteboard` as described in this post is technically an unintended use of the API. Your mileage might vary, and I'm not claiming anything about this approach.
+
+There are also a few things that could change that would throw a wrench in things - the behavior of the execCommand could change, Apple could change the behavior of the general pasteboard, etc. This technique was a good use case for <TrestleBlogPostLink>Trestle</TrestleBlogPostLink>, but might not match yours. 🤷‍♂
+
+# Conclusion
+Hopefully this was an interesting technical discussion of a simple way to get around a complicated problem, and provide user delight in the flow from mobile web to app. If you have any other hacky ideas about how to pass data across the app store, feel free to [reach out](https://twitter.com/noahsark769). (And if you'd like to see `UIPasteboard` in action, you can download Trestle using <TrestleBlogPostLink>this link</TrestleBlogPostLink>.)

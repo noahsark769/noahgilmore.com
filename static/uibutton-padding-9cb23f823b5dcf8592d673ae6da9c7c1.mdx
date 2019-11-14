@@ -1,0 +1,72 @@
+---
+title: "UIButton: Padding Between Image and Text"
+date: 2019-04-30
+tags: ios, swift, uikit
+staticPreview: Today I'm launching CIFilter.io. CIFilter.io is a project I've been working on for the last few months, and today it's open source. It has two parts...
+mdxPreview: >
+    Today I'm launching [CIFilter.io](https://cifilter.io) 🎉
+    CIFilter.io is a project I've been working on for the last few months, and today it's [open source](https://github.com/noahsark769/cifilter.io/). It has two parts...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
+
+Pop quiz: in a `UIButton`, how do you set a padding of 10pt between the image and the title?
+
+<CaptionedImage max={200} filename="uibutton-padding-1.png" alt="Image showing 10pt padding between title and image of a UIButton" caption="If you're looking for a code snippet, skip to the bottom :)" />
+
+I had to do this at work recently, and I was surprised at how hard it was to reason about. There are several posts talking about this topic (including [this one](https://medium.com/short-swift-stories/using-uiedgeinsets-to-layout-a-uibutton-44ba04dd085c) which uses edge insets to flip the title and image!), but the answer for my use case was pretty hard to find.
+
+Adding image-title padding is possible, but takes some trickiness with `contentEdgeInsets`, `titleEdgeInsets`, and `imageEdgeInsets`.
+
+> The code for all the examples in this post can be found at [NGUIButtonInsetsExample](https://github.com/noahsark769/NGUIButtonInsetsExample).
+
+# UIButton Insets
+To understand why adding image-title padding is hard, we have to look at UIButton's various insets properties, which control how the UIButton is drawn (in different ways).
+
+## contentEdgeInsets
+`contentEdgeInsets` is probably the easiest insets property to reason about. The insets apply padding to the content of the button, and they're taken into account in the button's `instrinsicContentSize` (which was what I expected).
+
+- Positive values expand the button away from its content
+- Negative values contract the button towards its content
+
+With negative `contentEdgeInsets`, it's possible to get the image and text to draw outside of the button's bounds.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="content-top.gif" alt="contentEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="content-left.gif" alt="contentEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="content-bottom.gif" alt="contentEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="content-right.gif" alt="contentEdgeInsets right" caption="Right" />
+</FlowGrid>
+
+`contentEdgeInsets` is the closest thing available to "padding" within UIButton.
+
+## imageEdgeInsets
+`imageEdgeInsets` affects the drawing rect of the button's image, and does *not* figure into the button's `intrinsicContentSize` (this is different than `contentEdgeInsets`, which contributes to the `intrinsicContentSize`).
+
+- Positive values contract the drawing rect towards the image's center
+- Negative values expand the drawing rect away from the image's center
+
+Because `imageEdgeInsets` modifies the drawing rect, setting positive values can result in a squished image - with correct insets, you can actually flip the image! Negative values have the effect of translating the image, since setting negative values move the drawing rect back.
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="image-top.gif" alt="imageEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="image-left.gif" alt="imageEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="image-bottom.gif" alt="imageEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="image-right.gif" alt="imageEdgeInsets right" caption="Right" />
+</FlowGrid>
+
+Interestingly, negative values of equal magnitudes cancel each other out!
+
+<CaptionedImage max={300} filename="uibutton-cancellout.png" alt="With all insets the same negative value, the button looks the same" caption="" />
+
+## titleEdgeInsets
+`titleEdgeInsets` affects the drawing rect of the button's title, and also does *not* contribute to the button's `intrinsicContentSize`.
+
+As the title's drawing rect compresses, letters get cut off with [ellipses](https://twitter.com/noahsark769/status/1125608257806979073)
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="title-top.gif" alt="titleEdgeInsets top" caption="Top" />
+    <CaptionedImage max={300} filename="title-left.gif" alt="titleEdgeInsets left" caption="Left" />
+    <CaptionedImage max={300} filename="title-bottom.gif" alt="titleEdgeInsets bottom" caption="Bottom" />
+    <CaptionedImage max={300} filename="title-right.gif" alt="titleEdgeInsets right" caption="Right" />
+</FlowGrid>

@@ -1,0 +1,27 @@
+---
+title: "ImportError: No module named zlib on macOS Catalina"
+date: 2019-11-23
+tags: macOS, catalina, python
+staticPreview: A few times now, I've had to get around an issue that happens on macOS Catalina where you try to run a Python script and it fails with an import error...
+mdxPreview: >
+    A few times now, I've had to get around an issue that happens on macOS Catalina where you try to run a Python script and it fails with an import error...
+---
+A few times now, I've had to get around an issue that happens on macOS Catalina where you try to run a Python script and it fails with an import error:
+
+```
+ImportError: No module named zlib
+```
+
+The stacktrace will differ based on what was trying to import zlib, but the fix for me (on the most recent Catalina builds) was to reinstall python2 or python3 via brew. As some [others have noted](https://stackoverflow.com/questions/32630253/import-error-no-module-named-zlib-brew-installed-python), it's important to `xcode-select --install` first, if you haven't.
+
+If the script is Python 2:
+
+```
+brew reinstall python2
+```
+
+If the script is Python 3:
+
+```
+brew reinstall python3
+```

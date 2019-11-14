@@ -1,0 +1,24 @@
+---
+title: Passing data through the App Store with UIPasteboard
+date: 2019-03-07
+tags: ios, swift
+staticPreview: Hi
+mdxPreview: Hi
+---
+import { TrestleBlogPostLink } from "../../components/DataLink";
+
+About a year ago I wrote a puzzle game called <TrestleBlogPostLink>Trestle</TrestleBlogPostLink>. If you download it using <TrestleBlogPostLink>this link</TrestleBlogPostLink> or any of the links in this post (by clicking on them on your iOS device), you'll get a nice Easter egg and two of the (normally paid) level sets enabled for free.
+
+In this post, I'm going to describe the technique behind how I implemented this, using `UIPasteboard`.
+
+_Disclaimer_: I'm not recommending you use this in production to power your business-critical flows, since it's a non-standard use of an API and a few things could change that would break it. It might be tenable in small use cases, but _might_ also be grounds for App Store rejection. Use at your own risk.
+
+# Background
+
+It's common in iOS development, especially when you have a mobile web version of a product along with an app, to want to take action on first app launch based on how the user was interacting with your product before.
+
+Enabling level sets when they download from a specific link is an example. As another, imagine you're Facebook and the user is viewing a profile in Safari and decides to download the app - you'd ideally open that profile when the app launches. I like to call this "passing data over the app store", and Apple doesn't provide an official API for it.
+
+There are tricky ways to hack around this restriction - one of the most common is called "fingerprinting", where you use a variety of signals to try to link a user's web session to their app session. With this technique, you collect data about the user's browser beforehand, and make a call to your server on app launch to try to give your app data about what flow to present, if any.
+
+This approach is involved and usually implemented by a third party company like [Branch](https://branch.io/). In this post, I'm going to describe a simpler method which requires no backend, using `UIPasteboard`.

@@ -1,0 +1,16 @@
+---
+title: Casting a pointer to UInt in Swift
+date: 2018-10-16
+tags: ios, swift
+staticPreview: There are some times in Swift, like when using System Trace, that you want to get the pointer value of an object directly as a UInt.
+mdxPreview: >
+  There are some times in Swift, like when using [System Trace](https://developer.apple.com/videos/play/wwdc2016/411/), that you want to get the pointer value of an object directly as a `UInt` (passing the pointer to `kdebug_signpost` is one). I was surprised at how hard it was to find documentation on how to get a Swift reference’s pointer value as a `UInt`.
+---
+There are some times in Swift, like when using [System Trace](https://developer.apple.com/videos/play/wwdc2016/411/), that you want to get the pointer value of an object directly as a `UInt` (passing the pointer to `kdebug_signpost` is one). I was surprised at how hard it was to find documentation on how to get a Swift reference’s pointer value as a `UInt`. Here’s how to do it, using the `UInt(bitPattern:)` initializer:
+
+```swift
+_ = withUnsafePointer(to: myObject) { unsafePointer in
+    let pointerValue = UInt(bitPattern: unsafePointer)
+    // do whatever with pointerValue: it's a UInt!
+}
+```

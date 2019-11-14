@@ -1,0 +1,73 @@
+---
+title: Popovers, UINavigationController, and preferredContentSize
+date: 2019-08-26
+tags: ios, swift, popover, uinavigationcontroller, preferredcontentsize
+staticPreview: TODO
+mdxPreview: >
+    TODO
+---
+import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
+
+In this post we'll look at a very specific but tricky interaction in UIKit, one which took me multiple days to work out how to implement.
+
+It's two view controllers of different sizes, pushed on a `UINavigationController`, which is presented as a popover. The view controllers have different sizes (defined by autolayout), only one of them displays a nav bar, and the popover animates when their sizes change, including when they get pushed onto the nav stack, where the resize animation happens at the same time as the push:
+
+<CaptionedImage max={400} filename="popover-finished.gif" alt="Finished presentation of UIViewControllers with different content sizes inside a popover" caption="" />
+
+Surprisingly this is very tricky to implement in UIKit, and it ties together a lot of concepts that I wasn't really familiar with until I ran into this case.
+
+> The finished code for this interaction is available at TODO. If you're looking for the relevant `UINavigationController` wrapper, it's at the bottom.
+
+# Motivation
+
+At work, we do a fair amount of presenting view controllers as popovers to add context or more data to our existing iPad view. A common flow is the following:
+
+1. Present a small popover to add more context to something the user tapped
+2. When the user taps on a button in that popover, push on a new view controller with more information
+
+Seems easy enough, but the kicker is when _the two view controllers are different sizes_.
+
+Let's assume we have two view controllers to present: one 300x300 with a red background and no navigation bar content, and one 600x400 with a green background and a nav bar title:
+
+<CaptionedImage max={300} filename="red-controller.png" alt="Red view controller" caption="SmallViewControllerNoNavBar" />
+<CaptionedImage max={400} filename="green-controller.png" alt="Green view controller" caption="LargeViewControllerWithNavBar" />
+
+# preferredContentSize
+Let's start with the red controller.
+
+Setting up the width and height is easy enough with autolayout (or so you might think):
+
+```swift
+    override func viewDidLoad() {
+        // ...
+
+        self.view.widthAnchor.constraint(
+            equalToConstant: 300
+        ).isActive = true
+        self.view.heightAnchor.constraint(
+            equalToConstant: 300
+        ).isActive = true
+    }
+```
+
+TODO: this section should be about how to set up the red controller, but initially it doesn't take the autolayout defined content size
+
+## preferredContentSize + autolayout
+TODO this section is about using systemLayoutSizeFittingSize in viewWillAppear. But then when you push on another controller the animation is weird
+
+# UINavigationController animations
+TODO This section should specify about how UINavigationController does some funky shit with its push animation. And also that if you go back, the height doesn't update
+
+## Wrapping the nav controller
+TODO this section is about implementing a wrapper but no updates when the preferredcontentsize changes without push
+
+## Updating the size
+TODO this section is about how to animate the content size without push, but it only works outwardly
+
+## preferredContentSizeDidChange
+TODO this section is about implementing the nav controller subclass so that shit works out and the controller contracts and expands correctly
+
+# Caveats
+
+# Conclusion
