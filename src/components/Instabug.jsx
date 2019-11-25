@@ -141,13 +141,14 @@ const CallToActionButton = styled.span`
 `;
 
 const InstabugLinkWrapper = (props) => {
-    return <ReactGA.OutboundLink eventLabel="noah-test" to="/" target="_blank" style={{textDecoration: "none"}}>
+    return <ReactGA.OutboundLink eventLabel="instabug" to="https://instabug.com/crashlytics-alternative?utm_source=noahgilmore&utm_medium=nativeads&utm_campaign=noahgilmore-nativeads-november" target="_blank" style={{textDecoration: "none"}}>
         {props.children}
     </ReactGA.OutboundLink>
 };
 
 const Instabug = (props) => {
-    return <Container>
+    return <div className="sponsorship-opt-out-point">
+        <Container>
         <HeaderContainer>
             <HeaderContent>SPONSORED CONTENT</HeaderContent>
         </HeaderContainer>
@@ -175,9 +176,10 @@ const Instabug = (props) => {
             </BodyAndContent>
         </BodyContainer>
         <FooterContainer>
-            <p>Visiting Instabug helps support my writing and open source projects. <a href="/">Learn more</a></p>
+            <p>Visiting Instabug helps support my writing and open source projects. <a href="/blog/advertising">Learn more</a></p>
         </FooterContainer>
     </Container>
+    </div>
 };
 
 export default Instabug;
