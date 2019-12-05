@@ -1,4 +1,5 @@
 ---
+instabugEnabled: true
 title: Backwards compatibility for iOS 13 system colors
 date: 2019-06-09
 tags: ios, swift, ios 13, darkmode, uicolor
@@ -45,8 +46,6 @@ Colors are organized into two groups:
 iOS 13 has 23 new element colors (`label` etc) and one new standard color (`systemIndigo`). However, even system colors that have been around for a while (like `systemRed`) have become dynamic in iOS 13 - they might actually be different colors in dark mode vs light mode.
 
 (Skip to the bottom if you'd like to see a list of the new colors.)
-
-<Instabug />
 
 ## Compatibility
 These new colors are all well and good, but most of us with existing apps will still be supporting devices with iOS 12 or lower, at least for a while. This means we'll probably be doing a lot of things like this, using [Swift's #available syntax](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html):
@@ -115,5 +114,3 @@ For those interested in iOS 13+ system colors but not wanting (or not able) to c
 
 ## ColorCompatibility full code
 The full, generated implementation of `ColorCompatibility`, which is used by [Trestle](https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8) and [CIFilter.io](https://itunes.apple.com/us/app/cifilter-io/id1457458557?mt=8), is available [here](https://github.com/noahsark769/ColorCompatibility).
-
-<Instabug />

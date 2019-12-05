@@ -5,7 +5,12 @@ import Image from "../components/Image";
 import ReactGA from "react-ga";
 
 const Container = styled.div`
-    margin-top: 20px;
+    a, a:visited {
+        color: #60b5d1 !important;
+    }
+    a:hover {
+        color: #6bcfef;
+    }
 `;
 
 const HeaderContainer = styled.div`
@@ -70,6 +75,7 @@ const BodyInner = styled.div`
     flex-direction: column;
     padding-top: 10px;
     align-items: flex-end;
+    justify-content: center;
 `;
 
 const BodyContent = styled.p`
@@ -82,15 +88,6 @@ const BodyContent = styled.p`
     &:last-child {
         padding-bottom: 0;s
     }
-
-    a {
-        color: #60b5d1 !important;
-    }
-    a:hover {
-        color: #6bcfef;
-    }
-
-    
 `;
 
 const LogoContainer = styled.div`
@@ -107,6 +104,7 @@ const ScreenshotContainer = styled.div`
     
     display: flex;
     flex-direction: column;
+    margin-right: 20px;
 `;
 
 const Screenshot = styled.div`
@@ -122,6 +120,7 @@ const FooterContainer = styled.div`
         font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif !important;
         font-size: 12px;
         color: #666;
+        margin-top: 6px;
     }
 
     text-align: right;
@@ -151,6 +150,9 @@ const Instabug = (props) => {
         <Container>
         <HeaderContainer>
             <HeaderContent>SPONSORED CONTENT</HeaderContent>
+            { props.onHide && 
+                <HeaderContent><a href="#" onClick={(e) => {e.preventDefault(); props.onHide()}}>HIDE</a></HeaderContent>
+            }
         </HeaderContainer>
         <BodyContainer>
             <BodyAndContent>
@@ -166,9 +168,8 @@ const Instabug = (props) => {
                     </Screenshot>
                 </ScreenshotContainer>
                 <BodyInner>
-                    <BodyContent>Instabug is my go-to solution for user-reported issues in <a href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</a>.</BodyContent>
-                    <BodyContent>Instabug helps you identify and resolve severe crashes quickly. You can retrace in-app events and know exactly which line of code caused the crash along with environment details, network logs, repro steps, and the session profiler.</BodyContent>
-                    <BodyContent>Ask more questions or keep users up-to-date with in-app replies straight from your dashboard.</BodyContent>
+                    <BodyContent>Instabug implements in-app bug reports and message threads with users in a simple, easy to configure interface.</BodyContent>
+                    <BodyContent>Drop Instabug's library into your app to support user feedback out of the box!</BodyContent>
                     <InstabugLinkWrapper>
                         <CallToActionButton>Try Instabug Free</CallToActionButton>
                     </InstabugLinkWrapper>

@@ -6,6 +6,7 @@ import EndButtons from './EndButtons';
 import { BlogPostContainer, BlogPostMeta } from './BlogPost';
 import MarkdownContent from './MarkdownContent';
 import { formatDateString } from '../lib/dateFormat';
+import Instabug from './Instabug';
 import Disqus from './Disqus';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
@@ -23,7 +24,48 @@ const NonContent = styled.div`
     }
 `;
 
+const InstabugContainer = styled.div`
+    min-width: 430px;
+    margin-left: 60px;
+    @media all and (max-width: 1200px) {
+      display: none;
+    }
+`;
+
+const InstabugInner = styled.div`
+    
+`;
+
+const PostContainerOuter = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: ${(props) => props.hasPadding ? "20px" : "0"};
+
+    @media all and (max-width: 1200px) {
+      padding: 0;
+    }
+`;
+
+const PostContainerInner = styled.div`
+    display: block;
+    flex-direction: column;
+    width: 100%;
+`;
+
 export default class BlogPageLayout extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        isShowingInstabug: true
+      }
+    }
+
+    handleInstabugHide() {
+      this.setState({
+        isShowingInstabug: false
+      })
+    }
+
     render() {
       let isDarkMode = (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches);
         return (
@@ -42,19 +84,37 @@ export default class BlogPageLayout extends React.Component {
                   <meta name="description" content={this.props.pageContext.frontmatter.staticPreview} />
               </Helmet>
               <Nav blog />
-              <BlogPostContainer>
-                <NonContent>
-                  <BlogPostMeta
-                      title={this.props.pageContext.frontmatter.title}
-                      date={formatDateString(this.props.pageContext.frontmatter.date)} />
-                </NonContent>
-                <MarkdownContent>
-                  {this.props.children}
-                </MarkdownContent>
-                <NonContent>
-                  <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
-                  <Disqus />
-                </NonContent>
+              <BlogPostContainer isCompressed={
+                !this.state.isShowingInstabug ||
+                !this.props.pageContext.frontmatter.instabugEnabled
+              }>
+                <PostContainerOuter hasPadding={
+                  this.state.isShowingInstabug && this.props.pageContext.frontmatter.instabugEnabled
+                }>
+                    <PostContainerInner>
+                      <NonContent>
+                        <BlogPostMeta
+                            title={this.props.pageContext.frontmatter.title}
+                            date={formatDateString(this.props.pageContext.frontmatter.date)} />
+                      </NonContent>
+                      <MarkdownContent>
+                        {this.props.children}
+                      </MarkdownContent>
+                      <NonContent>
+                        <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
+                        <Disqus />
+                      </NonContent>
+                    </PostContainerInner>
+                    {
+                      this.state.isShowingInstabug &&
+                      this.props.pageContext.frontmatter.instabugEnabled &&
+                      <InstabugContainer>
+                        <InstabugInner>
+                          <Instabug onHide={() => this.handleInstabugHide()} />
+                        </InstabugInner>
+                      </InstabugContainer>
+                    }
+                </PostContainerOuter>
               </BlogPostContainer>
             </Container>
         )

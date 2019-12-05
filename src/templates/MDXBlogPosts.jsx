@@ -31,7 +31,7 @@ class MDXBlogPosts extends React.Component {
               <meta name="Description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
             </Helmet>
             <Nav />
-            <BlogPostContainer darkened>{this.props.pageContext.edges.map((edge) => {
+            <BlogPostContainer darkened isCompressed>{this.props.pageContext.edges.map((edge) => {
                 return <BlogPostPreview
                   key={edge.node.id}
                   url={"/blog/" + edge.node.parent.name}

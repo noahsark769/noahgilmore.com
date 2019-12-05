@@ -66,7 +66,7 @@ class MDXBlogPosts extends React.Component {
               <meta name="Description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
             </Helmet>
             <Nav />
-            <BlogPostContainer darkened>{this.props.queryData.allMdx.edges.map((edge) => {
+            <BlogPostContainer isCompressed darkened>{this.props.queryData.allMdx.edges.map((edge) => {
                 return <BlogPostPreview
                   key={edge.node.id}
                   url={"/blog/" + edge.node.parent.name}

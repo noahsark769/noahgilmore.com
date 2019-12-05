@@ -6,8 +6,9 @@ export const BlogPostContainer = styled.div`
     padding: 60px 0;
     margin: 0 auto;
     width: 90%;
+
     @media all and (min-width: 600px) {
-        max-width: 700px;
+        max-width: ${(props) => props.isCompressed ? "700px" : "1600px"};
         margin: auto;
     }
 
