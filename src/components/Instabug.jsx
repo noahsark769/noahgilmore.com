@@ -76,6 +76,8 @@ const BodyInner = styled.div`
     padding-top: 10px;
     align-items: flex-end;
     justify-content: center;
+
+    font-family: "Gentium Book Basic", times, serif;
 `;
 
 const BodyContent = styled.p`
