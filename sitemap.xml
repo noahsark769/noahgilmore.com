@@ -37,8 +37,8 @@
 <url> <loc>https://noahgilmore.com/blog/advertising/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/catalina-importerror-no-module-named-zlib/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/cfbundleversion-invalid/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/cifilterio/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/cifilter-colorwheel/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/cifilterio/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/civector-codable/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/color-compatibility-pod/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/dark-mode-uicolor-compatibility/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -52,13 +52,13 @@
 <url> <loc>https://noahgilmore.com/blog/nsobject-equatable/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/popover-uinavigationcontroller-preferredcontentsize/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/pyparsing-trees/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/swift-pointer-uint/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/rxswift-multiple-subscribers/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swift-dependency-injection/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/swift-pointer-uint/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swiftui-relativedatetimeformatter/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tables-are-hard/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/taking-down-sfsymbols/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/uibutton-padding/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/userdefaults-set-nil/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/uiwindowscene-black-screen/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/userdefaults-set-nil/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/uibutton-padding/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>

@@ -1,0 +1,35 @@
+---
+instabugEnabled: true
+title: Accessing MDX Frontmatter in Gatsby
+date: 2018-11-08
+tags: web, react, gatsby, mdx
+staticPreview: While building this site in Gatsby using MDX, I noticed that there wasn't any documentation on how to include data from the frontmatter of an MDX document in the document's page layout.
+mdxPreview: >
+  While building this site in Gatsby using [MDX](https://github.com/ChristopherBiscardi/gatsby-mdx), I noticed that there wasn't any documentation on how to include data from the frontmatter of an MDX document in the document's page layout...
+---
+While building this site in Gatsby using [MDX](https://github.com/ChristopherBiscardi/gatsby-mdx), I noticed that there wasn't any documentation on how to include data from the frontmatter of an MDX document in the document's page layout.
+
+Though this isn't anywhere in the `gatsby-mdx` docs (that I can tell), there's an [example](https://github.com/ChristopherBiscardi/gatsby-mdx/blob/ee4b17f814396ea7c4aaf8007a1603a57967a40a/examples/kitchen-sink/src/pages/using-pagecontext-frontmatter.mdx) of how to use it in the repo. Frontmatter is passed to the layout component in `props.pageContext.frontmatter`. This means you can do things like this in your markdown document:
+
+```
+---
+title: My Page
+---
+This is the content
+```
+
+And in your layout component, you can grab the frontmatter:
+```jsx
+const MyPageLayout = (props) => {
+    return (
+        <div>
+            <h1>{props.pageContext.frontmatter.title}</h1>
+            <div>
+                {props.children}
+            </div>
+        </div>
+    ); 
+};
+```
+
+On this [blog's home page](https://noahgilmore.com/blog) I use frontmatter of all the MDX documents, which includes things like title, date, and preview text, to render the list of blog post previews.
