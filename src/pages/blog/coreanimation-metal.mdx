@@ -1,0 +1,39 @@
+---
+instabugEnabled: true
+title: Animations with CoreAnimation, CALayer, and Metal
+date: 2019-11-25
+tags: ios, swift, metal
+staticPreview: TODO
+mdxPreview:
+    TODO
+---
+Recently, I've been learning more about Metal - I've written a couple of posts and tweets (TODO links) about it, and I've been working through Metal By Example (TODO link). Up until now I've mostly been coding sample projects, but I recently had the opportunity to prototype a Metal implementation integrated into our production app at work.
+
+One thing I hadn't considered until I had to implement Metal in a real app was animations - when another part of our interface animated, we wanted to scale the Metal content along with the animation. This post will dive into how to adapt the CALayer animation system to work with a custom Metal view, and along the way we'll see a situation which Swift can't handle without hacks. (😱)
+
+Our goal will be to build a triangle that animates to a new scale when a button is pressed:
+
+TODO gif
+
+> Full sample code is available for this project at TODO
+
+## Custom CALayer animations
+CoreAnimation (the framework that powers `CALayer` and the other content that is used to implement `UIView`) provides
+
+## Dynamic properties in Swift
+TODO this talks about implementing dynamic properties in Swift using @NSManaged
+
+## Using presentation layers
+TODO this part talks about how to use .presentation() to get the effective scale
+
+## More complicated animations
+TODO this part is about adapting the system to the cube
+
+## Keyframes
+Using CALayer properties to implement our animations means that we can hook into the entire CoreAnimation ecosystem, and one benefit of this is that we get keyframe animations for free!
+
+TODO
+
+## Conclusion
+
+
