@@ -63,6 +63,7 @@ const BodyAndContent = styled.div`
     display: flex;
     flex-direction: row;
     align-items: stretch;
+    margin-right: 10px;
 
     @media all and (max-width: 600px) {
         flex-direction: column;
@@ -126,6 +127,7 @@ const FooterContainer = styled.div`
     }
 
     text-align: right;
+    margin-right: 10px;
 `;
 
 const CallToActionButton = styled.span`
@@ -148,41 +150,43 @@ const InstabugLinkWrapper = (props) => {
 };
 
 const Instabug = (props) => {
-    return <div className="sponsorship-opt-out-point">
-        <Container>
-        <HeaderContainer>
-            <HeaderContent>SPONSORED CONTENT</HeaderContent>
-            { props.onHide && 
-                <HeaderContent><a href="#" onClick={(e) => {e.preventDefault(); props.onHide()}}>HIDE</a></HeaderContent>
-            }
-        </HeaderContainer>
-        <BodyContainer>
-            <BodyAndContent>
-                <ScreenshotContainer>
-                    <LogoContainer>
-                        <InstabugLinkWrapper>
-                            <Image filename="instabug-logo-white.png" alt="Instabug logo" />
-                        </InstabugLinkWrapper>
-                    </LogoContainer>
-                    <Spacer />
-                    <Screenshot>
-                        <Image filename="instabug-screenshot.png" alt="Screenshot of Instabug running in Trestle" />
-                    </Screenshot>
-                </ScreenshotContainer>
-                <BodyInner>
-                    <BodyContent>Instabug implements in-app bug reports and message threads with users in a simple, easy to configure interface.</BodyContent>
-                    <BodyContent>Drop Instabug's library into your app to support user feedback out of the box!</BodyContent>
-                    <InstabugLinkWrapper>
-                        <CallToActionButton>Try Instabug Free</CallToActionButton>
-                    </InstabugLinkWrapper>
-                </BodyInner>
-            </BodyAndContent>
-        </BodyContainer>
-        <FooterContainer>
-            <p>Visiting Instabug helps support my writing and open source projects. <a href="/blog/advertising">Learn more</a></p>
-        </FooterContainer>
-    </Container>
-    </div>
+    return (
+        <div className="sponsorship-opt-out-point">
+            <Container>
+                <HeaderContainer>
+                    <HeaderContent>SPONSORED CONTENT</HeaderContent>
+                    { props.onHide && 
+                        <HeaderContent><a href="#" onClick={(e) => {e.preventDefault(); props.onHide()}}>HIDE</a></HeaderContent>
+                    }
+                </HeaderContainer>
+                <BodyContainer>
+                    <BodyAndContent>
+                        <ScreenshotContainer>
+                            <LogoContainer>
+                                <InstabugLinkWrapper>
+                                    <Image filename="instabug-logo-white.png" alt="Instabug logo" />
+                                </InstabugLinkWrapper>
+                            </LogoContainer>
+                            <Spacer />
+                            <Screenshot>
+                                <Image filename="instabug-screenshot.png" alt="Screenshot of Instabug running in Trestle" />
+                            </Screenshot>
+                        </ScreenshotContainer>
+                        <BodyInner>
+                            <BodyContent>Instabug implements in-app bug reports and message threads with users in a simple, easy to configure interface.</BodyContent>
+                            <BodyContent>Drop Instabug's library into your app to support user feedback out of the box!</BodyContent>
+                            <InstabugLinkWrapper>
+                                <CallToActionButton>Try Instabug Free</CallToActionButton>
+                            </InstabugLinkWrapper>
+                        </BodyInner>
+                    </BodyAndContent>
+                </BodyContainer>
+                <FooterContainer>
+                    <p>Visiting Instabug helps support my writing and open source projects. <a href="/blog/advertising">Learn more</a></p>
+                </FooterContainer>
+            </Container>
+        </div>
+    );
 };
 
 export default Instabug;
