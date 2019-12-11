@@ -85,11 +85,10 @@ export default class BlogPageLayout extends React.Component {
               </Helmet>
               <Nav blog />
               <BlogPostContainer isCompressed={
-                !this.state.isShowingInstabug ||
-                !this.props.pageContext.frontmatter.instabugEnabled
+                true
               }>
                 <PostContainerOuter hasPadding={
-                  this.state.isShowingInstabug && this.props.pageContext.frontmatter.instabugEnabled
+                  false
                 }>
                     <PostContainerInner>
                       <NonContent>
@@ -99,21 +98,24 @@ export default class BlogPageLayout extends React.Component {
                       </NonContent>
                       <MarkdownContent>
                         {this.props.children}
+                        {
+                          this.props.pageContext.frontmatter.instabugEnabled &&
+                          <p>If you enjoyed this post, consider checking out Instabug - checking them out helps <a href="/blog/advertising">support</a> my writing and open source projects.</p>
+                        }
                       </MarkdownContent>
+                      {
+                      this.props.pageContext.frontmatter.instabugEnabled &&
+                      // <InstabugContainer>
+                      //   <InstabugInner>
+                          <Instabug />
+                      //   </InstabugInner>
+                      // </InstabugContainer>
+                    }
                       <NonContent>
                         <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
                         <Disqus />
                       </NonContent>
                     </PostContainerInner>
-                    {
-                      this.state.isShowingInstabug &&
-                      this.props.pageContext.frontmatter.instabugEnabled &&
-                      <InstabugContainer>
-                        <InstabugInner>
-                          <Instabug onHide={() => this.handleInstabugHide()} />
-                        </InstabugInner>
-                      </InstabugContainer>
-                    }
                 </PostContainerOuter>
               </BlogPostContainer>
             </Container>

@@ -1,4 +1,5 @@
 ---
+instabugEnabled: true
 title: Animating Metal Content with CoreAnimation
 date: 2019-12-10
 tags: ios, swift, metal
@@ -95,9 +96,9 @@ class CustomCAMetalLayer: CAMetalLayer {
 Our button callback sets the new value:
 
 ```swift
-    @objc private func didTapButton() {
-        layer.triangleScale = 2
-    }
+@objc private func didTapButton() {
+    layer.triangleScale = 2
+}
 ```
 
 And when we run the app and click the button, we get...
@@ -322,7 +323,3 @@ There's a lot of great Apple and non-Apple content written about custom CALayer 
 - [Advanced Graphics with CoreAnimation](https://academy.realm.io/posts/tryswift-tim-oliver-advanced-graphics-with-core-animation/)
 - [Custom CALayer](https://nsscreencast.com/episodes/290-core-graphics-custom-calayer)
 - [Advanced Animation Tricks](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/AdvancedAnimationTricks/AdvancedAnimationTricks.html)
-
-If you enjoyed this post, consider checking out Instabug - checking them out helps support my writing and open source projects 🤓
-
-<Instabug />
