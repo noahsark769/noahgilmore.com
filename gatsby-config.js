@@ -102,7 +102,13 @@ module.exports = {
               },
               injectStyles: false,
             }
-          }
+          },
+          {
+            resolve: `gatsby-remark-autolink-headers`,
+            options: {
+              icon: false
+            }
+          },
         ],
       }
     },

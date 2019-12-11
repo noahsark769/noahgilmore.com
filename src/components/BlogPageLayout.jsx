@@ -10,6 +10,8 @@ import Instabug from './Instabug';
 import Disqus from './Disqus';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
+import { MDXProvider } from "@mdx-js/react"
+import { IoMdLink, IoIosCheckmark } from "react-icons/io";
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
@@ -51,6 +53,103 @@ const PostContainerInner = styled.div`
     flex-direction: column;
     width: 100%;
 `;
+
+const HeaderLinkContainer = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+`;
+
+const Icon = styled.span`
+    cursor: pointer;
+  
+    @media all and (max-width: 600px) {
+      display: none;
+    }
+
+    color: #1A3F4B;
+    -webkit-transition: 0.2s ease-in-out;
+    -moz-transition: 0.2s ease-in-out;
+    -o-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+
+    @media (prefers-color-scheme: dark) {
+        color: #60b5d1;
+    }
+
+    &:hover {
+      color: #47656E;
+
+      @media (prefers-color-scheme: dark) {
+          color: #6bcfef;
+      }
+    }
+`;
+
+class HeaderLink extends React.Component {
+  constructor() {
+    super();
+    this.state = { done: false };
+  }
+
+  handleClick() {
+    this.props.onClick();
+    this.setState({ done: true });
+  }
+
+  render() {
+    return <HeaderLinkContainer onClick={() => this.handleClick()}>
+    <Icon>{this.state.done ? <IoIosCheckmark size={32} /> : <IoMdLink />}</Icon>
+    </HeaderLinkContainer>
+  }
+};
+
+class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isHovering: false
+    };
+  }
+
+  handleMouseEnter() {
+    this.setState({ isHovering: true });
+  }
+
+  handleMouseLeave() {
+    this.setState({ isHovering: false });
+  }
+
+  copyToClipboard() {
+    var textField = document.createElement('textarea')
+    const href = window.location.href;
+    var toCopy;
+    if (window.location.hash) {
+      toCopy = window.location.href.replace(window.location.hash, `#${this.props.id}`);
+    } else {
+      toCopy = window.location.href + `#${this.props.id}`
+    }
+    textField.innerText = toCopy;
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove()
+  }
+
+  render() {
+    const MyTag = styled[this.props.is]`
+      position: relative;
+      @media all and (min-width: 600px) {
+        margin-left: -50px;
+        padding-left: 50px;
+      }
+    `;
+    return <MyTag id={this.props.id} onMouseEnter={() => this.handleMouseEnter()} onMouseLeave={() => this.handleMouseLeave()}>
+      {this.props.children}
+      {this.state.isHovering && <HeaderLink id={this.props.id} onClick={() => this.copyToClipboard()} />}
+    </MyTag>
+  }
+}
 
 export default class BlogPageLayout extends React.Component {
     constructor(props) {
@@ -96,27 +195,32 @@ export default class BlogPageLayout extends React.Component {
                             title={this.props.pageContext.frontmatter.title}
                             date={formatDateString(this.props.pageContext.frontmatter.date)} />
                       </NonContent>
-                      <MarkdownContent>
-                        {this.props.children}
+                      <MDXProvider components={{
+                        h1: props => <Header is="h1" {...props} />,
+                        h2: props => <Header is="h2" {...props} />
+                      }}>
+                        <MarkdownContent>
+                          {this.props.children}
+                          {
+                            this.props.pageContext.frontmatter.instabugEnabled &&
+                            <p>If you enjoyed this post, consider checking out Instabug - checking them out helps <a href="/blog/advertising">support</a> my writing and open source projects.</p>
+                          }
+                        </MarkdownContent>
                         {
-                          this.props.pageContext.frontmatter.instabugEnabled &&
-                          <p>If you enjoyed this post, consider checking out Instabug - checking them out helps <a href="/blog/advertising">support</a> my writing and open source projects.</p>
+                        this.props.pageContext.frontmatter.instabugEnabled &&
+                        // <InstabugContainer>
+                        //   <InstabugInner>
+                            <Instabug />
+                        //   </InstabugInner>
+                        // </InstabugContainer>
                         }
-                      </MarkdownContent>
-                      {
-                      this.props.pageContext.frontmatter.instabugEnabled &&
-                      // <InstabugContainer>
-                      //   <InstabugInner>
-                          <Instabug />
-                      //   </InstabugInner>
-                      // </InstabugContainer>
-                    }
+                      </MDXProvider>
                       <NonContent>
                         <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
                         <Disqus />
                       </NonContent>
                     </PostContainerInner>
-                </PostContainerOuter>
+                  </PostContainerOuter>
               </BlogPostContainer>
             </Container>
         )
