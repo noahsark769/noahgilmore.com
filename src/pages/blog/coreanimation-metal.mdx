@@ -75,7 +75,7 @@ In order to implement our triangle's scale-up animation, we need to talk more ab
 
 Many layer properties (you can see a list [here](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/AnimatableProperties/AnimatableProperties.html#//apple_ref/doc/uid/TP40004514-CH11-SW4)) are animatable, which means that when they're changed, CoreAnimation will interpolate between the old value and the new value to animate the change. If you've ever tried to change the background color of a `CALayer` directly (using `backgroundColor`), you might notice that the change isn't instant - there's a subtle fade. Animatable `CALayer` properties all have default, "implicit" animations.
 
-> Note: layers which back `UIView`s don't have these implicit animations by default since `UIView`s don't provide an action through their layer delgate method. More on this later.
+> Note: layers which back `UIView`s don't have these implicit animations by default since `UIView`s don't provide an action through their layer delegate method. More on this later.
 
 We'll add our `triangleScale` as a custom layer property - we want this property to animate between 1 and 2 to double the size of the triangle.
 
