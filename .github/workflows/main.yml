@@ -14,6 +14,10 @@ jobs:
       run: |
         git config --global user.email "ci@noahgilmore.com"
         git config --global user.name "Automated Deployment"
+    - name: Clean node modules
+      run: rm -rf node_modules
+    - name: Clean npm cache
+      run: npm cache clean --force
     - name: NPM install
       run: npm install
     - name: Build and Deploy
