@@ -17,13 +17,19 @@ jobs:
       run: |
         git config --global user.email "ci@noahgilmore.com"
         git config --global user.name "Automated Deployment"
-    - name: Report settings
+    - name: Report node version
       run: node --version
+    - name: Report node location
+      run: which node
+    - name: Report npm location
+      run: which npm
+    - name: Report npm version
+      run: npm --version
     - name: Clean node modules
       run: rm -rf node_modules
     - name: Clean npm cache
       run: npm cache clean --force
-    - name: NPM install
+    - name: npm install
       run: npm install --verbose
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@db4aacadf4db71778afb0c8a452382184a71d318
