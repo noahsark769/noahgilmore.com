@@ -27,6 +27,8 @@ jobs:
       run: npm --version
     - name: Clean node modules
       run: rm -rf node_modules
+    - name: Clean gatsby cache
+      run: rm -rf .cache
     - name: Clean npm cache
       run: npm cache clean --force
     - name: npm install
