@@ -39,11 +39,12 @@ jobs:
       run: npm install --verbose
     - name: npm rebuild
       run: npm rebuild
+    - name: npm run gatsby-build
+      run: npm run gatsby-build
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
         FOLDER: public
-        BUILD_SCRIPT: npm run gatsby-build
         CNAME: noahgilmore.com
