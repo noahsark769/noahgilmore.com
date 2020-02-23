@@ -17,6 +17,10 @@ jobs:
       run: |
         git config --global user.email "ci@noahgilmore.com"
         git config --global user.name "Automated Deployment"
+    - name: Print working directory
+      run: pwd
+    - name: Print working directory contents
+      run: ls -al
     - name: Report node version
       run: node --version
     - name: Report node location
