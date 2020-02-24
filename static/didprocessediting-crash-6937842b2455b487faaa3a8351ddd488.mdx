@@ -1,0 +1,85 @@
+---
+title: "NSTextStorage: Crash in didProcessEditing"
+date: 2020-02-23
+tags: swift, appkit, macos
+staticPreview: "When you're writing an editor, a common feature is to intercept the user's typing and automatically edit the text, to make writing easier. For example, if we're typing in a list, we might want to automatically insert another bullet point when the user presses enter..."
+mdxPreview: >
+  When you're writing an [editor](https://twitter.com/noahsark769/status/1231077295164538880?s=20), a common feature is to intercept the user's typing and automatically edit the text, to make writing easier. For example, if we're typing in a list, we might want to automatically insert another bullet point when the user presses enter...
+---
+When you're writing an [editor](https://twitter.com/noahsark769/status/1231077295164538880?s=20), a common feature is to intercept the user's typing and automatically edit the text, to make writing easier. For example, if we're typing in a list, we might want to automatically insert another bullet point when the user presses enter.
+
+With `NSTextView` and `NSTextStorageDelegate`, it might be tempting to do this in the delegate's `didProcessEditing` - when the user enters a newline, we insert another dash into the text storage and call it a day, right?
+
+```swift
+extension MyTextView: NSTextStorageDelegate {
+    func textStorage(
+        _ textStorage: NSTextStorage,
+        didProcessEditing editedMask: NSTextStorageEditActions,
+        range editedRange: NSRange,
+        changeInLength delta: Int
+    ) {
+        guard let stringRange = Range(
+            editedRange, in: textStorage.string
+        ) else { return }
+        let editedString = textStorage.string[stringRange]
+        let lineRange = textStorage.string.lineRange(for: stringRange)
+        let line = textStorage.string[lineRange]
+
+        if editedString == "\n" && line.trimmingCharacters(
+            in: .whitespaces
+        ).starts(with: "-") {
+            let locationToInsert = NSMaxRange(editedRange)
+            let textToInsert = "- "
+            textStorage.insert(
+                NSAttributedString(string: textToInsert),
+                at: locationToInsert
+            )
+        }
+    }
+}
+```
+
+This might behave as expected...at first. But after the characters are inserted and you keep typing, you'll start seeing random errors related to string length, index out of bounds, or in the worst case, a crash in `objc_release` where the only stack trace is the `NSTextStorage`'s `didProcessEditing` - not even any exception or error message, just an `EXC_BAD_ACCESS`.
+
+I ran into this and spent almost a whole day trying to figure out what the issue was, until I had the sense to read the [NSTextStorageDelegate documentation](https://developer.apple.com/documentation/uikit/nstextstoragedelegate) more closely. The docs for [didProcessEditing](https://developer.apple.com/documentation/uikit/nstextstoragedelegate/1534375-textstorage) say:
+
+> The delegate can verify the final state of the text storage object; it can’t change the text storage object’s characters without leaving it in an inconsistent state, but if necessary it can change attributes.
+
+By calling `insert`, we're changing the object's characters and leaving it in an inconsistent state 😱
+
+Luckily `NSTextStorageDelegate` provides a hook where you _can_ edit the text. For [willProcessEditing](https://developer.apple.com/documentation/uikit/nstextstoragedelegate/1534795-textstorage):
+
+> The delegate can verify the changed state of the text storage object and make changes to the text storage object’s characters or attributes to enforce whatever constraints it establishes.
+
+So the best way is to get rid of that code from didProcessEditing and do the edit in willProcessEditing instead:
+
+```swift
+extension MyTextView: NSTextStorageDelegate {
+    func textStorage(
+        _ textStorage: NSTextStorage,
+        willProcessEditing editedMask: NSTextStorageEditActions,
+        range editedRange: NSRange,
+        changeInLength delta: Int
+    ) {
+        guard let stringRange = Range(
+            editedRange, in: textStorage.string
+        ) else { return }
+        let editedString = textStorage.string[stringRange]
+        let lineRange = textStorage.string.lineRange(for: stringRange)
+        let line = textStorage.string[lineRange]
+
+        if editedString == "\n" && line.trimmingCharacters(
+            in: .whitespaces
+        ).starts(with: "-") {
+            let locationToInsert = NSMaxRange(editedRange)
+            let textToInsert = "- "
+            textStorage.insert(
+                NSAttributedString(string: textToInsert),
+                at: locationToInsert
+            )
+        }
+    }
+}
+```
+
+Hopefully this saves someone some time running into `didProcessEditing` crashes.

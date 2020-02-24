@@ -1,0 +1,28 @@
+---
+title: Processing shift-tab (backtab) events in NSTextView
+date: 2020-02-22
+tags: macos, appkit, swift
+staticPreview: I'm writing a Mac App which includes an NSTextView. One of the things I found difficult to discover online is how to respond to when the user presses shift-tab while editing in the text view - I wanted to intercept this event to de-indent a list item...
+mdxPreview: >
+  I'm writing a [Mac App](https://twitter.com/noahsark769/status/1137425513402658816?s=20) which includes an `NSTextView`. One of the things I found difficult to discover online is how to respond to when the user presses shift-tab while editing in the text view - I wanted to intercept this event to de-indent a list item...
+---
+I'm writing a [Mac App](https://twitter.com/noahsark769/status/1137425513402658816?s=20) which includes an `NSTextView`. One of the things I found difficult to discover online is how to respond to when the user presses shift-tab while editing in the text view - I wanted to intercept this event to de-indent a list item.
+
+Turns out this is called a "backtab" and `NSTextView` has a built in way for consumers to respond to it, as part of `NSTextViewDelegate`. You implement the `doCommandBy` function and check for `#selector(insertBacktab(_:))`
+
+```swift
+extension MyViewController: NSTextViewDelegate {
+    func textView(
+        _ textView: NSTextView,
+        doCommandBy commandSelector: Selector
+    ) -> Bool {
+        if commandSelector == #selector(insertBacktab(_:)) {
+            print("Handling the backtab!")
+            return true
+        }
+        return false
+    }
+}
+```
+
+Note: we return true to indicate that the event was handled, which prevents any other default behavior. We need to return false otherwise, since we still want other commands (like inserting newlines) to work correctly.

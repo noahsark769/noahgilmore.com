@@ -1,0 +1,52 @@
+---
+title: Something went wrong installing the "sharp" module. Module did not self-register.
+date: 2020-02-22
+tags: js, gatsby, web
+staticPreview: I spent more time than I'd care to admit today trying to debug why my Github Actions workflow to automatically deploy new versions of noahgilmore.com on push to master was failing. The site is build on Gatsby, and the pipeline runs gatsby build, but I was running into the following error on every push...
+mdxPreview: >
+  I spent [more time than I'd care to admit](https://twitter.com/noahsark769/status/1231387394189824000?s=20) today trying to debug why my Github Actions workflow to automatically deploy new versions of noahgilmore.com on push to `master` was failing. The site is build on [Gatsby](https://www.gatsbyjs.org/), and the pipeline runs `gatsby build`, but I was running into the following error on every push...
+---
+I spent [more time than I'd care to admit](https://twitter.com/noahsark769/status/1231387394189824000?s=20) today trying to debug why my Github Actions workflow to automatically deploy new versions of noahgilmore.com on push to `master` was failing. The site is built on [Gatsby](https://www.gatsbyjs.org/), and the pipeline runs `gatsby build`, but I was running into the following error on every push:
+
+```
+Something went wrong installing the "sharp" module
+
+Module did not self-register.
+
+- Remove the "node_modules/sharp" directory, run "npm install" and look for errors
+- Consult the installation documentation at https://sharp.pixelplumbing.com/en/stable/install/
+- Search for this error at https://github.com/lovell/sharp/issues
+```
+
+Given [how](https://github.com/gatsbyjs/gatsby/issues/18277) [many](https://github.com/lovell/sharp/issues/1899) [different](https://github.com/lovell/sharp/issues/2031) [people](https://github.com/lovell/sharp/issues/952) [have](https://github.com/lovell/sharp/issues/1936) [reported](https://github.com/lovell/sharp/issues/1983) [symptoms](https://github.com/lovell/sharp/issues/2065) [of](https://github.com/lovell/sharp/issues/1819) what looks like the same issue, I figured I'd shared what worked for my case.
+
+The root cause of this issue seems to be that folks are trying to run `gatsby build` with a version of node which is different than the one they installed `sharp` with. In my case, I used to have the workflow set up do deploy like this:
+
+```yml
+- name: Build and Deploy
+  uses: JamesIves/github-pages-deploy-action@db4aacadf4db71778afb0c8a452382184a71d318
+    env:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      BRANCH: gh-pages
+      FOLDER: public
+      BUILD_SCRIPT: npm run gatsby-build
+      CNAME: noahgilmore.com
+```
+
+[github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action) is a great github action that automatically pushes a given local folder to your `gh-pages` branch to deploy via [Github Pages](https://pages.github.com/). The version I was using ran everything in a Docker container and excuted the given `BUILD_SCRIPT` before pushing. I think this was the issue - that container most likely had a different version of node.
+
+The most recent release of this action gets rid of the `BUILD_SCRIPT` entirely, opting to let the workflow build its own folder first, and the action _just_ takes care of pushing the build folder. The working workflow looks like this:
+
+```yml
+- name: npm run gatsby-build
+  run: npm run gatsby-build
+- name: Build and Deploy
+    uses: JamesIves/github-pages-deploy-action@releases/v3
+    with:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      BRANCH: gh-pages
+      FOLDER: public
+      CNAME: noahgilmore.com
+```
+
+Single responsibilities make everything easier for everyone 👍
