@@ -76,7 +76,7 @@ const Nav = (props) => {
             <NavLinks>
                 <NavLink><StyledA aria-label="Blog Home" href="/blog"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
                 <NavLink><StyledA aria-label="Twitter" href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
-                <NavLink><StyledA aria-label="App Store" href="https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
+                <NavLink><StyledA aria-label="App Store" href="https://apps.apple.com/us/app/cifilter-io/id1457458557"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
             </NavLinks>
         </StyledNav>
     );
