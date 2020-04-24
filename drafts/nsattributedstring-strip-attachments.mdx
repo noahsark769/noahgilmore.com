@@ -1,0 +1,16 @@
+```
+var rangesToReplace: [NSRange: String] = [:]
+        renderedString.enumerateAttribute(.attachment, in: NSRange(location: 0, length: renderedString.length), options: []) { value, range, stop in
+            guard value != nil, range.length > 0 else { return }
+            rangesToReplace[range] = ""
+        }
+
+        // Assumes all attachments are length one
+        let mutableString = renderedString.mutableCopy() as! NSMutableAttributedString
+        var replacements = 0
+        for (range, replacement) in rangesToReplace.sorted(by: { $0.0.location < $1.0.location }) {
+            mutableString.replaceCharacters(in: NSRange(location: range.location - replacements, length: 1), with: replacement)
+            replacements += 1
+        }
+        return mutableString.string
+```
