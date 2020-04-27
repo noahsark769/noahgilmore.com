@@ -1,0 +1,136 @@
+---
+title: Relative date time formatting in SwiftUI
+date: 2019-10-19
+tags: ios, swift, swiftui, apple
+staticPreview: In the wild world of 2019 SwiftUI development, lots of things aren't documented. One such thing I ran into recently was the usage of RelativeDateTimeFormatter in a Text view...
+mdxPreview: >
+  In the wild world of 2019 SwiftUI development, lots of things aren't documented. One such thing I ran into recently was the usage of `RelativeDateTimeFormatter` in a `Text` view...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+
+In the wild world of 2019 SwiftUI development, lots of things aren't documented. One such thing I ran into recently was the usage of `RelativeDateTimeFormatter` in a `Text` view.
+
+`RelativeDateTimeFormatter` is a new formatter which is available in iOS 13+ and macOS 10.15+. Though it's [not documented at the time of writing](https://developer.apple.com/documentation/foundation/relativedatetimeformatter) (just like [14.6% of Foundation](https://nooverviewavailable.com/foundation/)), there have been a [fair](https://nshipster.com/formatter/#relativedatetimeformatter) [amount](https://david.y4ng.fr/relativedatetimeformatter-and-listformatter/) of folks online writing about it. This formatter formats dates relative each other as well as relative `DateComponents` - its output looks like "one minute ago" or "two minutes from now".
+
+Most blog posts about `RelativeDateTimeFormatter` show its usage like this:
+
+```swift
+let formatter = RelativeDateTimeFormatter()
+formatter.localizedString(from: DateComponents(day: -1)) // "1 day ago"
+```
+
+# SwiftUI, date formatters, and string interpolation
+SwiftUI declares a custom string interpolation ([which is a new feature in Swift 5](https://www.hackingwithswift.com/articles/163/how-to-use-custom-string-interpolation-in-swift)) called `LocalizedStringKey.StringInterpolation` (also [undocumented at the time of writing](https://developer.apple.com/documentation/swiftui/localizedstringkey/stringinterpolation), like [59.4% of SwiftUI](https://nooverviewavailable.com/swiftui/)) which allows you to write `Text` views with formatters like so:
+
+```swift
+Text("My String \(myVariable, formatter: myFormatter)")
+```
+
+Let's assume I want to show the relative time from the [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time) until now. I'll just write a `Text` the same way, right?
+
+```swift
+struct ContentView: View {
+    static let formatter = RelativeDateTimeFormatter()
+
+    var body: some View {
+        let unixEpoch = Date(timeIntervalSince1970: 0)
+        let components = Calendar.current.dateComponents(
+            [.day, .year, .month, .minute, .second],
+            from: Date(),
+            to: unixEpoch
+        )
+        return VStack {
+            Text("Current date is:")
+            Text("\(components, formatter: Self.formatter)").bold()
+            Text("since the unix Epoch")
+            Spacer()
+        }
+    }
+}
+```
+
+Unfortunately this doesn't work - the middle text doesn't show up:
+
+<CaptionedImage filename="relativedatetime-1.png" alt="Screenshot of the app showing no content in the second Text view" caption="Interesting" />
+
+There's also an error in the console!
+
+```
+The supplied formatter <NSRelativeDateTimeFormatter: 0x6000025c7c00>
+returned `nil` when invoked with <NSDateComponents: 0x6000026b4450> {
+    Calendar Year: -49
+    Month: -9
+    Day: -18
+    Minute: -1017
+    Second: -43. An empty string will be used instead.
+```
+
+# The Tricky Part
+As far as I can tell, the reason this happens is because `RelativeDateTimeFormatter` has a few different methods, with different signatures, for formatting its relative dates:
+
+```swift
+func localizedString(for: Date, relativeTo: Date) -> String
+func localizedString(from: DateComponents) -> String
+func localizedString(fromTimeInterval: TimeInterval) -> String
+func string(for: Any?) -> String?
+```
+
+Only one of those matches the [Formatter](https://developer.apple.com/documentation/foundation/formatter) superclass definition that SwiftUI's string interpolation uses. I'm guessing that `RelativeDateTimeFormatter`'s `string(for:)` method doesn't call into the same code that `localizedString(from:)` uses - it seems like `string(for:)` handles the `Date` case, but not the `DateComponents` case.
+
+Hopefully this changes in a future version of iOS, but for now, we can solve the problem in a couple of ways: 
+
+## Solution #1
+Since what we want is the date relative to _right now_, and that's the default behavior of `RelativeDateTimeFormatter`, we can just pass in `epochTime`:
+
+```swift
+struct ContentView: View {
+    static let formatter = RelativeDateTimeFormatter()
+
+    var body: some View {
+        let unixEpoch = Date(timeIntervalSince1970: 0)
+        return VStack {
+            Text("Current date is:")
+            Text("\(unixEpoch, formatter: Self.formatter)").bold()
+            Text("since the unix Epoch")
+            Spacer()
+        }
+    }
+}
+```
+
+This gets us the result we want:
+
+<CaptionedImage filename="relativedatetime-2.png" alt="Screenshot of the app showing the correct relative time" caption="Note: if you want minutes, seconds, etc, set the formatter's dateTimeStyle and unitStyle" />
+
+Also note: even though nothing at the surface level is calling `localizedString`, the string will be properly localized as long as you set the formatter's `locale`.
+
+## Solution #2
+We can also ignore the custom string interpolation, and just call the formatter's `localizedString`:
+
+```swift
+struct ContentView: View {
+    static let formatter = RelativeDateTimeFormatter()
+
+    var body: some View {
+        let unixEpoch = Date(timeIntervalSince1970: 0)
+        let components = Calendar.current.dateComponents(
+            [.day, .year, .month, .minute, .second],
+            from: Date(),
+            to: unixEpoch
+        )
+        return VStack {
+            Text("Current date is:")
+            Text("\(Self.formatter.localizedString(from: components))").bold()
+            Text("since the unix Epoch")
+            Spacer()
+        }
+    }
+}
+```
+
+<CaptionedImage filename="relativedatetime-2.png" alt="Screenshot of the app showing the correct relative time" caption="🎉" />
+
+# Conclusion
+Either of the solutions above would work for this specific issue, though if you want to output the relative time between two dates (instead of between one date and now) with the `formatter:` string interpolation, looks like you're out of luck.
+
+Sample code for this post is available [on GitHub   ](https://github.com/noahsark769/NGSwiftUIRelativeDateTimeFormatterExample).

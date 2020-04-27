@@ -1,0 +1,36 @@
+---
+title: CIVector Codable
+date: 2019-03-05
+tags: ios, swift, coreimage, apple
+staticPreview: For my current side project, I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's Codable...
+mdxPreview: For my current [side project](https://twitter.com/noahsark769/status/1102318232025718785), I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's `Codable`...
+---
+For my current [side project](https://twitter.com/noahsark769/status/1102318232025718785), I have to export CIFilter parameters to json, and I've been running into issues with various CoreImage types not conforming to Swift's `Codable`. `CIColor` works well with `Codable` out of the box, but `CIVector` (which represents an arbitrary length list of `CGFloats`) is trickier.
+
+Thought I'd share a wrapper type which I use to encode and decode `CIVector`:
+
+```swift
+struct CIVectorCodableWrapper {
+    let vector: CIVector
+}
+
+extension CIVectorCodableWrapper: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        var floats: [CGFloat] = []
+        while !container.isAtEnd {
+            floats.append(try container.decode(CGFloat.self))
+        }
+        vector = CIVector(floats: floats)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        for i in 0..<vector.count {
+            try container.encode(vector.value(at: i))
+        }
+    }
+}
+```
+
+`CIVector` is semantically an "unkeyed container" type, so the `Codable` implementation encodes the vector's floats to an unkeyed coding container (with `JSONEncoder`, for example, this becomes an array).

@@ -1,0 +1,17 @@
+---
+title: Implementing Amplitude analytics in a macOS app
+date: 2020-04-20
+tags: swift, macos, apple
+staticPreview: I've been moving towards Amplitude for analytics in my personal apps, since it seems to have the best user experience and easiest itegration vs Google Analytics and Mixpanel (plus, it has a free tier!), but I only recently implemented analytics in a macOS app..
+mdxPreview:
+    I've been moving towards [Amplitude](https://amplitude.com/) for analytics in my personal apps, since it seems to have the best user experience and easiest itegration vs Google Analytics and Mixpanel (plus, it has a free tier!), but I only recently implemented analytics in a macOS app...
+---
+I've been moving towards [Amplitude](https://amplitude.com/) for analytics in my personal apps, since it seems to have the best user experience and easiest itegration vs Google Analytics and Mixpanel (plus, it has a free tier!), but I only recently implemented analytics in a macOS app. It was a bit tough to figure out how to pull in Amplitude, since (as far as I can tell) their [documentation](https://developers.amplitude.com/?objc--ios#setting-up-our-sdks) is iOS-specific. If you try to install the `Amplitude-iOS` pod in a Mac app, you're going to have a bad time.
+
+Luckily they're publishing [another podspec](https://github.com/amplitude/Amplitude-iOS/blob/v5.1.0/Amplitude.podspec) which correctly sets the macOS deployment target. Integrating Amplitude into your project is as easy as:
+
+```ruby
+pod 'Amplitude'
+```
+
+(This post isn't sponsored by Amplitude, it's just the best solution I've found for tracking usage of my personal apps.)

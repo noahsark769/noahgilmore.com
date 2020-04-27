@@ -1,0 +1,19 @@
+---
+title: GPU Capture Button Flickering
+date: 2019-10-28
+tags: ios, metal, swift, apple
+staticPreview: One of the "Things I Don't Know" in the iOS ecosystem is Metal. As such, I've been working through Metal By Example recently, which still stands as a great introduction to Metal...
+mdxPreview: >
+    One of the "[Things I Don't Know](https://overreacted.io/things-i-dont-know-as-of-2018/)" in the iOS ecosystem is Metal. As such, I've been working through [Metal By Example](https://metalbyexample.com/) recently, which still stands as a great introduction to Metal...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+
+One of the "[Things I Don't Know](https://overreacted.io/things-i-dont-know-as-of-2018/)" in the iOS ecosystem is Metal. As such, I've been working through [Metal By Example](https://metalbyexample.com/) recently, which still stands as a great introduction to Metal. Invariably I've hit issues debugging my shader pipelines, and [GPU Frame Capture](https://app.plangrid.com/projects/712902dd-d42d-d9de-9557-86222a6ef5b2/sheets) has been a really invaluable tool.
+
+One weird thing I noticed was that in the [examples](https://github.com/noahsark769/MetalByExampleExamples) I was writing, the camera button in Xcode which enables GPU Frame Capture would flicker, making it really hard to click:
+
+<CaptionedImage max={400} filename="gpu-frame-capture.gif" alt="GIF showing the camera button flickering" caption="" />
+
+After puzzling over this for a while, Warren Moore, who wrote the book (!) [reached out](https://twitter.com/warrenm/status/1188915996125356032) on Twitter to note that this might happen because I was calling the device's `makeCommandQueue` every frame, when really I should be creating one up front and saving it.
+
+[It worked](https://github.com/noahsark769/MetalByExampleExamples/commit/6a6e7b0320bc877e58c055fd5f084fe91ff5e1ad#diff-c11c08d51dee2b1b6b212e4dc20e1d65R21), and now the flicker doesn't happen anymore! 🎉
