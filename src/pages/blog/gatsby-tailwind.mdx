@@ -1,0 +1,45 @@
+---
+title: Gatsby with Tailwind CSS
+date: 2020-04-26
+tags: web, react, gatsby, tailwind
+staticPreview: When creating the site for Fluency, I knew I wanted to use Gatsby, but I figured I'd try out Tailwind CSS as well. Unfortunately the docs on how to integrate Tailwind with Gatsby are quite complicated...
+mdxPreview: >
+    When creating the site for [Fluency](https://getfluency.io), I knew I wanted to use [Gatsby](https://www.gatsbyjs.org/), but I figured I'd try out [Tailwind CSS](https://tailwindcss.com/) as well. Unfortunately the [docs](https://www.gatsbyjs.org/docs/tailwind-css/) on how to integrate Tailwind with Gatsby are quite complicated...
+---
+When creating the site for [Fluency](https://getfluency.io), I knew I wanted to use [Gatsby](https://www.gatsbyjs.org/), but I figured I'd try out [Tailwind CSS](https://tailwindcss.com/) as well. Unfortunately the [docs](https://www.gatsbyjs.org/docs/tailwind-css/) on how to integrate Tailwind with Gatsby are quite complicated, and as someone who isn't super familiar with the current state of web build systems, PostCSS, etc, it took me longer than I thought to figure out how to integrate it.
+
+So, this is what I know as the minimal number of steps to start using Tailwind classes to style your CSS in a Gatsby site:
+
+1. Install packages:
+    ```
+    npm install tailwindcss --save-dev
+    npm install --save gatsby-plugin-postcss
+    ```
+2. Add plugin to your `gatsby-config.js`, so that Gatsby knows to load postcss (which loads Tailwind):
+    ```js
+    plugins: [`gatsby-plugin-postcss`],
+    ```
+3. Add the following to a new file at the root of the repo called `postcss.config.js` so that postcss knows to load Tailwind:
+    ```js
+    module.exports = () => ({
+      plugins: [require("tailwindcss")],
+    })
+    ```
+4. Create a new css file with the following content (the directives here apply Tailwind styles) - I called mine `global.css`:
+    ```css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    ```
+5. Add the following to `gatsby-browser.js`, so that Gatsby imports Tailwind on every page:
+    ```js
+    import "./src/global.css";
+    ```
+
+Voila, you should now be able to use Tailwind classes anywhere to style your site.
+
+## Bonus
+If you happen to use the Tailwind CSS Itellisense plugin for VS Code, which will autocomplete Tailwind CSS classes, there's an [issue](https://github.com/bradlc/vscode-tailwindcss/issues/74) open indicating that a Tailwind config is required. In order to make this work, you'll need to run
+```
+npx tailwind init
+```
