@@ -24,6 +24,8 @@ mdxPreview: >
 
   print([A(x: 1)] == [A(x: 1)])
 ---
+> Update (4/27/2020): 4 years after writing this article, I realized that it could be improved on a little bit. Added info about the recommended way to override equality for NSObjects, and a note about how Swiftlint has a rule to handle this.
+
 Swift can be tricky sometimes. For example, what does the following print?
 
 ```swift
@@ -99,7 +101,7 @@ false
 
 ### The fix
 
-As far as I can tell, the best way to make an NSObject subclass use custom equality inside an array is to override isEqual:
+The best way to make an NSObject subclass use custom equality inside an array is to override isEqual:
 
 ```swift
 class C: NSObject {
@@ -111,25 +113,20 @@ class C: NSObject {
 
   override func isEqual(_ object: Any?) -> Bool {
     guard let object = object as? C else { return false }
-    return object == self
+    return object.x == self.x
   }
 }
-
-func ==(left: C, right: C) -> Bool {
-  print("== for C")
-  return left.x == right.x
-}
 ```
+
 ```swift
 print([C(x: 1)] == [C(x: 1)])
 ```
 ```nohighlight
-== for C
 true
 ```
     
 Of course, if we defined `A` as a `struct` or a regular `class` in the first place, there won't be `==(_:_:)` defined for `[A]`, which means the compiler would catch our mistake instead of falling back to something that might not work correctly.
 
-Sigh. Working with NSObject can be tricky.
+If you use Swiftlint, there's actually a rule you can use to prefer the recommended way of overriding `isEqual`: [nsobject_prefer_isequal](https://realm.github.io/SwiftLint/nsobject_prefer_isequal.html). Highly recommended!
 
 A working playground with the code from this post can be found [here](https://github.com/noahsark769/code-examples/blob/ed9df41aae709eaeb4e334e3e9a5b1a650deef4d/swift/swift-nsobject-equatable.playground/Contents.swift).
