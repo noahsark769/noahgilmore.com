@@ -6,6 +6,8 @@ staticPreview: When creating the site for Fluency, I figured now was as good a t
 mdxPreview: >
     When creating the site for [Fluency](https://getfluency.io), I figured now was as good a time as any to try out [Tailwind CSS](https://tailwindcss.com/). Like all static sites I build nowadays, the site runs on [Gatsby](https://www.gatsbyjs.org/), but wnfortunately the [docs](https://www.gatsbyjs.org/docs/tailwind-css/) on how to integrate Tailwind with Gatsby are quite complicated...
 ---
+> Update (5/2/2020): Added another bonus section about how to implement dark mode with Tailwind.
+
 When creating the site for [Fluency](https://getfluency.io), I figured now was as good a time as any to try out [Tailwind CSS](https://tailwindcss.com/). Like all static sites I build nowadays, the site runs on [Gatsby](https://www.gatsbyjs.org/), but unfortunately the [docs](https://www.gatsbyjs.org/docs/tailwind-css/) on how to integrate Tailwind with Gatsby are quite complicated. As someone who isn't super familiar with the current state of web build systems, PostCSS, etc, it took me longer than I thought to figure out how to integrate it.
 
 So, this is what I know as the minimal number of steps to start using Tailwind classes to style your CSS in a Gatsby site:
@@ -38,8 +40,33 @@ So, this is what I know as the minimal number of steps to start using Tailwind c
 
 Voila, you should now be able to use Tailwind classes anywhere to style your site.
 
-## Bonus
+## Bonus: VSCode Autocompletion
 If you happen to use the Tailwind CSS Itellisense plugin for VS Code, which will autocomplete Tailwind CSS classes, there's an [issue](https://github.com/bradlc/vscode-tailwindcss/issues/74) open indicating that a Tailwind config is required. In order to make this work, you'll need to run
 ```
 npx tailwind init
 ```
+
+## Bonus: Dark Mode
+I loved [this article from Stefan Zweifel](https://stefanzweifel.io/posts/support-mojave-dark-mode-with-tailwind-css/) about how to support dark mode in Tailwind: if you've already got a config file from the last step (`tailwind init`), then you can copy this config to support dark mode out of the box:
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {},
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      'dark-mode': {'raw': '(prefers-color-scheme: dark)'},
+    },
+  },
+  variants: {},
+  plugins: [],
+}
+```
+
+Then you can use `dark-mode` as a specifier for your Tailwind styles: `dark-mode:text-white` for example.
+
+(Note: I've included the built-in screens for Tailwind here, since if you just put in the `dark-mode` specifier, other screens like `md` won't work. I'm not sure if there's a way to extend the default configuration rather than redefining it.)
