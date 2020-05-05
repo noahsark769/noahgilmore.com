@@ -1,0 +1,85 @@
+---
+title: UserDefaults editing with SwiftUI and property wrappers
+date: 2020-05-04
+tags: swift, ios, macos, swiftui
+staticPreview: TODO
+mdxPreview: >
+    TODO
+---
+I've been talking a lot TODO tweet embed online about how useful SwiftUI has been in building debug components for Fluency TODO link - debug menus are one of the places where you can start using SwiftUI right now (TODO link to rambo's post), and I've found that since writing little UIs is easier with SwiftUI, I've been able to create a lot more developer tools for myself, _during the actual development_ of the app.
+
+I thought I'd highlight in this post one of the debug tools I developed for editing the app's known UserDefaults on the fly, since I found it to be especially nice and elegant when combined with modern Swift components like property wrappers, keypaths, and bindings.
+
+The UI we're building is doesn't have a lot of components: each boolean user default gets a toggle, and when you tap the toggle, the user default gets persisted:
+
+TODO image with toggles
+
+> The full code in a sample app is available at TODO. The example is an iOS app, but almost the exact same code works with macOS as well!
+
+# UserDefaults with property wrappers
+
+A lot has been written about TODO links writing your app's UserDefaults as a global object with property wrappers - in fact, I think it's one of the few cases I've come across where property wrappers make a lot of sense to use over other methods. The Fluency TODO link property wrapper looks like this:
+
+```swift
+@propertyWrapper
+struct SimpleUserDefault<T> {
+    let userDefaults: UserDefaults
+    let key: String
+    let defaultValue: T
+
+    init(
+        userDefaults: UserDefaults = UserDefaults.standard,
+        key: String,
+        defaultValue: T
+    ) {
+        self.userDefaults = userDefaults
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+
+    var wrappedValue: T {
+        get {
+            guard let data = userDefaults.object(forKey: key) as? T else { return self.defaultValue }
+            return data
+        }
+
+        set {
+            userDefaults.set(newValue, forKey: key)
+        }
+    }
+}
+```
+
+I've found this implementation works well for native values like bools (if you want more complicated encoding/decoding, your mileage may vary). The next step is to create a global object (I call mine `UserDefaultsConfig`) which wraps the defaults. Let's assume that we have two defaults: one to enable debug mode in our app, and one to hide a new UI we don't want released yet:
+
+```swift
+class UserDefaultsConfig {
+    static let shared = UserDefaultsConfig()
+
+    @SimpleUserDefault(key: "com.getfluencyio.is-test-mode-enabled", defaultValue: false)
+    var testModeEnabled: Bool
+
+    @SimpleUserDefault(key: "com.getfluencyio.is-new-ui-enabled", defaultValue: false)
+    var newUIEnabled: Bool
+}
+```
+
+Wherever we want to check out defaults, we can use `if UserDefaultsConfig.shared.testModeEnabled { /*...*/ }` to determine the default's value. But the really interesting part is building a debug tool for ourselves which lets us edit each of these flags on the fly.
+
+# Editing UI
+For the editing UI in our debug menu, we'll write a quick SwiftUI view:
+
+```swift
+struct UserDefaultsView: View {
+    var body: some View {
+        List {
+            UserDefaultsConfigToggleItemView(path: \.testModeEnabled, name: "Test Mode")
+            UserDefaultsConfigToggleItemView(path: \.newUIEnabled, name: "Hide Test Mode UI")
+        }.navigationBarTitle("UserDefaults Editor", displayMode: .inline)
+    }
+}
+```
+
+The only trouble is, how to implement the `UserDefaultsConfigToggleItemView`?
+
+TODO twitter embed of the guys original tweet
