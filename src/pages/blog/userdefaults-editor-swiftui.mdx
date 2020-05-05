@@ -1,24 +1,35 @@
 ---
 title: Writing a UserDefaults editor with SwiftUI and property wrappers
-date: 2020-05-04
+date: 2020-05-05
 tags: swift, ios, macos, swiftui
 staticPreview: I've been talking a lot online about how useful SwiftUI has been in building debug components for Fluency - debug menus are one of the places where you can start using SwiftUI right now...
 mdxPreview: >
     I've been talking a lot online about how useful SwiftUI has been in building debug components for [Fluency](https://getfluency.io?utm_source=noahgilmore.com&utm_campaign=userdefaultseditor&utm_content=0) - debug menus are one of the places where you can start using SwiftUI right now..
 ---
-I've been talking a lot (TODO tweet embed) online about how useful SwiftUI has been in building debug components for [Fluency](https://getfluency.io?utm_source=noahgilmore.com&utm_campaign=userdefaultseditor&utm_content=1) - debug menus are one of the places where you can start using SwiftUI right now (TODO link to rambo's post), and I've found that since writing little UIs is easier with SwiftUI, I've been able to create a lot more developer tools for myself, _during the actual development_ of the app.
+import CaptionedImage from '../../components/CaptionedImage';
+import FlowGrid from '../../components/FlowGrid';
+import Tweet from '../../components/Tweet';
+
+I've been talking a lot online about how useful SwiftUI has been in building debug components for [Fluency](https://getfluency.io?utm_source=noahgilmore.com&utm_campaign=userdefaultseditor&utm_content=1):
+
+<Tweet tweetId="1222697090595246080" />
+
+Debug menus are one of the places where you can [start using SwiftUI today](https://rambo.codes/posts/2020-01-03-you-can-use-swiftui-today), and I've found that since writing little UIs is easier with SwiftUI, I've been able to create a lot more developer tools for myself, _during the actual development_ of the app.
 
 I thought I'd highlight in this post one of the debug tools I developed for editing the app's known UserDefaults on the fly, since I found it to be especially nice and elegant when combined with modern Swift components like property wrappers, keypaths, and bindings.
 
 The UI we're building is doesn't have a lot of components: each boolean user default gets a toggle, and when you tap the toggle, the user default gets persisted:
 
-TODO image with toggles
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="userdefaults-0.png" alt="Main screen showing two user defaults indicated as on/off" caption="" />
+    <CaptionedImage max={300} filename="userdefaults-1.png" alt="Defaults editor screen showing toggles" caption="" />
+</FlowGrid>
 
-> The full code in a sample app is available at TODO. The example is an iOS app, but almost the exact same code works with macOS as well!
+> The full code in a sample app is available at [NGSwiftUIUserDefaultsEditorExample](https://github.com/noahsark769/NGSwiftUIUserDefaultsEditorExample). The example is an iOS app, but almost the exact same code works with macOS as well!
 
 # UserDefaults with property wrappers
 
-A lot has been written about TODO links writing your app's UserDefaults as a global object with property wrappers - in fact, I think it's one of the few cases I've come across where property wrappers make a lot of sense to use over other methods. The [Fluency](https://getfluency.io?utm_source=noahgilmore.com&utm_campaign=userdefaultseditor&utm_content=2) property wrapper looks like this:
+A [lot](https://christiantietze.de/posts/2019/12/userdefaults-property-wrappers/) [has](https://swiftsenpai.com/swift/create-the-perfect-userdefaults-wrapper-using-property-wrapper/) [been](https://www.andyibanez.com/posts/nsuserdefaults-property-wrappers/) [written](https://www.avanderlee.com/swift/property-wrappers/) about writing your app's UserDefaults as a global object with property wrappers - in fact, I think it's one of the few cases I've come across where property wrappers make a lot of sense to use over other methods. The [Fluency](https://getfluency.io?utm_source=noahgilmore.com&utm_campaign=userdefaultseditor&utm_content=2) property wrapper looks like this:
 
 ```swift
 @propertyWrapper
@@ -50,16 +61,22 @@ struct SimpleUserDefault<T> {
 }
 ```
 
-I've found this implementation works well for native values like bools (if you want more complicated encoding/decoding, your mileage may vary). The next step is to create a global object (I call mine `UserDefaultsConfig`) which wraps the defaults. Let's assume that we have two defaults: one to enable debug mode in our app, and one to hide a new UI we don't want released yet:
+I've found this implementation works well for native values like bools (if you want more complicated encoding/decoding, your mileage may vary). The next step is to create a global object (I call mine `UserDefaultsConfig`) which wraps the defaults. For this post we'll assume we have two defaults: one to enable debug mode in our app, and one to hide a new UI we don't want released yet:
 
 ```swift
 class UserDefaultsConfig {
     static let shared = UserDefaultsConfig()
 
-    @SimpleUserDefault(key: "com.getfluencyio.is-test-mode-enabled", defaultValue: false)
+    @SimpleUserDefault(
+        key: "com.getfluencyio.is-test-mode-enabled",
+        defaultValue: false
+    )
     var testModeEnabled: Bool
 
-    @SimpleUserDefault(key: "com.getfluencyio.is-new-ui-enabled", defaultValue: false)
+    @SimpleUserDefault(
+        key: "com.getfluencyio.is-new-ui-enabled",
+        defaultValue: false
+    )
     var newUIEnabled: Bool
 }
 ```
@@ -73,8 +90,12 @@ For the editing UI in our debug menu, we'll write a quick SwiftUI view:
 struct UserDefaultsView: View {
     var body: some View {
         List {
-            UserDefaultsConfigToggleItemView(/* reference testModeEnabled here */)
-            UserDefaultsConfigToggleItemView(/* reference newUIEnabled here */)
+            UserDefaultsConfigToggleItemView(
+                /* reference testModeEnabled here */
+            )
+            UserDefaultsConfigToggleItemView(
+                /* reference newUIEnabled here */
+            )
         }.navigationBarTitle("UserDefaults Editor", displayMode: .inline)
     }
 }
@@ -82,9 +103,9 @@ struct UserDefaultsView: View {
 
 But the implementation of `UserDefaultsConfigToggleItemView` isn't super straightforward. In fact, how to make this work in an elegant way has been confusing to more people than just me:
 
-TODO twitter embed of the guys original tweet
+<Tweet tweetId="1257350894892593158" />
 
-Let's break the problem into a simpler piece: how would we write this UI if UserDefaults wasn't involved? Probably we'd use a few `@State` properties and a `Toggle`:
+Let's break the problem into a simpler piece: how would we write this UI if UserDefaults _wasn't_ involved? Probably we'd use a few `@State` properties and a `Toggle`:
 
 ```swift
 struct UserDefaultsConfigToggleItemView: View {
@@ -126,11 +147,16 @@ struct UserDefaultsConfigToggleItemView: View {
 }
 ```
 
-This will work, but it's a lot of code to type out for every single property you want to edit. One step further would be to use key paths to create the binding:
+This will work, but it's a lot of code to type out for every single property you want to edit. 😿
+
+One step further would be to use key paths to create the binding:
 
 ```swift
 extension Binding {
-    init<RootType>(keyPath: ReferenceWritableKeyPath<RootType, Value>, object: RootType) {
+    init<RootType>(
+        keyPath: ReferenceWritableKeyPath<RootType, Value>,
+        object: RootType
+    ) {
         self.init(
             get: { object[keyPath: keyPath] },
             set: { object[keyPath: keyPath] = $0}
@@ -138,7 +164,10 @@ extension Binding {
     }
 }
 
-let testModeEnabledBinding = Binding(keyPath: \.testModeEnabled, object: UserDefaultsConfig.shared)
+let testModeEnabledBinding = Binding(
+    keyPath: \.testModeEnabled,
+    object: UserDefaultsConfig.shared
+)
 
 struct UserDefaultsConfigToggleItemView: View {
     let binding: Binding<Bool>
@@ -155,7 +184,9 @@ struct UserDefaultsConfigToggleItemView: View {
 }
 ```
 
-We've reduced the boilerplate for each binding, but we still have to write out a new one for every user default we want to edit. As I was working with this, I realized a better way would be to _make the UserDefaultsConfig object observerable itself!_ If we conform our config to ObservableObject, then we can have every toggle item observe one of its keypaths, which ends up looking quite nice:
+We've reduced the boilerplate for each binding, but...we still have to write out a new one for every user default we want to edit.
+
+As I was working with this, I realized a better way would be to _make the UserDefaultsConfig object observerable itself!_ If we conform our config to `ObservableObject`, then we can have every toggle item observe one of its keypaths, which ends up looking quite nice:
 
 ```swift
 class UserDefaultsConfig: ObservableObject {
@@ -163,14 +194,20 @@ class UserDefaultsConfig: ObservableObject {
 
     let objectWillChange = PassthroughSubject<Void, Never>()
 
-    @SimpleUserDefault(key: "com.getfluencyio.is-test-mode-enabled", defaultValue: false)
+    @SimpleUserDefault(
+        key: "com.getfluencyio.is-test-mode-enabled",
+        defaultValue: false
+    )
     var testModeEnabled: Bool {
         willSet {
             objectWillChange.send()
         }
     }
 
-    @SimpleUserDefault(key: "com.getfluencyio.is-new-ui-enabled", defaultValue: false)
+    @SimpleUserDefault(
+        key: "com.getfluencyio.is-new-ui-enabled",
+        defaultValue: false
+    )
     var newUIEnabled: Bool {
         willSet {
             objectWillChange.send()
@@ -189,7 +226,10 @@ struct UserDefaultsConfigToggleItemView: View {
 
     var body: some View {
         HStack {
-            Toggle(isOn: Binding(keyPath: self.path, object: self.defaultsConfig)) {
+            Toggle(isOn: Binding(
+                keyPath: self.path,
+                object: self.defaultsConfig
+            )) {
                 Text(name)
             }
             Spacer()
@@ -200,8 +240,14 @@ struct UserDefaultsConfigToggleItemView: View {
 struct UserDefaultsView: View {
     var body: some View {
         List {
-            UserDefaultsConfigToggleItemView(path: \.testModeEnabled, name: "Test Mode")
-            UserDefaultsConfigToggleItemView(path: \.newUIEnabled, name: "Hide Test Mode UI")
+            UserDefaultsConfigToggleItemView(
+                path: \.testModeEnabled,
+                name: "Test Mode"
+            )
+            UserDefaultsConfigToggleItemView(
+                path: \.newUIEnabled,
+                name: "Hide Test Mode UI"
+            )
         }.navigationBarTitle("UserDefaults Editor", displayMode: .inline)
     }
 }
@@ -209,7 +255,10 @@ struct UserDefaultsView: View {
 
 Here's what the sample app which implements this looks like - it's still surprising to me that SwiftUI enables creating nontrivial UIs like this in so few lines of code:
 
-TODO image
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="userdefaults-0.png" alt="Main screen showing two user defaults indicated as on/off" caption="" />
+    <CaptionedImage max={300} filename="userdefaults-1.png" alt="Defaults editor screen showing toggles" caption="" />
+</FlowGrid>
 
 ## Conclusion
 I think this ends up being a simple, expressive interface that allows for toggling all your UserDefaults flags in a debug menu view pretty easily. Property wrappers and key paths definitely make Swift more complicated, but they end up enabling really nice syntactic sugar like this, which I love as a developer because I get to spend less time writing boilerplate and more time focusing on the business logic of the apps I write.
