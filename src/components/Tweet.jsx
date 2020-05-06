@@ -4,11 +4,17 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 const Wrapper = styled.div`
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 `;
 
 const InnerWrapper = styled.div`
-    display: inline-block;
+    width: 1px;
+    min-width: 500px;
+
+    @media all and (max-width: 600px) {
+        min-width: 90%;
+    }
 `;
 
 export default class Tweet extends React.Component {
