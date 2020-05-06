@@ -81,7 +81,13 @@ class UserDefaultsConfig {
 }
 ```
 
-Wherever we want to check out defaults, we can use `if UserDefaultsConfig.shared.testModeEnabled { /*...*/ }` to determine the default's value. But the really interesting part is building a debug tool for ourselves which lets us edit each of these flags on the fly.
+Wherever we want to check out defaults, we can use
+
+```swift
+if UserDefaultsConfig.shared.testModeEnabled { /*...*/ }
+```
+
+to determine the default's value. But the really interesting part is building a debug tool for ourselves which lets us edit each of these flags on the fly.
 
 # Editing UI
 For the editing UI in our debug menu, we'll write a quick SwiftUI view:
