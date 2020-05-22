@@ -56,7 +56,7 @@ protocol NetworkInterface {
 
 And the concrete implementation:
 
-```
+```swift
 private class NetworkService: NetworkInterface {
     func makeRequest(
         url: URL,
@@ -75,7 +75,7 @@ let getNetwork = SimpleDI.bind(NetworkInterface.self) { NetworkService() }
 
 `bind` returns `getNetwork` as a function which can be called to get a concrete implementation of the `NetworkInterface` protocol. `CatService` can then call `getNetwork` to get access to the network:
 
-```
+```swift
 class CatService {
     func getCat(id: Int, completion: @escaping (Result<Cat, Error>) -> Void) {
         let network = getNetwork()
@@ -157,7 +157,7 @@ This code isn't very pretty - in fact, checks like `isTestEnvironment` are gener
 
 Let's say we want to write a test which makes sure CatService reports an error when the underlying network errors:
 
-```
+```swift
 class NetworkThatAlwaysErrors: NetworkInterface {
     func makeRequest(url: URL, completion: @escaping (Result<Data>) -> Void) {
         completion(.error(error: NSError(domain: "", code: 0, userInfo: nil)))
