@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 <url> <loc>https://noahgilmore.com/blog/tags/swift/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/tags/testing/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tags/ios/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tags/macos/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tags/swiftui/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -63,6 +64,7 @@
 <url> <loc>https://noahgilmore.com/blog/nstextview-shift-tab/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/popover-uinavigationcontroller-preferredcontentsize/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/pyparsing-trees/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/refactoring-private-to-public/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/rxswift-multiple-subscribers/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swift-dependency-injection/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swift-pointer-uint/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>

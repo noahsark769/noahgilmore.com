@@ -1,0 +1,215 @@
+---
+title: "Swift Tip: Refactoring a Private Method for Testability"
+date: 2020-05-28
+tags: swift, testing
+staticPreview: Writing testable Swift code is an ongoing process, so much so that you could write a book about it, but yesterday I was reminded of a really great insight I read long ago in Working Effectively with Legacy Code about testing private methods...
+mdxPreview: >
+    Writing testable Swift code is an ongoing process, so much so that you could [write a book about it](https://twitter.com/noahsark769/status/1257347091233374212), but yesterday I was reminded of a really great insight I read long ago in [Working Effectively with Legacy Code](https://www.oreilly.com/library/view/working-effectively-with/0131177052/) about testing private methods...
+---
+import Tweet from '../../components/Tweet';
+
+Writing testable Swift code is an ongoing process, so much so that you could [write a book about it](https://twitter.com/noahsark769/status/1257347091233374212), but yesterday I was reminded of a really great insight I read long ago in [Working Effectively with Legacy Code](https://www.oreilly.com/library/view/working-effectively-with/0131177052/) about testing private methods:
+
+<Tweet tweetId="1265784850579025921" />
+
+I came across a really great example yesterday where a coworker and I were able to refactor a private method to make it testable. In this post I'd like to go over that example with the hope that you can apply a similar pattern to make testing your own code easier.
+
+> tl;dr: If there's a private method you want to test, avoid making it public just to test it - instead, extract it out to a public method on another object.
+
+# Testing Private Methods
+When you're writing code, it's common to encounter the following scenario: you're writing a class which is becoming increasingly complex, and you realize there's a private method which is complex enough that you don't trust yourself to make sure it works correctly without a test.
+
+Here's a concrete example (code is paraphrased from real production code I reviewed at work). Let's say we're building an app which manages reports that the user can fill out. There are different report types, and a user can be assigned to a report. We're viewing some subset of the reports based on the types and users we've selected, and we want to show stats on our page about how many reports we're looking at of each type. In order to configure our view, we have a Store class which provides a ViewModel.
+
+The code might look something like this:
+
+```swift
+final class ReportsStore {
+    private var _currentlySelectedUserIds: [Int]
+    private var _currentUser: User
+    private var _seletedTypes: [ReportType]
+
+    // ... initializer and setup omitted ...
+
+    /// - Returns: The number of draft reports of each of the currently
+    // selected report types relevant to either the current user id or the
+    // users we're currently filtering by, keyed by report type
+    private func _getDraftCounts() -> [Int: Int] {
+        let userIds = self._currentlySelectedUserIds + [
+            self._currentUser.id
+        ]
+        var draftCounts = [[Int: Int]]()
+        userIds.forEach { userId in
+            let filter = ReportsFilter(
+                status: .draft,
+                userId: userId,
+                types: self._selectedTypes
+            )
+            do {
+                let draftCount = try self.dataRepository
+                    .countReportsByType(filter)
+                draftCounts.append(draftCount)
+            } catch {
+                Logger.shared.error(
+                    "Error: unable to retrive draft counts"
+                )
+            }
+        }
+        let totalCounts = draftCounts
+            .flatMap { $0 }
+            .reduce([Int: Int]()) { dict, tuple in
+                var nextDict = dict
+                nextDict[tuple.0] = tuple.0
+                return nextDict
+            }
+        return totalCounts
+    }
+
+    /// - Returns: the view model which our view will use
+    /// to configure itself
+    public func viewModel() -> ReportsViewModel {
+        // ... do more work to figure out the other properties
+        // of the view model ...
+        return ReportsViewModel(
+            // ...
+            draftCounts: self._getDraftCounts()
+            // ...
+        )
+    }
+}
+```
+
+The method takes the current state of the store (`_currentlySelectedUserIds`, `_currentUser`, `_selectedTypes`), creates a filter object and passes that to a `DataRepository` object to actually get the report models. It then processes the report models to create the stats.
+
+For me, the `_getDraftCounts` sets off the testing alarm bell. We want to make sure we get the right reports, and we want to make sure the post-processing to create the stats works - it's complicated enough that I want to write tests to make sure I didn't make a mistake, but figuring out _what the best way is_ to get a test around this isn't that easy.
+
+# Private vs Public
+It may be tempting to just expose the `_getDraftCounts` method as public in order to test it. It's less code, after all: no changes required to the actual method, and the test is small:
+
+```swift
+func testGetDraftCounts() {
+    let store = ReportsStore()
+    // ... set up the data repository with the right data ...
+    // ... set up the store with the right selected types, etc ...
+    let draftCounts = store._getDraftCounts()
+    XCTAssertEqual(draftCounts, /* ... */)
+}
+```
+
+But there are a couple of issues with this:
+
+1. The setup required to get the `ReportsStore` into a state where you can test `_getDraftCounts` is non-trivial. It might be as easy as setting some variables, or it might be as hard as calling a complicated chain of methods. Or worse, you might actually have to expose _other_ private methods as public in order to set the class up for testing!
+2. It's testing the implementation of `ReportsStore`, not the interface. `_getDraftCounts` is private because it's an implementation detail - no outside consumer (other than the test) is ever going to want to call `_getDraftCounts` directly. That means that if we want to refactor how the store calculates stats in the future (imagine if we introduced a different model and wanted to include that new model in the stats), the test would break. Having these brittle (easy to break) tests around increases the overhead of maintaining the whole system.
+
+# Single Responsibility
+To understand how to refactor this code so it's easier to test, it's useful to note that the method has one main dependency: the data repository. The method's primary responsibility is to figure out how to query the data repository.
+
+_So, why not make the data repository do the work?_
+
+If we extract the work do the data repository, the code gets less confusing:
+
+```swift
+extension DataRepository {
+    public func getDraftCounts(
+        userIds: [Int],
+        types: [ReportType]
+    ) -> [Int: Int] {
+        var draftCounts = [[Int: Int]]()
+        userIds.forEach { userId in
+            let filter = ReportsFilter(
+                status: .draft,
+                userId: userId,
+                types: types
+            )
+            do {
+                let draftCount = try self.countReportsByType(filter)
+                draftCounts.append(draftCount)
+            } catch {
+                Logger.shared.error(
+                    "Error: unable to retrive draft counts"
+                )
+            }
+        }
+        let totalCounts = draftCounts
+            .flatMap { $0 }
+            .reduce([Int: Int]()) { dict, tuple in
+                var nextDict = dict
+                nextDict[tuple.0] = tuple.0
+                return nextDict
+            }
+        return totalCounts
+    }
+}
+
+final class ReportsStore {
+    // ...
+
+    private func _getDraftCounts() -> [Int: Int] {
+        return self.dataRepository.getDraftCounts(
+            userIds: self._currentlySelectedUserIds + [self._currentUser.id],
+            types: self._seletedTypes
+        )
+    }
+}
+```
+
+Now that we've extracted the method, we can completely eliminate the need to set up the Store class, and in fact our test won't care about the store at all!
+
+```swift
+func testGetDraftCounts() {
+    let repository = DataRepository()
+    // ... set up the data repository with the right data ...
+    let draftCounts = repository.getDraftCounts()
+    XCTAssertEqual(draftCounts, /* ... */)
+}
+```
+
+Also:
+
+1. The implementation of `_getDraftCounts` in the `ReportsStore` is free to change or rename itself without this test breaking.
+2. If another store comes along in the future that wants to use the same counting logic in a different way, only the DataReopsitory needs to be updated, not the `ReportsStore`.
+3. If we want to test that `ReportsStore` calls `getDraftCounts` with the correct parameters, we can do that in a separate test that injects the `DataRepository` as an interface.
+4. The `_getDraftCounts` function isn't exposed on the store, so some other class can't violate the store's interface by calling it directly.
+5. `ReportsStore` doesn't have to care about constructing a `ReportsFilter`. If `DataRepository` wants to stop using a filter object in the future, we'll only have to change the `DataRepository` method, not the `ReportsStore` method.
+
+# How do I know when to do this?
+This is only one refactoring strategy, and it doesn't apply to all cases. However, I usually find that you can apply this if the following are true:
+
+1. You have a complicated private method on a large class (like `_getDraftCounts`)
+2. The private method has one "main" dependency (like `dataRepository.countReportsByType`)
+3. The private method doesn't reference `self` very much.
+
+> Note: If the private method doesn't reference `self` as all, then it probably should be a util function, not a method!
+
+> Also: If the private method doesn't just have one main dependency, then you can still apply this strategy, but you'll often end up injecting a protocol that includes all of the calls to dependencies that you need, and extracting the method to _an extension of that protocol_ instead of an extension of the main dependency.
+
+# FAQ
+
+### This seems like a lot of work, I'd rather just expose the private method for testing.
+It's true that it's more work, but it's not _that much_ more work, and it pays off heavily in the long run. Instead of having the `ReportsStore` with a complicated method which is entangled with the data repository, you now have two separate objects which are independently maintainable and testable, which keeps the code robust as you keep adding to it.
+
+### Isn't this exposing too many public methods?
+When I tweeted about this, a few people raised concerns to the effect of "sure this works, but you're still creating an unnecessary public method". It's true that you're creating more public surface area of your API, but it's for good reason. 
+
+There are caveats though: in a small app with only one Swift module, everything `internal` is effectively `public`, but you control all the consumers of public methods, so it's okay to expose more public APIs since you have a handle on what will be calling them.
+
+This isn't the case if you're developing a library, or even if you're developing a common part of a large app with a large team (in which case, you're _effectively_ developing a library). You can still use this refactoring technique, but you'll want to extract the code to an internal method rather than a public one. If you're working in a very large codebase with only one Swift module, you're a bit out of luck as far as compiler safety goes, but you can use other techniques to deter consumers from calling the method directly, like prefixing the method with an underscore, docblocks warning against usage, or linting.
+
+### This creates too many wrapper classes for no reason!
+If you follow this strategy a lot, you'll definitely create more classes than you had before. However, in my experience I've found two things to be true:
+
+1. The class which you want to extract the method to usually already exists
+2. Usually it makes sense for the method to live on that class anyway
+3. When you do have to create a new class, it feels more like a general utility, not something you need to keep around and frown at just because the tests are forcing you to. You can also declare the class in the same file as the method you extracted it from, or even as a nested class!
+
+### What about VisibleForTesting?
+Android has a JVM annotation called [VisibleForTesting](https://developer.android.com/reference/androidx/annotation/VisibleForTesting) which relaxes visibilty constraints so that you can call private methods in tests. This can be useful for when you're developing a library (like mentioned above) and you don't want to expose a method publicly, but if you think to yourself "I'll just put VisibleForTesting on this method so that I can test it directly", that's very similar to making the method public for testing and subject to many of the same issues.
+
+### What about performance?
+At least one person who replied to the tweet was concerned about whether using this strategy results in performance overhead because it's slower to have to allocate memory for more objects. I have two thoughts about this:
+
+1. Usually you'll find this strategy results in a new method in an existing class, not a new class. In all but the most performance-critical code, an extra function call and stack frame won't impact anything.
+2. Be careful not to prematurely optimize for performance. If you notice lagging or performance issues, take the time to profile your code and figure out what the main drivers of the slowness are - almost always, having an additional object allocation won't be the issue, but if it is, you can deal with that case when it comes up.
+
+# Conclusion
+Hopefully this example was a bit more fully fleshed out and gave a better rationale for using this refactoring strategy than can fit in 280 characters. If you're interested in more content about Swift refactoring and testing, you can [follow me on Twitter](https://twitter.com/noahsark769).
