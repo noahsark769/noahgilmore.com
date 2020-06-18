@@ -1,0 +1,41 @@
+---
+title: "SwiftUI: Two equal width columns"
+date: 2020-06-17
+tags: ios, swift, swiftui, apple
+ogimage: "swiftui-columns-large.png"
+staticPreview: A problem that many people run into after writing enough SwiftUI is how to make it so that two views inside an HStack have equal width, such that if the HStack grows both inner views expand proportionally.
+mdxPreview: >
+  A problem that many people run into after writing enough SwiftUI is how to make it so that two views inside an `HStack` have equal width, such that if the `HStack` grows both inner views expand proportionally...
+---
+import FlowGrid from '../../components/FlowGrid';
+import CaptionedImage from '../../components/CaptionedImage';
+
+A problem that many people run into after writing enough SwiftUI is how to make it so that two views inside an `HStack` have equal width, such that if the `HStack` grows both inner views expand proportionally.
+
+There are several articles online talking about how to do this with `GeometryReader` or preferences, but for the common case of just having columns equally distributed, it's actually easier to just use frames. If you set the views' frames to both have a min width of 0 and max width of infinity, SwiftUI's layout system distributes them equally:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        HStack(alignment: .top, spacing: 0) {
+            Rectangle()
+                .fill(Color.blue)
+                .frame(minWidth: 0, maxWidth: .infinity)
+            Rectangle()
+                .fill(Color.red)
+                .frame(minWidth: 0, maxWidth: .infinity)
+        }.padding().background(Color.white)
+    }
+}
+```
+
+This produces the result we want regardless of screen size:
+
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="swiftui-columns-small.png" alt="Red and blue squares filling space equally on a small screen" caption="" />
+    <CaptionedImage max={500} filename="swiftui-columns-large.png" alt="Red and blue squares filling space equally on a large screen" caption="" />
+</FlowGrid>
+
+Hopefully this helps you simplify your SwiftUI code for when you only need to account for the common case of two columns 👍
+
+> Sample code for this project is available at [NGSwiftUIEqualWidthColumnExample](https://github.com/noahsark769/NGSwiftUIEqualWidthColumnsExample).
