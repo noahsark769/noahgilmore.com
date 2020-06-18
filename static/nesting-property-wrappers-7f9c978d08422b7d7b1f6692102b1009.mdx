@@ -1,0 +1,228 @@
+---
+title: Nested Property Wrappers in Swift
+date: 2020-05-11
+tags: swift, ios
+ogimage: "propertywrappers-1.png"
+staticPreview: You can nest property wrapers in Swift, but it's difficult. NSHipster has a great article about all things property wrappers, and the summary of trying to compose them (which others have echoed) is that it's hard and prone to compiler errors...
+mdxPreview: >
+    You can nest [property wrapers](https://www.swiftbysundell.com/articles/property-wrappers-in-swift/) in Swift, but it's difficult. NSHipster has a [great article](https://nshipster.com/propertywrapper/) about all things property wrappers, and the summary of trying to compose them (which others have echoed) is that it's hard and prone to compiler errors...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+import Tweet from '../../components/Tweet';
+
+<CaptionedImage max={400} filename="propertywrappers-1.png" alt="Screenshot of code showing 6 nested property wrappers" caption="Pop quiz: what does this print?" />
+
+You can nest [property wrapers](https://www.swiftbysundell.com/articles/property-wrappers-in-swift/) in Swift, but it's difficult. NSHipster has a [great article](https://nshipster.com/propertywrapper/) about all things property wrappers, and the summary of trying to compose them (which others have echoed) is that it's hard and prone to compiler errors.
+
+But, at least as of Swift 5.2, nesting property wrappers (having a property wrapper of a property wrapper, or equivalently, having a property with _two_ property wrappers) is possible if you try hard enough! In this post I'll go over a method I've found to effectively structure property wrappers for composition. [Skip](#is-this-too-much) down the page if you want an opinion on whether you _should actually_ do this.
+
+# Property Wrappers
+Property wrappers are one of the newest features of the ever [evolving](https://github.com/apple/swift-evolution) Swift language, and they're not without controversy. You'll probably see them mostly in SwiftUI, where they figure prominently - `@State`, `@Binding`, `@ObservedObject`, etc.
+
+If you're not familiar with property wrappers, I'd check out any of the following before reading further:
+
+- [Hacking With Swift](https://www.hackingwithswift.com/quick-start/swiftui/understanding-property-wrappers-in-swift-and-swiftui)
+- [Swift By Sundell](https://www.swiftbysundell.com/articles/property-wrappers-in-swift/)
+- [NSHipster](https://nshipster.com/propertywrapper/)
+- [Swift Documentation on Properties](https://docs.swift.org/swift-book/LanguageGuide/Properties.html)
+- [The Complete Guide to Property Wrappers in Swift 5](https://www.vadimbulavin.com/swift-5-property-wrappers/)
+
+
+Let's consider a self-contained example - a property wrapper which wraps a string, and always appends a suffix.
+
+```swift
+import Foundation
+
+@propertyWrapper
+struct Appending {
+    private(set) var value: String
+    let toAppend: String
+
+    var wrappedValue: String {
+        get { value }
+        set { value = newValue + self.toAppend }
+    }
+
+    init(wrappedValue: String, _ toAppend: String) {
+        self.value = wrappedValue
+        self.toAppend = toAppend
+    }
+}
+
+struct Test {
+    @Appending("!") var name: String = ""
+
+    init(_ name: String) {
+        self.name = name
+    }
+}
+
+var a = Test("Noah")
+print(a.name) // Prints "Noah!"
+```
+
+This wrapper takes in a wrapped value (the `= ""`) and an additional string to append (the `"!"`), and vends its wrapped value as the result of appending the string to the internal storage. This works well enough, but suppose we try to nest it:
+
+```swift
+struct Test {
+    @Appending("!")
+    @Appending("?")
+    var name: String = ""
+
+    init(_ name: String) {
+        self.name = name
+    }
+}
+```
+
+This actually fails to compile with the following error:
+
+```swift
+AppendingSimple.swift:20:22: error: cannot convert value of type 'Appending' to expected argument type 'String'
+    @Appending("!") @Appending("?") var name: String = ""
+                     ^
+AppendingSimple.swift:20:6: error: value of type 'String' has no member 'wrappedValue'
+    @Appending("!") @Appending("?") var name: String = ""
+     ^~~~~~~~~~~~~~
+```
+
+Which...makes sense! Appending only wraps Strings, so trying to wrap an `Appending` with another `Appending` doesn't work.
+
+# Nesting
+The [Swift Evolution Proposal](https://github.com/apple/swift-evolution/blob/master/proposals/0258-property-wrappers.md#composition-of-property-wrappers) details how composition of property wrappers works - the `wrappedValue` access goes two levels deep.
+
+For example, if we declare a nested wrapped property like this:
+
+```swift
+@DelayedMutable @Copying var path: UIBezierPath
+```
+
+That's equivalent to having a regular property like this:
+
+```swift
+private var _path: DelayedMutable<Copying<UIBezierPath>> = .init()
+var path: UIBezierPath {
+  get { return _path.wrappedValue.wrappedValue }
+  set { _path.wrappedValue.wrappedValue = newValue }
+} 
+```
+
+Now, consider our example:
+
+```swift
+@Appending("!") @Appending("?") var name: String = ""
+```
+
+The `wrappedValue` of the outer property wrapper isn't `String`, it's actually `Appending`, and therein lies the problem. If we want one level of wrapping, `Appending` needs to take a `String`, but for two levels of wrapping it needs to take another `Appending`.
+
+This might seem like a [Catch-22](https://en.wikipedia.org/wiki/Catch-22_(logic)), but we can actually use _protocolization_ to solve this issue. Instead of `Appending` operating on `String`s, we can make it operate on "anything that is appendable" by using a protocol.
+
+```swift
+protocol Appendable {
+    func appending(string: String) -> Self
+}
+
+extension String: Appendable {
+    func appending(string: String) -> String {
+        return self + string
+    }
+}
+
+@propertyWrapper
+struct Appending<T: Appendable> {
+    private(set) var value: T
+    let toAppend: String
+
+    var wrappedValue: T {
+        get { value }
+        set { value = newValue.appending(string: toAppend) }
+    }
+
+    init(wrappedValue: T, _ toAppend: String) {
+        self.value = wrappedValue
+        self.toAppend = toAppend
+    }
+}
+```
+
+Now for the kicker: we can make an `Appending`, itself, be `Appendable` too!
+
+```swift
+extension Appending: Appendable {
+    func appending(string: String) -> Appending<T> {
+        return Appending(
+            wrappedValue: self.wrappedValue.appending(
+                string: string
+            ),
+            self.toAppend
+        )
+    }
+}
+```
+
+The `appending` method in `Appending` takes the wrapped value, appends the string, and creates a new `Appending`. The recursive nature means the strings are appended in inner-to-outer order, and it works!
+
+```swift
+struct Test {
+    @Appending("!")
+    @Appending("?")
+    var name: String = ""
+
+    init(_ name: String) {
+        self.name = name
+    }
+}
+
+var a = Test("Noah")
+print(a.name) // Prints "Noah?!"
+```
+
+# Is this too much?
+Well...probably. Though nesting property wrappers like this works, it's pretty confusing and you could achieve the same result with code that is much easier to read and understand.
+
+In general, the main use case I've seen for property wrappers in application code is when you want to have properties on your objects driven or observed by an outside, unrelated system. [Driving properties with UserDefaults](/blog/userdefaults-editor-swiftui) is one use case, and hooking into SwiftUI to invalidate layout with `@State` is another.
+
+In most cases, I think that one level of wrapping with configurable behavior is better than two levels of wrapping. If you need to nest property wrappers, consider whether you can make your existing wrapper exhibit the same behavior by making it configurable. For example:
+
+```swift
+// This:
+@Appending("!") @Appending("?") var name = "Noah"
+
+// Could be simpler by combining the parameters:
+@Appending("?!") var name = "Noah"
+```
+
+```swift
+// This:
+@Doubled @Tripled var value: Int
+
+// Could be phrased with the multiple as a parameter:
+@Multiplied(multiplier: 6) var value: Int
+```
+
+```swift
+// This:
+@Lowercased @Trimmed var slug: String
+
+// Could be combined with an OptionSet parameter 
+@StringTransform([.lowercasing, .trimming])
+var slug: String
+```
+
+However, I think there are two cases where you might need to use this nesting strategy:
+
+1. You want to double-wrap a property wrapper you don't control
+2. You're a library author and you want to make sure your library's wrappers can be double-wrapped (around themselves, or around another wrapper)
+
+It's worth noting as well that property wrappers are notorious for sometimes causing crashes in the Swift compiler:
+
+<Tweet tweetId="1259328094168510469" />
+
+So, take that as an additional caveat when you're considering nested wrappers.
+
+# Conclusion
+In general, think carefully about when to use nested property wrappers - but if you want them, protocolization could be the answer! The generics system in Swift can be complicated, but it's really powerful, especially combined with the other, newer features of the language. With great power comes great responsibility.
+
+<Tweet tweetId="1259557851132911616" />
+
+> If you're interested in the full source code for this example, it's available [on Github](https://gist.github.com/noahsark769/ddee2e7d8f4fc9347ba1d9a66fbac058).

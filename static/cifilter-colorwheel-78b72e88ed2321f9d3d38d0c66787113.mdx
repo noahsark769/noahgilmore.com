@@ -1,0 +1,97 @@
+---
+title: iOS Color Wheel Using CIFilter
+date: 2019-01-28
+tags: ios, swift, coreimage, apple
+ogimage: "cifilter-colorwheel-1.png"
+staticPreview: After struggling for some time with CIFilter documentation at work, I've been working on an app which can apply filters interactively for various inputs...
+mdxPreview: After struggling for some time with CIFilter documentation at work, I've been [working on an app](https://twitter.com/noahsark769/status/1080580341973348352) which can apply filters interactively for various inputs...
+---
+import CaptionedImage from '../../components/CaptionedImage';
+
+After struggling for some time with [CIFilter](https://developer.apple.com/documentation/coreimage/cifilter) documentation at work, I've been [working on an app](https://twitter.com/noahsark769/status/1080580341973348352) which can apply filters interactively for various inputs (another blog post to come on this later). As part of this app, I needed a UI for the user to select a color, and decided to implement a color wheel.
+
+There are several open source projects implementing color wheels on iOS, and StackOverflow has a [few answers](https://stackoverflow.com/questions/5108921/how-to-draw-a-color-wheel-in-objective-c) which mostly recommend drawing the color wheel image yourself by iterating over the [Hue-Saturation-Lightness](https://en.wikipedia.org/wiki/HSL_and_HSV) color representation. However, I managed to find [this post](http://www.chibicode.org/?p=62) about new CIFilters in iOS 10, which included a description of `CIHueSaturationValueGradient`, and realized we can use this filter to generate a color wheel much more easily.
+
+## CoreImage Has Color Wheels Built In
+The description of `CIHueSaturationValueGradient` is:
+
+> Generates a color wheel that shows hues and saturations for a specified value.
+
+For a given value of lightness (0 is dark, 1 is light), this filter's output image will be a wheel of all the hues and saturations for that lightness in a given color space. Code that looks like this:
+
+```swift
+let filter = CIFilter(name: "CIHueSaturationValueGradient", parameters: [
+    "inputColorSpace": CGColorSpaceCreateDeviceRGB(),
+    "inputDither": 0,
+    "inputRadius": 160,
+    "inputSoftness": 0,
+    "inputValue": 1
+])!
+let image = UIImage(ciImage: filter.outputImage!)
+```
+
+Generates an output image that looks like this:
+
+<CaptionedImage max="400" filename="cifilter-colorwheel-1.png" alt="Color wheel" caption="" />
+
+## Details
+The filter takes five parameters:
+
+`inputColorSpace`: This is a `CGColorSpaceRef` representing the color space in which to generate the wheel. Generally, you're going to want to use `CGColorSpaceCreateDeviceRGB()` for this, which will generate a wheel in the current device's color space.
+
+`inputDither`: The amount of [dither](https://en.wikipedia.org/wiki/Dither) to apply to the wheel. I'm not exactly sure what this is useful for, but it can be fun to play around with. I also don't really know the units of this value, but I think it's pixels (if you can confirm, [let me know](https://twitter.com/noahsark769)). For example, here's a color wheel with `inputDither` as 300:
+
+<CaptionedImage max="400" filename="cifilter-colorwheel-2.png" alt="Color wheel with dither" caption="" />
+
+`inputRadius`: The value, _in points_, of the radius of the wheel. A radius of 160 creates an image which is 320x320 points square (640x640 pixels on a device with 2x screen scale).
+
+`inputSoftness`: Specifies a softness value to smooth the gradient. A value of 0 means no smoothing, which is probably what you want for a color wheel. I'm also pretty sure the units here are pixels. Here's a color wheel with `inputSoftness` as 4:
+
+<CaptionedImage max="400" filename="cifilter-colorwheel-3.png" alt="Color wheel" caption="" />
+
+`inputValue`: The lightness value. 0 creates a black wheel, 1 means full lightness. Here's a color wheel with `inputValue` as 0.5:
+
+<CaptionedImage max="400" filename="cifilter-colorwheel-4.png" alt="Color wheel" caption="" />
+
+## Getting The Color On Touch
+I still needed to actually let the user select a color from the color wheel. Turns out there are tons of people online talking about how to get the color at a given touch location for a `UIImageView`. I ended up going with [this one](https://stackoverflow.com/questions/12770181/how-to-get-the-pixel-color-on-touch) which translated pretty well into an extension:
+
+```swift
+extension UIImageView {
+    func getPixelColorAt(point: CGPoint) -> UIColor {
+        let pixel = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: 4)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+        let context = CGContext(
+            data: pixel,
+            width: 1,
+            height: 1,
+            bitsPerComponent: 8,
+            bytesPerRow: 4,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue
+        )
+
+        context!.translateBy(x: -point.x, y: -point.y)
+        layer.render(in: context!)
+        let color = UIColor(
+            red: CGFloat(pixel[0]) / 255.0,
+            green: CGFloat(pixel[1]) / 255.0,
+            blue: CGFloat(pixel[2]) / 255.0,
+            alpha: CGFloat(pixel[3]) / 255.0
+        )
+
+        pixel.deallocate()
+        return color
+    }
+}
+```
+
+## End Result
+It ended up [working pretty well](https://twitter.com/noahsark769/status/1087511576871981056)! Adding a gesture recognizer to the imageView which calls `getPixelColorAt(point:)` allows us to easily determine the color that the user picked and render a simple UI to show the selected color:
+
+<CaptionedImage max="400" filename="cifilter-colorwheel-5.png" alt="Color wheel" caption="" />
+
+All in all, this was a great exercise in figuring out the least complicated way to implement a complicated UI component, and I continue to learn about all the awesome stuff that CoreImage comes with out of the box (not just color wheels, but photo effects, blurs, distortions, etc).
+
+More on CIFilters soon to come! 👋
