@@ -27,7 +27,7 @@ function rssFeedPlugin(glob, feedName, title) {
                 // If you're seeing this and can help, please let me know at
                 // twitter.com/noahsark769, thanks :D
                 url: site.siteMetadata.siteUrl + "/blog/" + edge.node.parent.name,
-                guid: site.siteMetadata.siteUrl + "/blog/" + edge.node.parent.name,
+                guid: site.siteMetadata.siteUrl + "/blog/" + edge.node.parent.name
               })
             })
           },

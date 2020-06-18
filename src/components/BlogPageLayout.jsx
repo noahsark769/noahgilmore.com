@@ -12,6 +12,7 @@ import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import { MDXProvider } from "@mdx-js/react"
 import { IoMdLink, IoIosCheckmark } from "react-icons/io";
+import { OGImage } from "./OGImage";
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
@@ -154,6 +155,7 @@ class Header extends React.Component {
 export default class BlogPageLayout extends React.Component {
     constructor(props) {
       super(props)
+      console.log(props);
       this.state = {
         isShowingInstabug: true
       }
@@ -182,6 +184,7 @@ export default class BlogPageLayout extends React.Component {
                   <meta property="og:description" content={this.props.pageContext.frontmatter.staticPreview} />
                   <meta name="description" content={this.props.pageContext.frontmatter.staticPreview} />
               </Helmet>
+              {this.props.pageContext.frontmatter.ogimage && <OGImage filename={this.props.pageContext.frontmatter.ogimage} />}
               <Nav blog />
               <BlogPostContainer isCompressed={
                 true
