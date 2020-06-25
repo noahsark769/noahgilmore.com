@@ -1,0 +1,59 @@
+---
+title: Expression shuffles the elements of this tuple; this behavior is deprecated
+date: 2020-06-25
+tags: swift, ios
+ogimage: "tuple-shuffle.png"
+staticPreview: Whenever a new major version of Xcode is released, one of the first things I do is download it and run it with the various codebases I'm working on. Usually the new version of Swift is smarter and can surface more warnings and diagnostics, and the Xcode 12 beta release earlier this week (with Swift 5.3) is no exception...
+mdxPreview: >
+    Whenever a new major version of Xcode is released, one of the first things I do is download it and run it with the various codebases I'm working on. Usually the new version of Swift is smarter and can surface more warnings and diagnostics, and the Xcode 12 beta release earlier this week (with Swift 5.3) is no exception...
+---
+Whenever a new major version of Xcode is released, one of the first things I do is download it and run it with the various codebases I'm working on. Usually the new version of Swift is smarter and can surface more warnings and diagnostics, and the Xcode 12 beta release earlier this week (with Swift 5.3) is no exception.
+
+However, there was one new warning message the confused me:
+
+> expression shuffles the elements of this tuple; this behavior is deprecated
+
+tl;dr: If you see this message it probably means you're passing a tuple to a method with the named elements in the wrong order, e.g.:
+
+```swift
+func myMethod(tuple: (a: Int, b: Int)) {
+    print(tuple)
+}
+
+myMethod(tuple: (b: 1, a: 2)) // should be myMethod(tuple: (a: 2, b: 1))
+```
+
+# Tuple Shuffling
+Tuple Shuffling is a deprecated feature of Swift which basically amounts to "you can switch the order of named tuple elements during assignment". If you declare a tuple with named elements in a certain order, you don't have to pass them in the same order.
+
+```swift
+func myMethod(tuple: (a: Int, b: Int)) {
+    print(tuple)
+}
+
+// This is perfectly legal, even though b comes before a
+myMethod(tuple: (b: 1, a: 2))
+```
+
+However, Tuple Shuffling is generally something that you shouldn't do, because it can have subtle and confusing side effects. For example, consider the following code:
+
+```swift
+var a: (Int, y: Int) = (2, 1)
+var b: (y: Int, Int) = (1, 2)
+
+a = b
+print(a == b) // prints "false"
+```
+
+This is also perfectly legal code, but it's weird that the two tuples aren't equal, even after you assigned one to the other!
+
+This example works because `a = b` does an implicit Tuple Shuffle - the `y`th element of `b` is assigned to the `y`th element of `a`, and the first non-named element of `b` is assigned to the first non-named element of `a`. Because `a.y` and `b.y` were already the same and the first non-named element of each tuple (`a.0` and `b.1`) was also the same, the assignment is effectively a no-op.
+
+The standard library implementation of `==` for tuples compares them index-wise (it's equivalent to `a.0 == b.0 && a.1 == b.1` in this case), and these tuples were never index-wise equal, so `a == b` returns false.
+
+As [the folks who proposed the Tuple Shuffling deprecation in the forums said](https://forums.swift.org/t/deprecating-tuple-shuffles-round-2/16884), Tuple Shuffling allows inconsistencies between how Swift works as a language and how the standard library methods work.
+
+# Fixing the warning
+The proposal to deprecate Tuple Shuffling has been around since 2018 - it appears that in Swift 5.3, the warning against shuffling is finally there.
+
+The usually warning comes up in practice when you try to pass a tuple of the form `(a: 1, b: 1)` to an argument that expects a different ordering of names (`(b: Int, a: Int)`). The fix for this is almost always to pass your named tuple elements in the order they're defined (`a` first, then `b`).
