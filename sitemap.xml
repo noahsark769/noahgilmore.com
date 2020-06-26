@@ -58,9 +58,9 @@
 <url> <loc>https://noahgilmore.com/blog/gpu-capture-flickering/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/install-nokogiri-macos-mojave/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/installing-sharp-github-actions/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/my-bucket-list/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/nesting-property-wrappers/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/nsobject-equatable/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/my-bucket-list/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/nstextview-shift-tab/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/popover-uinavigationcontroller-preferredcontentsize/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/pyparsing-trees/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -75,6 +75,6 @@
 <url> <loc>https://noahgilmore.com/blog/tuple-shuffling/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/uibutton-padding/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/uiwindowscene-black-screen/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/userdefaults-editor-swiftui/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/userdefaults-set-nil/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/userdefaults-editor-swiftui/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>
