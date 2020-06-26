@@ -1,0 +1,12 @@
+Talk about how to get around the issue where UIActivityViewController dismisses whatever controller is modally presented.
+
+```
+let intermediaryController = UIViewController()
+                    intermediaryController.modalPresentationStyle = .overFullScreen
+
+                    activityController.completionWithItemsHandler = { [weak newController] _, _, _, _ in
+                        intermediaryController.dismiss(animated: false, completion: nil)
+                    }
+```
+
+https://github.com/noahsark769/NGUIActivityViewControllerDismissalExample
