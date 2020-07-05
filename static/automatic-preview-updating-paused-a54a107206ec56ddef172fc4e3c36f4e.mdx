@@ -1,0 +1,40 @@
+---
+title: "Automatic preview updating paused"
+date: 2020-07-05
+tags: swift, ios, swiftui
+ogimage: "preview-updating.png"
+staticPreview: "I've been rewriting parts of CIFilter.io in SwiftUI, and one issue I ran into recently was that SwiftUI previews didn't seem to work as advertised. When I opened the preview, it would trigger an app build, eventually show up, but there would always be a banner telling me that previewing had been paused..."
+mdxPreview: >
+    I've been rewriting parts of [CIFilter.io](https://itunes.apple.com/us/app/cifilter-io/id1457458557?mt=8) in SwiftUI, and one issue I ran into recently was that SwiftUI previews didn't seem to work as advertised. When I opened the preview, it would trigger an app build, eventually show up, but there would always be a banner telling me that previewing had been paused...
+---
+import Tweet from "../../components/Tweet";
+import CaptionedImage from '../../components/CaptionedImage';
+
+I've been rewriting parts of [CIFilter.io](https://itunes.apple.com/us/app/cifilter-io/id1457458557?mt=8) in SwiftUI, and one issue I ran into recently was that SwiftUI previews didn't seem to work as advertised. When I opened the preview, it would trigger an app build, eventually show up, but there would always be a banner telling me that previewing had been paused, with the following message:
+
+> Automatic preview updating pauses when the the previewed file is edited in a way which causes the containing module to be rebuilt.
+
+Every time I clicked the "Resume" button, the app would build again, and the banner would come up again. Initially, I wrote it off as SwiftUI previews just not working - since each preview triggered an app build, I just defaulted to building the app each time I changed something. Eventually though, I realized that other people weren't having this issue.
+
+## Clues
+
+A clue to what might be happening came up from [Paul Colton](https://twitter.com/paulcolton) on Twitter:
+
+<Tweet tweetId="1279072572471050240" />
+
+As it turned out, I actually _did_ have some [build phases](https://github.com/noahsark769/cifilter.io/blob/97734a91559267bcf9c2b5e85c4e6e00d04c1230/iOS/CIFilter.io.xcodeproj/project.pbxproj#L605) running as part of the project's build - various normal ones like copying bundle resources, embedding Pods frameworks, etc, and also some custom ones to write data into `Info.plist` and upload dSYMs to Sentry for crash reporting. It seemed weird to me that these scripts could cause preview updating to fail, but then I realized that one of the scripts was not like the others.
+
+The [CIFilter.io app](https://itunes.apple.com/us/app/cifilter-io/id1457458557?mt=8) has a build phase which looks at various data (like the current git sha and number of commits) and writes it to a json file called `buildInformation.json`. This file is included in the Xcode project, and the app reads it at runtime to figure out what version, sha, etc it's running for analytics purposes.
+
+The important thing about this script was that _running it modified a file that was part of the Xcode project_. Because this script ran every preview build, it would modify a file in the project every time, which caused Xcode to pause automatic previewing.
+
+## The Fix
+To prove it, I created a [sample project](https://github.com/noahsark769/NGSwiftUIPreviewBuildPhaseIssue) which is a pared down version of this situation. A build script writes the current date to a file every build, and that file is included in the project (though not used). The same thing happens - endless loop of "Automatic preview updating paused".
+
+One option would be moving away from using that file entirely, but I found out a better way to resolve the issue - Xcode has an option to only run build phase scripts "on install", which really means that they [only get run on Archive builds](https://twitter.com/noahsark769/status/1279816240874188800?s=20). If you check this option in the sample project, the script doesn't get run on preview builds, the file doesn't get updated, and previews work magically again. 🙌
+
+<CaptionedImage max={250} filename="preview-updating.png" caption="This green indicator is what you want to see" alt="Image of the green circle indicating that automatic previewing in Xcode is enabled" />
+
+Checking this option worked great for my use case, and completely resolved the issue. It seems this is pretty much the only way to get around this, though - I tried to look into whether you could detect whether a build was for previews only and not update the file, but I wasn't able to figure out if it's possible. If you know differently, please [reach out](https://twitter.com/noahsark769) 👋
+
+> The sample code demonstrating the preview updating issue is available at [NGSwiftUIPreviewBuildPhaseIssue](https://github.com/noahsark769/NGSwiftUIPreviewBuildPhaseIssue).
