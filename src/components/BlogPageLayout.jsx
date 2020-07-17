@@ -16,7 +16,7 @@ import { OGImage } from "./OGImage";
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
-    background-color: #2b2c2f;
+    background-color: #23282f;
   }
 `;
 
