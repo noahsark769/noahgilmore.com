@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import { A, P } from '../components/default';
+import { A, P, colors } from '../components/default';
 import MarkdownContent from '../components/MarkdownContent';
 import ReactMarkdown from 'react-markdown';
 
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
     background-color: white;
 
     @media (prefers-color-scheme: dark) {
-        background-color: #333;
+        background-color: ${colors.secondaryDarkBackground};
     }
 
     &:hover {
@@ -43,16 +43,16 @@ const Title = styled.h1`
 `;
 
 const StyledDate = styled.div`
-    font-family: "Gentium Book Basic", times, serif;
+    font-family: "Merriweather", times, serif;
     font-style: italic;
-    font-size: 16px;
+    font-size: 14px;
     color: #999;
     margin-bottom: 20px;
 `;
 
 const Content = styled.div`
     font-family: "Open Sans", times, serif;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 16px;
     color: #333;
     padding-bottom: 15px;
@@ -71,7 +71,7 @@ const StyledA = styled(A)`
     &, &:hover {
         color: #1A3F4B;
         text-decoration: underline;
-        font-family: "Gentium Book Basic", times, serif;
+        font-family: "Merriweather", times, serif;
         font-size: 16px;
         line-height: 18px;
 

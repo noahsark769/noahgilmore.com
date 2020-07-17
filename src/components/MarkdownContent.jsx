@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import { colors } from '../components/default';
 
 const Container = styled.div`
     p, li {
@@ -28,7 +29,7 @@ const Container = styled.div`
         font-style: italic;
 
         @media (prefers-color-scheme: dark) {
-            background-color: #3f3f3f;
+            background-color: ${colors.secondaryDarkBackground};
         }
 
         p {

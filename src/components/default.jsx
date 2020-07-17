@@ -6,7 +6,8 @@ import bariol_ttf from '../fonts/Bariol-Regular.ttf';
 import bariol_svg from '../fonts/Bariol-Regular.svg';
 
 export const colors = {
-    darkBackground: `#23282f`
+    darkBackground: `#23282f`,
+    secondaryDarkBackground: `#2b2c2f`
 };
 
 export const GlobalStyle = createGlobalStyle`
