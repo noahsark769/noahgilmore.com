@@ -42,9 +42,9 @@ const Heading = styled.h1`
 `;
 
 const DateContainer = styled.p`
-    font-family: "Gentium Book Basic", times, serif;
+    font-family: "Merriweather", times, serif;
     font-style: italic;
-    font-size: 16px;
+    font-size: 13px;
     color: #999;
 `;
 

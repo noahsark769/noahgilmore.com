@@ -5,8 +5,8 @@ const Container = styled.div`
     p, li {
         margin: 0;
         padding: 0;
-        font-family: "Gentium Book Basic", times, serif;
-        font-size: 21px;
+        font-family: "Merriweather", times, serif;
+        font-size: 18px;
         line-height: 29px;
         color: #333;
         padding-bottom: 15px;

@@ -6,7 +6,7 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
   return new Promise((resolve, reject) => {
-    const postsTemplate = path.resolve(`src/templates/MDXBlogPosts.jsx`)
+    const postsTemplate = path.resolve(`src/templates/MDXBlogPostsTemplate.jsx`)
 
     resolve(
       graphql(

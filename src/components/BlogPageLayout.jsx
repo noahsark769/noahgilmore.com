@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { BlogGlobalStyle } from './default';
+import { BlogGlobalStyle, colors } from './default';
 import Nav from './Nav';
 import EndButtons from './EndButtons';
 import { BlogPostContainer, BlogPostMeta } from './BlogPost';
@@ -16,7 +16,7 @@ import { OGImage } from "./OGImage";
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
-    background-color: #23282f;
+    background-color: ${colors.darkBackground};
   }
 `;
 
@@ -174,7 +174,7 @@ export default class BlogPageLayout extends React.Component {
               <BlogGlobalStyle />
               <Helmet>
                   <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
-                  <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+                  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet" />
                   {!isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />}
                   {isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css" />}
                   <meta name="twitter:card" content="summary" />
