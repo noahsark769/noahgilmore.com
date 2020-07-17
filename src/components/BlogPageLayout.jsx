@@ -174,7 +174,7 @@ export default class BlogPageLayout extends React.Component {
               <BlogGlobalStyle />
               <Helmet>
                   <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
-                  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet" />
+                  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
                   {!isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />}
                   {isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css" />}
                   <meta name="twitter:card" content="summary" />

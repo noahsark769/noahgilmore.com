@@ -27,6 +27,8 @@ const Container = styled.div`
         border-left: 4px solid #e5e4e1;
         padding: 20px;
         font-style: italic;
+        font-synthesis: weight;
+        font-weight: 300;
 
         @media (prefers-color-scheme: dark) {
             background-color: ${colors.secondaryDarkBackground};
