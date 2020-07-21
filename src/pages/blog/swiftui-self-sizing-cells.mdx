@@ -147,7 +147,7 @@ final class HostingCell<Content: View>: UITableViewCell {
 }
 ```
 
-We're taking advantage of the fact that `UIHostingController` defines a [sizeThatFits](https://developer.apple.com/documentation/swiftui/uihostingcontroller/sizethatfits(in:)) method, and we're basically taking that exact size and using it to manually layout the cell's subviews.
+We're taking advantage of the fact that `UIHostingController` defines a [sizeThatFits](https://developer.apple.com/documentation/swiftui/uihostingcontroller/sizethatfits(in:)) method, and we're taking that exact size and using it to manually layout the cell's subviews.
 
 Our table view delegate method will dequeue the cell, generate a view with repetitions based on the index path, and set that view on the cell. For demo purposes, we'll put a complicated cell every 6th row:
 
@@ -281,7 +281,7 @@ func set(rootView: Content, parentController: UIViewController) {
 }
 ```
 
-And magically, this works! When using proper view controller containment, I haven't been able to detect any incorrect sizes at all - the cell layouts just work, there are no detectable scroll performance issues, and I'm a happy camper - for whatever reason, adding proper view controller containment solves the issue.
+And magically, this works! When using proper view controller containment, I haven't been able to detect any incorrect sizes at all - the cell layouts just work, there are no detectable scroll performance issues. For whatever reason, adding proper view controller containment solves the issue.
 
 ## Caveats
 This approach has worked really well for my use case, but you can't do everything SwiftUI can do inside these cell views and expect them to work. Specifically:
