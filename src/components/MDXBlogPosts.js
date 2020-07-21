@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { BlogGlobalStyle } from '../components/default';
+import { BlogGlobalStyle, colors } from '../components/default';
 import Nav from '../components/Nav';
 import { BlogPostContainer } from '../components/BlogPost';
 import BlogPostPreview from '../components/BlogPostPreview';
@@ -10,19 +10,22 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
-    background-color: #2b2c2f;
+    background-color: ${colors.darkBackground};
   }
 `;
 
-class MDXBlogPosts extends React.Component {
+export default class MDXBlogPosts extends React.Component {
   render() {
+    let isDarkMode = (typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches);
     return (
         <Container>
             <BlogGlobalStyle />
             <Helmet>
-              <title>{this.props.pageContext.tag + " | "}Noah Gilmore</title>
+              <title>{(this.props.tag || "Blog") + " | "}Noah Gilmore</title>
               <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
-              <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet" />
+              <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
+                {!isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />}
+                {isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css" />}
               <meta name="twitter:card" content="summary" />
               <meta name="twitter:creator" content="@noahsark769" />
               <meta property="og:url" content={`https://noahgilmore.com/blog`} />
@@ -31,7 +34,7 @@ class MDXBlogPosts extends React.Component {
               <meta name="Description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
             </Helmet>
             <Nav />
-            <BlogPostContainer darkened isCompressed>{this.props.pageContext.edges.map((edge) => {
+            <BlogPostContainer isCompressed darkened>{this.props.mdxEdges.map((edge) => {
                 return <BlogPostPreview
                   key={edge.node.id}
                   url={"/blog/" + edge.node.parent.name}
@@ -48,5 +51,3 @@ class MDXBlogPosts extends React.Component {
       ReactGA.pageview(window.location.pathname + window.location.search);
   }
 };
-
-export default MDXBlogPosts;

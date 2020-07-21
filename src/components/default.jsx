@@ -5,6 +5,11 @@ import bariol_woff from '../fonts/Bariol-Regular.woff';
 import bariol_ttf from '../fonts/Bariol-Regular.ttf';
 import bariol_svg from '../fonts/Bariol-Regular.svg';
 
+export const colors = {
+    darkBackground: `#23282f`,
+    secondaryDarkBackground: `#2b2c2f`
+};
+
 export const GlobalStyle = createGlobalStyle`
     @font-face {
         font-family: 'Bariol';
@@ -48,7 +53,7 @@ export const BlogGlobalStyle = createGlobalStyle`
 
     @media (prefers-color-scheme: dark) {
         html, body {
-            background-color: #2b2c2f;
+            background-color: ${colors.darkBackground};
         }
     }
 `;

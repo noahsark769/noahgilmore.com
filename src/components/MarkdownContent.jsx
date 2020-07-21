@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
+import { colors } from '../components/default';
 
 const Container = styled.div`
     p, li {
         margin: 0;
         padding: 0;
-        font-family: "Gentium Book Basic", times, serif;
-        font-size: 21px;
+        font-family: "Merriweather", times, serif;
+        font-size: 18px;
         line-height: 29px;
         color: #333;
         padding-bottom: 15px;
@@ -26,9 +27,11 @@ const Container = styled.div`
         border-left: 4px solid #e5e4e1;
         padding: 20px;
         font-style: italic;
+        font-synthesis: weight;
+        font-weight: 300;
 
         @media (prefers-color-scheme: dark) {
-            background-color: #3f3f3f;
+            background-color: ${colors.secondaryDarkBackground};
         }
 
         p {

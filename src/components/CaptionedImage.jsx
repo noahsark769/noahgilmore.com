@@ -21,6 +21,7 @@ const Caption = styled.div`
     margin-bottom: 30px;
     margin-top: 12px;
     text-align: center;
+    line-height: 1.2em;
 
     img {
         width: 100%;
