@@ -1,0 +1,104 @@
+---
+title: "SwiftUI Crash in AG::LayoutDescriptor::compare"
+date: 2020-07-03
+tags: swift, ios, swiftui
+ogimage: "ag-stack-trace.png"
+staticPreview: I've been working lately on rewriting some of CIFilter.io in SwiftUI. One crash I came across that initially stumped me would happen when resetting my UIHostingController's rootView to a view that was equivalent to the one already set..
+mdxPreview: >
+    I've been working lately on rewriting some of [CIFilter.io](/blog/cifilterio) in SwiftUI. One crash I came across that initially stumped me would happen when resetting my `UIHostingController`'s `rootView` to a view that was equivalent to the one already set...
+---
+import Tweet from "../../components/Tweet";
+
+> Update (2/23/2020): In addition to the issue this post originally described, I've reported another, similar issue for SwiftUI in AppKit. See the bottom of this post for more info.
+
+I've been working lately on rewriting some of [CIFilter.io](/blog/cifilterio) in SwiftUI. One crash I came across that initially stumped me would happen when resetting my `UIHostingController`'s `rootView` to a view that was equivalent to the one already set (mostly, this happened when transitioning the window from full to split-screen mode). The crash only had one stackframe that started with `AG::LayoutDescriptor::compare`:
+
+```
+#0	0x00007fff4a9b6069 in AG::LayoutDescriptor::compare(unsigned char const*, unsigned char const*, unsigned char const*, unsigned long, unsigned int) ()
+```
+
+Initially I had no idea what was going on here, but I found two clues. One was this tweet:
+
+<Tweet tweetId="1268846742558179330" />
+
+Looks like [Alexey Demedeckiy](https://medium.com/@DAloG) ran into this a while back, and the solution was to make an enum with many cases conform to `Equatable`. I realized that I also had an enum (`FilterParameterType`) with 20+ cases which I was now using as part of the SwiftUI view state.
+
+The second clue was that the crashing method was called `compare`: my enum wasn't equatable, but it seems like SwiftUI was doing something under the hood to try to compare it anyways.
+
+I spent a bit of time creating a sample project and whitling down my code into a minimal reproduction case, and I realized that the following triggers the same crash:
+
+```swift
+enum Type {
+    case one(info: String)
+    case two(info: String)
+    case three(info: String)
+    case four(info: String)
+    case five(info: String)
+    case six(info: String)
+    case seven(info: String)
+    case eight(info: String)
+    case nine(info: String)
+    case ten(info: String)
+}
+
+struct ContentView: View {
+    @State var type: Type = .one(info: "one")
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Button(action: {
+                self.type = .one(info: "one")
+            }, label: {
+                Text("Tap here to crash")
+            })
+        }
+    }
+}
+```
+
+Tapping that button (twice, for some reason?) crashes the app!
+
+This was a super, super interesting bug to find. Even more interesting is that the crash _doesn't_ happen if you do any of the following:
+
+1. Make the enum `Equatable`
+2. Comment out one of the cases
+3. Comment out the _associated value_ of one of the cases
+
+From what I can tell, SwiftUI's trying hard to compare the enum, even if it's not equatable, but I guess 10 cases is the point at which it gives up.
+
+The takeaway: if you use enums as part of your SwiftUI view state, make them Equatable.
+
+> A test project which reproduces this issue is available at [NGSwiftUIEquatableCrashExample](https://github.com/noahsark769/NGSwiftUIEquatableCrashExample). I've filed this issue with Apple as FB7847416.
+
+## Bonus
+
+About a month after this issue, I noticed another, similar issue. It seems a similar crash can happen in SwiftUI running on top of AppKit (in macOS apps) with the following code:
+
+```swift
+struct NormalExperienceState {
+    var one: String?
+    var two: String?
+    var three: String?
+    var four: String?
+    var five: String?
+    var six: String?
+    var seven: String?
+    var eight: String?
+    var nine: String?
+    var ten: String?
+    var eleven: String?
+    var twelve: String?
+    var thirteen: String?
+}
+
+struct ContentView: View {
+    @State var state = NormalExperienceState()
+    var body: some View {
+        Text("Hello, world!").padding()
+    }
+}
+```
+
+The crash seems to happen most frequently in `objc_release`, `StateStorageBox`, or `swift_initStructMetadata`. (Putting these keywords here in case someone is googling and needs to find them.) Similarly, making the struct conform correctly to `Equatable` solves the problem.
+
+I've created [another sample project](https://github.com/noahsark769/NGSwiftUIEquatableStateIssue) (with linked feedback number) for this.
