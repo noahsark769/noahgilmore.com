@@ -9,6 +9,8 @@ mdxPreview: >
 ---
 import Tweet from "../../components/Tweet";
 
+> Update (2/23/2020): In addition to the issue this post originally described, I've reported another, similar issue for SwiftUI in AppKit. See the bottom of this post for more info.
+
 I've been working lately on rewriting some of [CIFilter.io](/blog/cifilterio) in SwiftUI. One crash I came across that initially stumped me would happen when resetting my `UIHostingController`'s `rootView` to a view that was equivalent to the one already set (mostly, this happened when transitioning the window from full to split-screen mode). The crash only had one stackframe that started with `AG::LayoutDescriptor::compare`:
 
 ```
@@ -67,3 +69,36 @@ From what I can tell, SwiftUI's trying hard to compare the enum, even if it's no
 The takeaway: if you use enums as part of your SwiftUI view state, make them Equatable.
 
 > A test project which reproduces this issue is available at [NGSwiftUIEquatableCrashExample](https://github.com/noahsark769/NGSwiftUIEquatableCrashExample). I've filed this issue with Apple as FB7847416.
+
+## Bonus
+
+About a month after this issue, I noticed another, similar issue. It seems a similar crash can happen in SwiftUI running on top of AppKit (in macOS apps) with the following code:
+
+```swift
+struct NormalExperienceState {
+    var one: String?
+    var two: String?
+    var three: String?
+    var four: String?
+    var five: String?
+    var six: String?
+    var seven: String?
+    var eight: String?
+    var nine: String?
+    var ten: String?
+    var eleven: String?
+    var twelve: String?
+    var thirteen: String?
+}
+
+struct ContentView: View {
+    @State var state = NormalExperienceState()
+    var body: some View {
+        Text("Hello, world!").padding()
+    }
+}
+```
+
+The crash seems to happen most frequently in `objc_release`, `StateStorageBox`, or `swift_initStructMetadata`. (Putting these keywords here in case someone is googling and needs to find them.) Similarly, making the struct conform correctly to `Equatable` solves the problem.
+
+I've created [another sample project](https://github.com/noahsark769/NGSwiftUIEquatableStateIssue) (with linked feedback number) for this.
