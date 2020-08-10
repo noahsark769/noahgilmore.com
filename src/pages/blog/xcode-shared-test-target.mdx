@@ -1,11 +1,11 @@
 ---
 title: "Creating a shared unit test utils library with Xcode"
-date: 2020-08-08
+date: 2020-08-09
 tags: swift, ios, xcode
-ogimage: TODO
-staticPreview: TODO
+ogimage: "xcodeshared-1.png"
+staticPreview: I've been talking a fair amount recently about how I've been writing a lot of unit tests for Fluency, my Confluence editor app, and how much I value having good tests to catch regressions and verify that the editor is actually working correctly. In the case of Fluency, I now have 70+ tests which test various parts of the app, and I've extracted various utils out of the actual...
 mdxPreview: >
-    TODO
+    I've been talking a fair amount recently about how I've been writing a lot of unit tests for [Fluency, my Confluence editor app](https://getfluency.io), and how much I value having good tests to catch regressions and verify that the editor is actually working correctly. In the case of Fluency, I now have 70+ tests which test various parts of the app, and I've extracted various utils out of the actual...
 ---
 import Tweet from "../../components/Tweet";
 import CaptionedImage from "../../components/CaptionedImage";
@@ -31,7 +31,7 @@ struct Container {
 }
 ```
 
-And in our tests, we've defined a util to test it (less complicated than `assertRoundTrip`, but the same idea):
+And in our tests, we've defined a util to test it (`assertContainerWorks` is less complicated than `assertRoundTrip`, but the same idea):
 
 ```swift
 // ExampleAppTests.swift
@@ -52,7 +52,7 @@ class ExampleAppTests: XCTestCase {
 
 Now, we want to add another test target which uses the same util. Right-clicking ExampleAppTests in the text navigator and choosing "New Unit Test Target" gets us that target, which we can call `OtherTests`:
 
-<CaptionedImage filename="xcodeshared-2.png" max={300} caption="" alt="Xcode UI with 'New Unit Test' menu item selected" />
+<CaptionedImage filename="xcodeshared-2.png" max={400} caption="" alt="Xcode UI with 'New Unit Test' menu item selected" />
 
 Our `OtherTests.swift` looks like:
 
@@ -99,7 +99,7 @@ public func assertContainerWorks() {
 
 Now let's go to work by telling Xcode to run the tests:
 
-<CaptionedImage filename="xcodeshared-5.png" max={300} caption="" alt="Xcode UI with the 'Run example app tests' menu item selected" />
+<CaptionedImage filename="xcodeshared-5.png" max={400} caption="" alt="Xcode UI with the 'Run example app tests' menu item selected" />
 
 ## Compiling the shared library
 (This section goes into detail about how to triage and resolve each issue I ran into - I'm hoping this is helpful for folks who, like me, weren't experienced at building and linking static libraries. If you're looking for a laundry list of what to do to make it work, skip to [here](/blog/xcode-shared-test-target#tldr).)
@@ -124,7 +124,7 @@ class ExampleAppTests: XCTestCase {
 }
 ```
 
-#### Clean and run #2:
+### Clean and run #2:
 
 ```
 No such module 'SharedTestUtils'
@@ -132,31 +132,40 @@ No such module 'SharedTestUtils'
 
 We haven't told Xcode that our test targets depend on `SharedTestUtils` being built, so it hasn't built it for us. We'll need to add `SharedTestUtils` as a dependency in the Xcode project settings (Build Phrases section) for both test targets:
 
-TODO two images
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="xcodeshared-6.png" alt="Xcode menu showing the plus button in the dependencies menu" caption="New Dependency" />
+    <CaptionedImage max={300} filename="xcodeshared-7.png" alt="Xcode menu showing the 'SharedTestUtils' library being selected as a dependency" caption="SharedTestUtils" />
+</FlowGrid>
 
-#### Clean and run #3:
+### Clean and run #3:
 
 ```
 Command CompileSwift failed with a nonzero exit code
 ```
 
-This one is a little harder: navigating to the report navigator and looking at the build log, we see the real error: `Failed to load module 'XCTest'`.
+This one is a little harder: looking at the build log in the report navigator, we see the real error: `Failed to load module 'XCTest'`.
 
-TODO image
+<CaptionedImage filename="xcodeshared-8.png" max={600} caption="" alt="Xcode build output screen showing the failure message" />
 
 This is because we haven't linked the `SharedTestUtils` library against `XCTest`. We'll need to go to the project settings for `SharedTestUtils`, Build Phases, Link Binary With Libraries and select `XCTest` from the sheet.
 
-TODO image, image
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="xcodeshared-9.png" alt="Xcode menu showing the plus button in linking menu" caption="Linking Menu" />
+    <CaptionedImage max={300} filename="xcodeshared-10.png" alt="Xcode menu showing the 'XCTest' library being selected for linking" caption="Selecting XCTest" />
+</FlowGrid>
 
-#### Clean and run #4:
+### Clean and run #4:
 
 ```
 No such module 'ExampleApp'
 ```
 
-We haven't specified that the `ExampleApp` target is a dependency of `SharedTestUtils`, 
+We haven't specified that the `ExampleApp` target is a dependency of `SharedTestUtils`, so we'll need to add that via Xcode settings as well.
 
-TODO image image
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="xcodeshared-11.png" alt="Xcode menu showing the plus button in the dependencies menu for SharedTestUtils" caption="" />
+    <CaptionedImage max={300} filename="xcodeshared-12.png" alt="Xcode menu showing the 'XCTest' library being selected for linking" caption="" />
+</FlowGrid>
 
 ### Clean and run #5:
 
@@ -166,14 +175,17 @@ Undefined symbol: SharedTestUtils.assertContainerWorks() -> ()
 
 We've gotten past the compiler errors and we're now on to linker errors. `SharedTestUtils` got compiled, but our test targets aren't linking against it, so the linker doesn't know where to find the executable code for `assertContainerWorks`. This can be solved in Xcode project settings too - under "Link Binary with Libraries" for both test targets, we'll add `libSharedTestUtils.a`, the static library artifact that results from compiling `SharedTestUtils`.
 
-TODO image image
+<FlowGrid columns={2}>
+    <CaptionedImage max={300} filename="xcodeshared-13.png" alt="Xcode menu showing the plus button in the linking menu for the test target" caption="Adding a library to link against" />
+    <CaptionedImage max={300} filename="xcodeshared-14.png" alt="Xcode menu showing the 'libSharedTestUtils.a' library being selected for linking" caption="libSharedTestUtils.a" />
+</FlowGrid>
 
 ### Clean and run #6:
 It works!
 
-TODO image
+<CaptionedImage max={400} filename="xcodeshared-15.png" alt="Xcode test run UI showing tests passing" caption="🎉" />
 
-### tl;dr:
+## tl;dr:
 In order to create a library that depends on app code and is shared between two test targets, you need to:
 
 1. Create the library as a Static Library target
@@ -185,13 +197,13 @@ In order to create a library that depends on app code and is shared between two 
 ## Other Options Considered
 A static library is only one way to include code in a dependency. I also tried using a Unit Test Bundle, but ran into linker issues - the test targets can't link against `SharedTestUtils` if it's a Unit Test Bundle, or at least not easily - Xcode doesn't show it in the Link Binary With Libraries setting.
 
-Using a dynamic library (wrapped in a Framework target) is also an option, and it might work well if your utils library just needs `XCTest` and doesn't need to `@testable import` your app. However, this is subject to the same issue as a Unit Test Bundle, where you can't link against the app binary. Thanks to Boris Bügling for pointing out TODO link that you can get around this with `BUNDLE_LOADER`, but it turns out if you specify the loader app correctly you end up with the following:
+Using a dynamic library (wrapped in a Framework target) is also an option, and it might work well if your utils library just needs `XCTest` and doesn't need to `@testable import` your app. However, this is subject to the same issue as a Unit Test Bundle, where you can't link against the app binary. Thanks to [Boris Bügling for pointing out](https://twitter.com/NeoNacho/status/1292203466362773505) that you can get around this with `BUNDLE_LOADER`, but it turns out if you specify the loader app correctly you end up with the following:
 
 ```
 '-bundle_loader <path/to/ExampleApp> not allowed with '-dynamiclib'
 ```
 
-Apparently `BUNDLE_LOADER` doesn't work with dynamic libraries, which is why I went with the static library approach in the first place. To be honest, I'm not sure if this is the best way - there could be something I'm totally missing that might allow this to work with a Framework. Please let me know TODO link if you have ideas 👋
+Apparently `BUNDLE_LOADER` doesn't work with dynamic libraries, which is why I went with the static library approach in the first place. To be honest, I'm not sure if this is the best way - there could be something I'm totally missing that might allow this to work with a Framework. Please [let me know](https://twitter.com/noahsark769) if you have ideas 👋
 
 ## Conclusion
 Hopefully this approach helps folks who want to maintain multiple unit test targets while keeping shared app test utils in common between them. It's worked great in [Fluency](https://getfluency.io), but your mileage might vary - if you're interested in discussing this or other Xcode/Swift/iOS related things, you can [follow me on Twitter](https://twitter.com/noahsark769).
