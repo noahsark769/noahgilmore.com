@@ -16,6 +16,7 @@
     "gatsby-plugin-manifest": "^2.2.27",
     "gatsby-plugin-mdx": "^1.0.24",
     "gatsby-plugin-offline": "^2.0.5",
+    "gatsby-plugin-postcss": "^2.3.11",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-plugin-sharp": "^2.2.38",
     "gatsby-plugin-sitemap": "^2.2.3",
@@ -48,7 +49,8 @@
     "deploy": "gatsby build --prefix-paths && cp CNAME ./public && gh-pages -d public"
   },
   "devDependencies": {
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "tailwindcss": "^1.8.9"
   },
   "repository": {
     "type": "git",

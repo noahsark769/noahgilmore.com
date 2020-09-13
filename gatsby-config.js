@@ -127,6 +127,7 @@ module.exports = {
     `gatsby-plugin-sitemap`,
     rssFeedPlugin("*ios*", '/blog/ios.xml', "Noah Gilmore's Development Blog: iOS"),
     rssFeedPlugin("*web*", '/blog/web.xml', "Noah Gilmore's Development Blog: Web"),
-    rssFeedPlugin("*", '/blog/rss.xml', "Noah Gilmore's Development Blog")
+    rssFeedPlugin("*", '/blog/rss.xml', "Noah Gilmore's Development Blog"),
+    `gatsby-plugin-postcss`
   ]
 }
