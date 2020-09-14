@@ -1,92 +1,46 @@
 import React from 'react';
-import { Div, A, GlobalStyle } from '../components/default';
 import styled from "styled-components";
-import HomepageLink from '../components/HomepageLink';
 import { Helmet } from "react-helmet";
-import RightColumnContent from '../components/RightColumnContent';
+import Image from "../components/Image";
 import ReactGA from 'react-ga';
 
-const Container = styled(Div)`
-    width: 960px;
-    height: 100vh;
-    margin: 0 auto;
-`;
-
-const leftRightMargin = 70;
-
-const LeftColumn = styled(Div)`
-    width: ${960 * 0.4 + "px;"}
-    height: 100%;
-    background-image: url("https://format-com-cld-res.cloudinary.com/image/private/s--noYGWsqS--/c_limit,g_center,h_65535,w_2500/a_auto,fl_keep_iptc.progressive,q_95/43206-2413999-uc-2.jpg?2500");
-    background-size: cover;
-    background-position: center center;
-    padding-top: 50px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: ${leftRightMargin}px;
-`;
-
-const Title = styled(Div)`
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    height: 60px;
-    line-height: 40px;
-    font-size: 30px;
-    text-transform: uppercase;
-
-    width: 100%;
-    text-align: left;
-    padding: 10px 15px 10px 0;
-    background-color: white;
-    text-align: right;
-`;
-
-const Links = styled(Div)`
-    display: block;
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    right: 0;
-`;
-
-const RightColumn = styled(Div)`
-    width: ${960 * 0.6 - leftRightMargin + "px;"}
-    font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
-    vertical-align: middle;
-    display: inline-block;
-`;
-
 class IndexPage extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            component: "about"
-        };
-    }
-
-    handleContentChange(section) {
-        this.setState({ component: section })
-    }
-
     render() {
-        return <Container>
-            <GlobalStyle />
+        return <div className="outerWrapper h-screen flex flex-col dark-mode:bg-gray-800 dark-mode:text-white"
+            style={{fontFamily: "'Merriweather', times, serif"}}>
             <Helmet>
-                <title>Noah Gilmore</title>
-                <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+                <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
+                <meta name="twitter:card" content="summary" />
+                <meta name="twitter:creator" content="@noahsark769" />
+                <meta property="og:url" content={`https://noahgilmore.com`} />
+                <meta property="og:title" content="Noah Gilmore" />
+                <meta property="og:description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
+                <meta name="Description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
             </Helmet>
-            <LeftColumn>
-                <Title><A href="/">Noah Gilmore</A></Title>
-                <Links>
-                    <HomepageLink onClick={() => this.handleContentChange("about")}>About</HomepageLink>
-                    <HomepageLink onClick={() => this.handleContentChange("contact")}>Contact</HomepageLink>
-                    <HomepageLink to='/blog'>Blog</HomepageLink>
-                </Links>
-            </LeftColumn>
-            <RightColumn>
-                <RightColumnContent component={this.state.component} />
-            </RightColumn>
-        </Container>
+            <div className="innerWrapper p-16 md:p-32 flex flex-row justify-center">
+                <div className="max-w-4xl flex flex-col leading-6">
+                    <div className="flex flex-row items-center mb-12">
+                        <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
+                            <Image filename="corgi.jpg" alt="Picture of me with a corgi" />
+                        </div>
+                        <div className="flex flex-col">
+                            <h1 className="uppercase text-3xl font-bold mb-4 leading-8" style={{fontFamily: "'Roboto', sans-serif"}}>Noah Gilmore</h1>
+                            <p className="hidden md:block">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                        </div>
+                    </div>
+                    <p className="block md:hidden mb-12">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                    <div>
+                        <ul className="p-0 md:p-8">
+                            <li className="pb-6">✍️ You can read technical posts on <a className="dark-mode:text-teal-400 underline text-teal-700" href="/blog">my blog</a></li>
+                            <li className="pb-6">💻 I'm writing a macOS editor for Atlassian Confluence which you can learn more about <a className="dark-mode:text-teal-400 underline text-blue-700" href="https://getfluency.io">here</a></li>
+                            <li className="pb-6">🧩 I made a puzzle game for iPhone and iPad called <a className="dark-mode:text-teal-400 underline text-indigo-700" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</a></li>
+                            <li className="pb-6">🎨 I wrote a CoreImage filter utility app for iOS developers called <a className="dark-mode:text-teal-400 underline text-pink-700" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</a></li>
+                            <li>👋 Please feel free to reach out on <a className="dark-mode:text-teal-400 underline text-red-700" href="https://twitter.com/noahsark769">Twitter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 
     componentDidMount() {
