@@ -55,6 +55,8 @@ const Container = styled.div`
         @media (prefers-color-scheme: dark) {
             color: #60b5d1;
         }
+
+        text-decoration: underline;
     }
     a:hover {
         color: #47656E;

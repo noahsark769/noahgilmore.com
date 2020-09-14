@@ -3,13 +3,40 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import Image from "../components/Image";
 import ReactGA from 'react-ga';
+import { colors, BlogGlobalStyle } from "../components/default";
+import Nav from '../components/Nav';
+
+const A = styled.a`
+    & {
+        color: #1A3F4B;
+        -webkit-transition: 0.2s ease-in-out;
+        -moz-transition: 0.2s ease-in-out;
+        -o-transition: 0.2s ease-in-out;
+        transition: 0.2s ease-in-out;
+
+        @media (prefers-color-scheme: dark) {
+            color: #60b5d1;
+        }
+    }
+    &:hover {
+        color: #47656E;
+
+        @media (prefers-color-scheme: dark) {
+            color: #6bcfef;
+        }
+    }
+`
 
 class IndexPage extends React.Component {
     render() {
-        return <div className="outerWrapper h-screen flex flex-col dark-mode:bg-gray-800 dark-mode:text-white"
+        return <div className="outerWrapper h-screen flex flex-col dark-mode:text-white"
             style={{fontFamily: "'Merriweather', times, serif"}}>
+            <Nav />
+            <BlogGlobalStyle />
             <Helmet>
+                <link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
                 <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
+                <title>Noah Gilmore</title>
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:creator" content="@noahsark769" />
                 <meta property="og:url" content={`https://noahgilmore.com`} />
@@ -25,17 +52,17 @@ class IndexPage extends React.Component {
                         </div>
                         <div className="flex flex-col">
                             <h1 className="uppercase text-3xl font-bold mb-4 leading-8" style={{fontFamily: "'Roboto', sans-serif"}}>Noah Gilmore</h1>
-                            <p className="hidden md:block">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                            <p className="hidden md:block">Hello! I'm Noah, a software developer based in the San Francisco Bay Area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
                         </div>
                     </div>
                     <p className="block md:hidden mb-12">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
                     <div>
                         <ul className="p-0 md:p-8">
-                            <li className="pb-6">✍️ You can read technical posts on <a className="dark-mode:text-teal-400 underline text-teal-700" href="/blog">my blog</a></li>
-                            <li className="pb-6">💻 I'm writing a macOS editor for Atlassian Confluence which you can learn more about <a className="dark-mode:text-teal-400 underline text-blue-700" href="https://getfluency.io">here</a></li>
-                            <li className="pb-6">🧩 I made a puzzle game for iPhone and iPad called <a className="dark-mode:text-teal-400 underline text-indigo-700" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</a></li>
-                            <li className="pb-6">🎨 I wrote a CoreImage filter utility app for iOS developers called <a className="dark-mode:text-teal-400 underline text-pink-700" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</a></li>
-                            <li>👋 Please feel free to reach out on <a className="dark-mode:text-teal-400 underline text-red-700" href="https://twitter.com/noahsark769">Twitter</a></li>
+                            <li className="pb-6">✍️ You can read technical posts on <A className="underline" href="/blog">my blog</A></li>
+                            <li className="pb-6">💻 I'm writing a macOS editor for Atlassian Confluence which you can learn more about <A className="underline" href="https://getfluency.io">here</A></li>
+                            <li className="pb-6">🧩 I made a puzzle game for iPhone and iPad called <A className="underline" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</A></li>
+                            <li className="pb-6">🎨 I wrote a CoreImage filter utility app for iOS developers called <A className="underline" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</A></li>
+                            <li>👋 Please feel free to reach out on <A className="underline" href="https://twitter.com/noahsark769">Twitter</A></li>
                         </ul>
                     </div>
                 </div>

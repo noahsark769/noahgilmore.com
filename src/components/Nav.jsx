@@ -2,7 +2,8 @@ import React from 'react';
 import { A, UL, LI } from '../components/default';
 import { blue, blueHighlight } from '../components/colors';
 import styled from "styled-components";
-import { IoIosHome, IoIosAppstore } from "react-icons/io";
+import { IoIosHome, IoIosAppstore, IoLogoGithub } from "react-icons/io";
+import { ImBlog } from "react-icons/im";
 import { FaTwitter } from "react-icons/fa";
 
 const StyledNav = styled.nav`
@@ -10,7 +11,6 @@ const StyledNav = styled.nav`
     flex-direction: row;
     flex-wrap: wrap;
     padding: 20px 60px;
-    border-bottom: 1px solid #ddd;
 
     @media all and (max-width: 600px) {
         padding: 20px;
@@ -47,14 +47,14 @@ const NavLink = styled(LI)`
     flex-direction: vertical;
     align-items: center;
     text-align: center;
-    font-family: "Bariol", "Helvetica Neue", "Helvetica", sans-serif;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 16px;
     padding: 0px 20px;
 `;
 
 const StyledA = styled(A)`
     height: auto;
-    color: ${blue};
+    ${(props) => props.blue && `color: ${blue} !important`};
     display: flex;
     flex-direction: vertical;
     align-items: center;
@@ -65,7 +65,7 @@ const StyledA = styled(A)`
     transition: 0.2s ease-in-out;
 
     &:hover {
-        color: ${blueHighlight};
+        ${(props) => props.blue && `color: ${blueHighlight} !important`};
     }
 `;
 
@@ -74,9 +74,11 @@ const Nav = (props) => {
         <StyledNav>
             <Title><StyledA href={props.blog ? '/blog' : '/'}>NOAH GILMORE</StyledA></Title>
             <NavLinks>
-                <NavLink><StyledA aria-label="Blog Home" href="/blog"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
-                <NavLink><StyledA aria-label="Twitter" href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
-                <NavLink><StyledA aria-label="App Store" href="https://apps.apple.com/us/app/cifilter-io/id1457458557"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
+                <NavLink title="Site Home"><StyledA aria-label="Home" href="/"><IoIosHome color={blue} size="24" /></StyledA></NavLink>
+                <NavLink title="Blog"><StyledA aria-label="Blog" href="/blog"><ImBlog color={blue} size="24" /></StyledA></NavLink>
+                <NavLink title="Twitter"><StyledA aria-label="Twitter" href="https://twitter.com/noahsark769"><FaTwitter color={blue} size="24" /></StyledA></NavLink>
+                <NavLink title="GitHub" className="hidden md:flex"><StyledA aria-label="GitHub" href="https://github.com/noahsark769"><IoLogoGithub color={blue} size="24" /></StyledA></NavLink>
+                <NavLink title="App Store"><StyledA aria-label="App Store" href="https://apps.apple.com/us/app/cifilter-io/id1457458557"><IoIosAppstore color={blue} size="24" /></StyledA></NavLink>
             </NavLinks>
         </StyledNav>
     );
