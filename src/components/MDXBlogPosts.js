@@ -33,7 +33,7 @@ export default class MDXBlogPosts extends React.Component {
               <meta property="og:description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
               <meta name="Description" content="Noah Gilmore's personal blog. Software development (web, iOS)." />
             </Helmet>
-            <Nav />
+            <Nav blog />
             <BlogPostContainer isCompressed darkened>{this.props.mdxEdges.map((edge) => {
                 return <BlogPostPreview
                   key={edge.node.id}
