@@ -29,7 +29,7 @@ const A = styled.a`
 
 class IndexPage extends React.Component {
     render() {
-        return <div className="outerWrapper h-screen flex flex-col dark-mode:text-white"
+        return <div className="outerWrapper h-screen dark-mode:text-white"
             style={{fontFamily: "'Merriweather', times, serif"}}>
             <Nav />
             <BlogGlobalStyle />
@@ -44,15 +44,15 @@ class IndexPage extends React.Component {
                 <meta property="og:description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
                 <meta name="Description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
             </Helmet>
-            <div className="innerWrapper p-16 md:p-32 flex flex-row justify-center">
-                <div className="max-w-4xl flex flex-col leading-6">
+            <div className="innerWrapper flex flex-row justify-center">
+                <div className="max-w-4xl flex flex-col leading-6 p-8 md:p-32">
                     <div className="flex flex-row items-center mb-12">
                         <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
                             <Image filename="corgi.jpg" alt="Picture of me with a corgi" />
                         </div>
                         <div className="flex flex-col">
                             <h1 className="uppercase text-3xl font-bold mb-4 leading-8" style={{fontFamily: "'Roboto', sans-serif"}}>Noah Gilmore</h1>
-                            <p className="hidden md:block">Hello! I'm Noah, a software developer based in the San Francisco Bay Area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                            <p className="hidden md:block">I'm Noah, a software developer based in the San Francisco Bay Area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
                         </div>
                     </div>
                     <p className="block md:hidden mb-12">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
