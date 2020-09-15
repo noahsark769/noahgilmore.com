@@ -29,7 +29,7 @@ const A = styled.a`
 
 class IndexPage extends React.Component {
     render() {
-        return <div className="outerWrapper h-screen flex flex-col dark-mode:text-white"
+        return <div className="outerWrapper h-screen dark-mode:text-white"
             style={{fontFamily: "'Merriweather', times, serif"}}>
             <Nav />
             <BlogGlobalStyle />
@@ -44,8 +44,8 @@ class IndexPage extends React.Component {
                 <meta property="og:description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
                 <meta name="Description" content="Noah Gilmore's personal website. Software development (web, iOS)." />
             </Helmet>
-            <div className="innerWrapper p-16 md:p-32 flex flex-row justify-center">
-                <div className="max-w-4xl flex flex-col leading-6">
+            <div className="innerWrapper flex flex-row justify-center">
+                <div className="max-w-4xl flex flex-col leading-6 p-8 md:p-32">
                     <div className="flex flex-row items-center mb-12">
                         <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
                             <Image filename="corgi.jpg" alt="Picture of me with a corgi" />
