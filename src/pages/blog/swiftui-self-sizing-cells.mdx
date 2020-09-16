@@ -11,6 +11,8 @@ import Tweet from "../../components/Tweet";
 import CaptionedImage from "../../components/CaptionedImage";
 import FlowGrid from '../../components/FlowGrid';
 
+> Update (9/16/2020): iOS 14 introduces issues related to keyboard safe area insets which basically make this approach invalid - it still works if your app is build with Xcode 11, but building with Xcode 12 will cause the cell layouts whose rects intersect with the keyboard rect to break. For more information see [this tweet](https://twitter.com/noahsark769/status/1305999564990750720), the [developer forums post with no response](https://developer.apple.com/forums/thread/658432), and feedbacks FB8305409, FB8240609, and FB8176223. Unfortunately, based on this, I don't think I can recommend taking this approach for writing table cells anymore, but it's still a great exercise in understanding how SwiftUI and UIKit interop work. If anything changes about this, I'll try my best to update this post with new information.
+
 <CaptionedImage filename="swiftuicell-1.png" max={300} caption="If you want to build these cells in SwiftUI, this is the post for you" alt="Screenshot of SwiftUI table view cells displayed in the sample app." />
 
 It's been a year since SwiftUI was released, and many iOS developers who are lucky to only support the two most current iOS versions will soon be able to start writing SwiftUI in their production apps. There are clear benefits to using SwiftUI (I could probably devote a whole post to them), but the question I've been thinking about lately is: where to start?
