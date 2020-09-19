@@ -1,0 +1,9 @@
+{
+  "actions" : {
+    "build" : {
+      "enabled" : true,
+      "script" : "make develop"
+    }
+  },
+  "identifier" : "73855C01-81AD-4E97-A5D1-EA61A9572A10"
+}
