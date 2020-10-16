@@ -15,7 +15,7 @@ import FlowGrid from '../../components/FlowGrid';
 
 > Update (9/18/2020): The issues detailed in the above update [seem to be resolved](https://twitter.com/zntfdr/status/1306913858263552001?s=20) as of Xcode 12.2 beta 1. I've created [UIHostingControllerAvoidanceExample](https://github.com/noahsark769/UIHostingControllerAvoidanceExample), which is a simpler reproduction case of the issues which existed before. However, as [Nathan Lawrence](https://twitter.com/NathanBLawrence) details in [this great Twitter thread](https://twitter.com/NathanBLawrence/status/1307091446739107848), there are other reasons to be careful about taking this approach in production apps. I posted a [Tweet](https://twitter.com/noahsark769/status/1307094916724600838?s=20) with more of my thoughts on it, but if you try to embed SwiftUI content inside your table view cells, be prepared to hack around issues - they'll surely continue to crop up as SwiftUI matures.
 
-> Update (9/18/2020): Just wanted to note so this post has up to date information - the issue still happens in the Xcode 12.1 GM build. Looks like we'll have to wait until Xcode 12.2.
+> Update (10/15/2020): Just wanted to note so this post has up to date information - the issue still happens in the Xcode 12.1 GM build. Looks like we'll have to wait until Xcode 12.2.
 
 <CaptionedImage filename="swiftuicell-1.png" max={300} caption="If you want to build these cells in SwiftUI, this is the post for you" alt="Screenshot of SwiftUI table view cells displayed in the sample app." />
 
