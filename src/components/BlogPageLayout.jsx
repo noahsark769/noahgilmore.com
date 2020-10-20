@@ -204,19 +204,7 @@ export default class BlogPageLayout extends React.Component {
                       }}>
                         <MarkdownContent>
                           {this.props.children}
-                          {
-                            this.props.pageContext.frontmatter.instabugEnabled &&
-                            <p>If you enjoyed this post, consider checking out Instabug - checking them out helps <a href="/blog/advertising">support</a> my writing and open source projects.</p>
-                          }
                         </MarkdownContent>
-                        {
-                        this.props.pageContext.frontmatter.instabugEnabled &&
-                        // <InstabugContainer>
-                        //   <InstabugInner>
-                            <Instabug />
-                        //   </InstabugInner>
-                        // </InstabugContainer>
-                        }
                       </MDXProvider>
                       <NonContent>
                         <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />

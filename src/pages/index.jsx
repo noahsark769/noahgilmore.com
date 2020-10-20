@@ -58,11 +58,11 @@ class IndexPage extends React.Component {
                     <p className="block md:hidden mb-12">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
                     <div>
                         <ul className="p-0 md:p-8">
-                            <li className="pb-6">✍️ You can read technical posts on <A className="underline" href="/blog">my blog</A></li>
-                            <li className="pb-6">💻 I'm writing a macOS editor for Atlassian Confluence which you can learn more about <A className="underline" href="https://getfluency.io">here</A></li>
-                            <li className="pb-6">🧩 I made a puzzle game for iPhone and iPad called <A className="underline" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</A></li>
-                            <li className="pb-6">🎨 I wrote a CoreImage filter utility app for iOS developers called <A className="underline" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</A></li>
-                            <li>👋 Please feel free to reach out on <A className="underline" href="https://twitter.com/noahsark769">Twitter</A></li>
+                            <li className="pb-6"><span role="img" aria-label="Writing">✍️</span> You can read technical posts on <A className="underline" href="/blog">my blog</A></li>
+                            <li className="pb-6"><span role="img" aria-label="Computer">💻</span> I'm writing a macOS editor for Atlassian Confluence which you can learn more about <A className="underline" href="https://getfluency.io">here</A></li>
+                            <li className="pb-6"><span role="img" aria-label="Puzzle">🧩</span> I made a puzzle game for iPhone and iPad called <A className="underline" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</A></li>
+                            <li className="pb-6"><span role="img" aria-label="Art">🎨</span> I wrote a CoreImage filter utility app for iOS developers called <A className="underline" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</A></li>
+                            <li><span role="img" aria-label="Wave">👋</span> Please feel free to reach out on <A className="underline" href="https://twitter.com/noahsark769">Twitter</A></li>
                         </ul>
                     </div>
                 </div>
