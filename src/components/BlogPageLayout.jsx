@@ -6,13 +6,14 @@ import EndButtons from './EndButtons';
 import { BlogPostContainer, BlogPostMeta } from './BlogPost';
 import MarkdownContent from './MarkdownContent';
 import { formatDateString } from '../lib/dateFormat';
-import Instabug from './Instabug';
 import Disqus from './Disqus';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import { MDXProvider } from "@mdx-js/react"
 import { IoMdLink, IoIosCheckmark } from "react-icons/io";
 import { OGImage } from "./OGImage";
+import Image from "../components/Image";
+import { A, HighlightedA } from "../components/default";
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
@@ -208,6 +209,28 @@ export default class BlogPageLayout extends React.Component {
                       </MDXProvider>
                       <NonContent>
                         <EndButtons tweetTitle={this.props.pageContext.frontmatter.title} tweetUrl={`https://noahgilmore.com${this.props.location.pathname}`} />
+                        <div style={{fontFamily: "'Merriweather', times, serif"}}
+                          className="dark-mode:text-white flex flex-col leading-6 mt-32 pt-16 border-t border-solid border-white">
+                            <div className="flex flex-row items-center mb-12 md:mb-0">
+                                <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
+                                    <Image filename="corgi.jpg" alt="Picture of me with a corgi" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <h1 className="uppercase text-3xl font-bold mb-4 leading-8" style={{fontFamily: "'Roboto', sans-serif"}}>Noah Gilmore</h1>
+                                    <p className="hidden md:block">I'm Noah, a software developer based in the San Francisco Bay Area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                                </div>
+                            </div>
+                            <p className="block md:hidden mb-12">Hello! I'm Noah, a software developer based in the San Francisco bay area. I focus mainly on iOS, Apple platform development, and full stack web development.</p>
+                            <div>
+                                <ul className="p-0 md:pt-8 md:pb-8">
+                                    <li className="pb-6"><span role="img" aria-label="Computer">💻</span> I'm writing a macOS editor for Atlassian Confluence called <HighlightedA className="underline" href="https://getfluency.io">Fluency</HighlightedA></li>
+                                    <li className="pb-6"><span role="img" aria-label="Phone">📱</span> I wrote an app which lets you create transparent app icons called <HighlightedA className="underline" href="https://transparenticons.app">Transparent App Icons</HighlightedA></li>
+                                    <li className="pb-6"><span role="img" aria-label="Puzzle">🧩</span> I made a puzzle game for iPhone and iPad called <HighlightedA className="underline" href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302">Trestle</HighlightedA></li>
+                                    <li className="pb-6"><span role="img" aria-label="Art">🎨</span> I wrote a CoreImage filter utility app for iOS developers called <HighlightedA className="underline" href="https://apps.apple.com/us/app/cifilter-io/id1457458557">CIFilter.io</HighlightedA></li>
+                                    <li><span role="img" aria-label="Wave">👋</span> Please feel free to reach out on <HighlightedA className="underline" href="https://twitter.com/noahsark769">Twitter</HighlightedA></li>
+                                </ul>
+                            </div>
+                        </div>
                         <Disqus />
                       </NonContent>
                     </PostContainerInner>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-    margin-top: 80px;
+    margin-top: 40px;
 `;
 
 export default class Disqus extends React.Component {

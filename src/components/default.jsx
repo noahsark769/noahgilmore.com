@@ -80,3 +80,20 @@ export const A = styled.a`
         text-decoration: none;
     }
 `;
+
+export const HighlightedA = styled.a`
+&, &:hover, &:focus {
+    color: #1A3F4B;
+    -webkit-transition: 0.2s ease-in-out;
+    -moz-transition: 0.2s ease-in-out;
+    -o-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+    
+    @media (prefers-color-scheme: dark) {
+        color: #60b5d1;
+    }
+
+    outline: none;
+    text-decoration: underline;
+}
+`;

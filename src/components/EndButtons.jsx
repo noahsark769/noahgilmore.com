@@ -1,5 +1,5 @@
 import React from 'react';
-import { A } from '../components/default';
+import { HighlightedA, A } from '../components/default';
 import styled, { css } from "styled-components";
 import { IoIosHome } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
@@ -13,6 +13,12 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 40px;
+
+    font-family: "Merriweather", serif;
+
+    @media (prefers-color-scheme: dark) {
+        color: #fff;
+    }
 `;
 
 const ButtonStyle = styled.div`
@@ -49,8 +55,10 @@ export default class EndButtons extends React.Component {
         const twitterUrl = formatTweetIntentUrl(`Post by @noahsark769: ${this.props.tweetTitle} ${this.props.tweetUrl}`);
         return (
             <Container>
-                <Button label="Twitter" url={twitterUrl} newTab margin><FaTwitter size={24} color='white'/></Button>
-                <Button label="Blog homepage" url="/blog"><IoIosHome size={24} color='white' /></Button>
+                <HighlightedA href={twitterUrl} target="_blank" className="pr-8">Tweet This</HighlightedA>
+                <HighlightedA href="https://noahgilmore.substack.com/" target="_blank">Get New Posts Via Email</HighlightedA>
+                {/* <Button label="Twitter" url={twitterUrl} newTab margin><FaTwitter size={24} color='white'/></Button>
+                <Button label="Blog homepage" url="/blog"><IoIosHome size={24} color='white' /></Button> */}
             </Container>
         );
     }
