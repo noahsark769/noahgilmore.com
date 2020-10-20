@@ -68,11 +68,11 @@
 <url> <loc>https://noahgilmore.com/blog/refactoring-private-to-public/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/rxswift-multiple-subscribers/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swift-dependency-injection/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/swift-pointer-uint/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swiftui-equatable-crash/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/swift-pointer-uint/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swiftui-relativedatetimeformatter/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/swiftui-self-sizing-cells/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/swiftui-two-columns-equal-width/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/swiftui-self-sizing-cells/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tables-are-hard/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/taking-down-sfsymbols/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/tuple-shuffling/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
