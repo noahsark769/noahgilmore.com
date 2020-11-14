@@ -39,9 +39,9 @@
 <url> <loc>https://noahgilmore.com/blog/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/examples/ios-copy-to-clipboard/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/advertising/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/amplitude-macos/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/automatic-preview-updating-paused/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/advertising/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/catalina-importerror-no-module-named-zlib/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/cfbundleversion-invalid/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/cifilter-colorwheel/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -79,6 +79,6 @@
 <url> <loc>https://noahgilmore.com/blog/uibutton-padding/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/uiwindowscene-black-screen/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/userdefaults-editor-swiftui/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://noahgilmore.com/blog/userdefaults-set-nil/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://noahgilmore.com/blog/xcode-shared-test-target/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://noahgilmore.com/blog/userdefaults-set-nil/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>

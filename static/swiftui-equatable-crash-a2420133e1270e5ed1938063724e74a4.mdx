@@ -11,6 +11,8 @@ import Tweet from "../../components/Tweet";
 
 > Update (2/23/2020): In addition to the issue this post originally described, I've reported another, similar issue for SwiftUI in AppKit. See the bottom of this post for more info.
 
+> Update (11/14/2020): I've added some more symbols I've seen in crashes with similar causes, which hopefully will be indexed by Google and help developers facing similar issues. My go-to strategy for fixing internal SwiftUI crashes (especially on macOS) has been "Is something not Equatable? Make it Equatable."
+
 I've been working lately on rewriting some of [CIFilter.io](/blog/cifilterio) in SwiftUI. One crash I came across that initially stumped me would happen when resetting my `UIHostingController`'s `rootView` to a view that was equivalent to the one already set (mostly, this happened when transitioning the window from full to split-screen mode). The crash only had one stackframe that started with `AG::LayoutDescriptor::compare`:
 
 ```
@@ -99,6 +101,6 @@ struct ContentView: View {
 }
 ```
 
-The crash seems to happen most frequently in `objc_release`, `StateStorageBox`, or `swift_initStructMetadata`. (Putting these keywords here in case someone is googling and needs to find them.) Similarly, making the struct conform correctly to `Equatable` solves the problem.
+The crash seems to happen most frequently in `objc_release`, `StateStorageBox`, `swift_initStructMetadata`, or `outlined copy of` various SwiftUI structs. (Putting these keywords here in case someone is googling and needs to find them.) Similarly, making the struct conform correctly to `Equatable` solves the problem.
 
 I've created [another sample project](https://github.com/noahsark769/NGSwiftUIEquatableStateIssue) (with linked feedback number) for this.
