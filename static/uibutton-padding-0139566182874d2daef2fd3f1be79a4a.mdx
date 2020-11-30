@@ -11,6 +11,8 @@ import CaptionedImage from '../../components/CaptionedImage';
 import FlowGrid from '../../components/FlowGrid';
 import Instabug from '../../components/Instabug';
 
+> Update (11/29/2020): I've updated this post to note that more subtlety is required to account for right-to-left languages.
+
 Pop quiz: in a `UIButton`, how do you set a padding of 10pt between the image and the title?
 
 <CaptionedImage max={200} filename="uibutton-padding-1.png" alt="Image showing 10pt padding between title and image of a UIButton" caption="If you're looking for a code snippet, skip to the bottom :)" />
@@ -110,6 +112,26 @@ extension UIButton {
     }
 }
 ```
+
+### Right-to-left languages
+In locales which write right-to-left, content and image insets have their right and left insets reversed, since the image is to the right of the text. In RTL environments, it's necessary to adjust the `setInsets` method as such:
+
+```swift
+self.contentEdgeInsets = UIEdgeInsets(
+    top: contentPadding.top,
+    left: contentPadding.left + imageTitlePadding,
+    bottom: contentPadding.bottom,
+    right: contentPadding.left
+)
+self.titleEdgeInsets = UIEdgeInsets(
+    top: 0,
+    left: -imageTitlePadding,
+    bottom: 0,
+    right: imageTitlePadding
+)
+```
+
+Unfortunately, `UIButton` [doesn't have support](https://stackoverflow.com/questions/53987344/support-nsdirectionaledgeinsets-for-uibuttons-contenedgeinsets) for `NSDirectionalEdgeInsets` currently, so you have to query the `userInterfaceLayoutDirection` to figure out whether to use the right-to-left version.
 
 ## Conclusion
 Hopefully this post helps some folks wrap their heads around a [weird](https://twitter.com/noahsark769/status/1123798154082758656) UIKit API. If you're looking for a truly customizable `UIButton`, don't forget that you can subclass `UIControl` directly and use your own layout entirely - I did this for [Trestle](https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8) and it worked well, even when I needed SVGs (!) inside the button.
