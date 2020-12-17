@@ -178,11 +178,13 @@ export default class BlogPageLayout extends React.Component {
                   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
                   {!isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css" />}
                   {isDarkMode && <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css" />}
-                  <meta name="twitter:card" content="summary" />
+                  {this.props.pageContext.frontmatter.usesLargeTwitterCard ? <meta name="twitter:card" content="summary_large_image" /> : <meta name="twitter:card" content="summary" /> }
                   <meta name="twitter:creator" content="@noahsark769" />
+                  <meta name="twitter:site" content="@noahsark769" />
                   <meta property="og:url" content={`https://noahgilmore.com${this.props.location.pathname}`} />
                   <meta property="og:title" content={this.props.pageContext.frontmatter.title} />
                   <meta property="og:description" content={this.props.pageContext.frontmatter.staticPreview} />
+                  <meta name="twitter:description" content={this.props.pageContext.frontmatter.staticPreview} />
                   <meta name="description" content={this.props.pageContext.frontmatter.staticPreview} />
               </Helmet>
               {this.props.pageContext.frontmatter.ogimage && <OGImage filename={this.props.pageContext.frontmatter.ogimage} />}
