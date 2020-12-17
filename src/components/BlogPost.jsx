@@ -41,6 +41,19 @@ const Heading = styled.h1`
     }
 `;
 
+const SubtitleHeaading = styled.h1`
+    width: 100%;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.2em;
+    font-style: italic;
+
+    @media (prefers-color-scheme: dark) {
+        color: #ddd;
+    }
+`;
+
 const DateContainer = styled.p`
     font-family: "Merriweather", times, serif;
     font-style: italic;
@@ -56,6 +69,7 @@ export const BlogPostMeta = (props) => {
             </Helmet>
             <TitleContainer>
                 <Heading>{props.title}</Heading>
+                {props.subtitle && <SubtitleHeaading>{props.subtitle}</SubtitleHeaading>}
                 <DateContainer>{props.date}</DateContainer>
             </TitleContainer>
         </div>

@@ -197,6 +197,7 @@ export default class BlogPageLayout extends React.Component {
                       <NonContent>
                         <BlogPostMeta
                             title={this.props.pageContext.frontmatter.title}
+                            subtitle={this.props.pageContext.frontmatter.subtitle}
                             date={formatDateString(this.props.pageContext.frontmatter.date)} />
                       </NonContent>
                       <MDXProvider components={{
