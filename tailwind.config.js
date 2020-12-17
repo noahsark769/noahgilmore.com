@@ -1,4 +1,7 @@
 module.exports = {
+    purge: [
+        './src/**/*.jsx',
+      ],
     theme: {
         extend: {},
         screens: {
