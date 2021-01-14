@@ -1,0 +1,12 @@
+# Common iOS code review issues
+- using tuples instead of structs as return values
+- using two optionals instead of an enum
+- using non-exhaustive switch statements
+- Not making things private
+- Not having tests
+- Unnecessary optionals
+    - Symptom: having a function which accepts an optional and the first statement is a guard let return 
+- Exposing too many internals (private vs internal), like subviews
+- Vars instead of lets
+- Not making classes final
+- Inheriting a class from NSObject when it doesn’t need to
