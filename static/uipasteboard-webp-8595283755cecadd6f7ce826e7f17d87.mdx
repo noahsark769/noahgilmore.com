@@ -8,7 +8,7 @@ mdxPreview: >
 ---
 I recently got a bug report for [Transparent App Icons](https://apps.apple.com/app/apple-store/id1533210346?pt=118551115&ct=uibpbp&mt=8) to the effect of "I tried to paste in a transparent image, but it didn't work." After cropping the background to create a "transparent" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image.
 
-Turns out, [WebP](https://developers.google.com/speed/webp), the web-optimized image format developed by Google, isn't supported natively by UIKit, but it's not too hard to implement support for it with the help of a small library and some deeper UIKit APIs.
+Turns out that [WebP](https://developers.google.com/speed/webp), the web-optimized image format developed by Google, isn't supported natively by UIKit. Luckily it's not too hard to implement support for it with the help of a small library and some deeper UIKit APIs.
 
 > Looking for a `UIPasteboard` extension which loads WebP images? Skip to the bottom!
 
