@@ -1,0 +1,55 @@
+// Welcome to the TypeScript Playground, this is a website
+// which gives you a chance to write, share and learn TypeScript.
+
+// You could think of it in three ways:
+//
+//  - A place to learn TypeScript in a place where nothing can break
+//  - A place to experiment with TypeScript syntax, and share the URLs with others
+//  - A sandbox to experiment with different compiler features of TypeScript
+
+interface TreeLikeStructure<T extends TreeLikeStructure<T>> {
+    id: string,
+    children?: T[]
+}
+
+interface Component {
+    id: string,
+    type: string,
+    children?: Component[]
+}
+
+interface DataNode {
+    id: string,
+    data: any,
+    children: DataNode[]
+}
+
+function forEachDataNodeAndDescendants<T extends TreeLikeStructure<T>>(
+  node: T,
+  execute: (node: T) => void
+) {
+  execute(node);
+  node.children?.forEach((child) => {
+    forEachDataNodeAndDescendants<T>(child, execute);
+  });
+}
+
+let componentTree: Component = {
+    id: "1",
+    type: "something",
+    children: [
+        {id: "1", type: "something"}
+    ]
+}
+
+let nodeTree: DataNode = {
+    id: "1",
+    data: "data",
+    children: [
+        {id: "1", data: "one thing or other", children: []},
+        {id: "2", data: "two thing or other", children: []}
+    ]
+}
+
+forEachDataNodeAndDescendants(nodeTree, (x: DataNode) => { console.log(x.data)})
+  
