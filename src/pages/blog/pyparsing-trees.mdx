@@ -6,7 +6,7 @@ staticPreview: Let's talk about syntax trees. In static analysis, a common opera
 mdxPreview: >
   Let's talk about [syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tree). In static analysis, a common operation is to take a character string (e.g. "x = 1") and transform it into well structured data.
 
-  Let's try to do this in python. We'll use [Pyparsing](http://pyparsing.wikispaces.com/) as our tokenization tool.
+  Let's try to do this in python. We'll use [Pyparsing](https://github.com/pyparsing/pyparsing/wiki) as our tokenization tool.
 ---
 import CaptionedImage from '../../components/CaptionedImage';
 
@@ -14,7 +14,7 @@ Let's talk about [syntax trees](https://en.wikipedia.org/wiki/Abstract_syntax_tr
 
 <CaptionedImage filename="pyparsing-trees-1.png" alt="Simple syntax tree" caption="" />
 
-Let's try to do this in python. We'll use [Pyparsing](http://pyparsing.wikispaces.com/) as our tokenization tool - you can use pyparsing's rules to build a grammar, from which you can get back a list of token data.
+Let's try to do this in python. We'll use [Pyparsing](https://github.com/pyparsing/pyparsing/wiki) as our tokenization tool - you can use pyparsing's rules to build a grammar, from which you can get back a list of token data.
 
 ```python
 from pyparsing import alphas, Word, Literal, nums
