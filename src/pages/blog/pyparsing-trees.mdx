@@ -127,9 +127,9 @@ And a way to print it out and see if it worked:
 
 ```python
 def pprint(node, tab=""):
-   print tab + u"┗━ " + str(node.value)
-   for child in node.children:
-      pprint(child, tab + "    ")
+    print(tab + u"┗━ " + str(node.value))
+    for child in node.children:
+        pprint(child, tab + "\t")
 ```
 
 ```
