@@ -47,11 +47,11 @@ Pyparsing supports recursive grammars using a grammar component called `Forward`
 grammar = pyparsing.Forward()
 grammar << pyparsing.Suppress("(") + pyparsing.Word("0123456789") + pyparsing.ZeroOrMore(grammar) + pyparsing.Suppress(")")
 
-query = "(1 (2 (3)) (4 (5 (6) (7) (8)))"
+query = "(1 (2 (3)) (4 (5 (6) (7) (8))))"
 ```
 ```
 >>> print(grammar.parseString(query))
-['5', '6', '7', '9', '9', '5', '6', '7', '8', '9', '7', '8', '9']
+['1', '2', '3', '4', '5', '6', '7', '8']
 ```
 
 This parses the grammar, but we still don't have the tree structure.
