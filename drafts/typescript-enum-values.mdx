@@ -1,1 +1,85 @@
 Figure out how to write a function to get enum values in typescript that you can pass to another function that has a parameter of type of the enum, then write about that
+
+something something,
+```
+type Component = {component: string}
+type Action = {action: string}
+type ConditionStatement = {condition: string}
+type Variant = {variant: string}
+
+type ComponentActionMethodAndArgs =
+  | { type: "setStyles"; value: Record<string, any> }
+  | {
+      type: "createOrUpdateAction";
+      value: { trigger: string; action: Partial<Action> };
+    }
+
+type StuctureRecord<A extends { type: string }, R> = {
+  [T in A as T["type"]]: ((value: T) => R) | R;
+};
+
+type StuctureRecordExcludingFunctions<A extends { type: string }, R> = {
+  [T in A as T["type"]]: R;
+};
+
+/**
+ * @returns A function which can be used to create an exhaustive switch over all
+ * types of a discriminated union (enum with "type" field).
+ *
+ * Example:
+ *
+ * type OneOrTwo = {
+ *   type: "one",
+ *   numberValue: number
+ * } | { type: "two", stringValue: string }
+ *
+ * let oneOrTwo = ...
+ * let result = exhaustiveSwitch(oneOrTwo)({
+ *   one: (op) => `${op.numberValue + 1}`, // Typescript knows numberValue is a number
+ *   two: (op) => op.stringValue + "hello", // Typescript knows stringValue is a string
+ * }) // type of result is inferred to be string
+ *
+ * Typescript will error if you forget a case, or if you assume the wrong type
+ * for a case value. The switch also returns the value you return from the function
+ * mapping, so it works well for "extension" methods
+ */
+const exhaustiveSwitchNonString = <A extends { type: string }>(value: A) => <R,>(
+  cases: StuctureRecord<A, R>
+): R => {
+  const type: A["type"] = value.type;
+  const possiblyFunction = cases[type];
+  if (typeof possiblyFunction === "function") {
+    let f = possiblyFunction as (value: any) => R
+    return f(value);
+  }
+  return possiblyFunction as R
+};
+
+const exhaustiveSwitchString = <A extends string>(value: A) => <R,>(
+  cases: StuctureRecordExcludingFunctions<{type: A}, R>
+): R => {
+  const type: A = value;
+  return cases[type] as R;
+};
+
+const exhaustiveSwitch = <string | (A extends { type: string })>() => {
+
+}
+
+const allCases = <A extends string>(values: StuctureRecord<{type: A}, true>): (keyof StuctureRecord<{type: A}, true>)[] => {
+  return Object.keys(values) as (keyof StuctureRecord<{type: A}, true>)[]
+}
+
+// const typesafeFromEntries = <T extends Array<string>>(array: T): StuctureRecord<{type: typeof T[number]}, true> => {
+//   return 
+// }
+
+type ActionType = "a" | "b" | "c" | "d"
+const ActionTypes = allCases<ActionType>({a: true, b: true, c: true, d: true})
+
+const processedAction = (actionType: ActionType) => {
+  return exhaustiveSwitchString(actionType)({a: "A", b: "B", c: "C", d: "D"})
+}
+
+console.log(ActionTypes.map(type => processedAction(type)))
+```
