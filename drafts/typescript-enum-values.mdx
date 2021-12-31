@@ -83,3 +83,11 @@ const processedAction = (actionType: ActionType) => {
 
 console.log(ActionTypes.map(type => processedAction(type)))
 ```
+
+Three kinds of enums: enums, union types, and discriminated unions
+
+We want to:
+
+1. have typesafe parameters (applies to all 3 kinds)
+2. have exhaustive switches (applies to all 3 kinds)
+3. allCases (only applies to first two types of enums, except in edge cases where you want ".raw" or something like that)
