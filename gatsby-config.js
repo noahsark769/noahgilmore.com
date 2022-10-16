@@ -73,7 +73,7 @@ function rssFeedPlugin(glob, feedName, title) {
 module.exports = {
   siteMetadata: {
     title: 'Noah Gilmore',
-    description: "Noah Gilmore's Development Blog",
+    description: "Noah Gilmore's Blog",
     siteUrl: "https://noahgilmore.com"
   },
   plugins: [
