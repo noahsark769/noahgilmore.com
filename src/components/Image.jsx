@@ -8,7 +8,7 @@ export const ImageProvider = props => {
       src={
         props.filename.startsWith("/") ? props.filename : `/${props.filename}`
       }
-      layout={"fill"}
+      {...props}
     />
   );
 };
