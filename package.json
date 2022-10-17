@@ -22,12 +22,12 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
     "format": "prettier --write \"src/**/*.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gatsby-build": "gatsby build --prefix-paths",
-    "deploy": "gatsby build --prefix-paths && cp CNAME ./public && gh-pages -d public"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "devDependencies": {
     "prettier": "^1.14.2",
