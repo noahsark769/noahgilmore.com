@@ -1,29 +1,21 @@
 import React from "react";
 import Image from "next/image";
 
-export const ImageProvider = props => {
+const CustomImage = props => {
   return (
-    <Image
-      alt={props.alt}
-      src={
-        props.filename.startsWith("/") ? props.filename : `/${props.filename}`
-      }
-      {...props}
-    />
+    <div className="w-full h-full">
+      <Image
+        layout="fill"
+        // width="500px"
+        // height="auto"
+        alt={props.alt}
+        src={
+          props.filename.startsWith("/") ? props.filename : `/${props.filename}`
+        }
+        {...props}
+      />
+    </div>
   );
 };
 
-const CustomImage = props => (
-  <ImageProvider
-    {...props}
-    noChildImageContent={node => {
-      return (
-        <img style={{ width: "100%" }} alt={props.alt} src={node.publicURL} />
-      );
-    }}
-    childImagesContent={(node, imageSizes) => {
-      return <Img alt={props.alt} sizes={imageSizes} />;
-    }}
-  />
-);
 export default CustomImage;

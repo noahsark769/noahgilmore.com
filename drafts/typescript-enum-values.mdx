@@ -1,6 +1,7 @@
 Figure out how to write a function to get enum values in typescript that you can pass to another function that has a parameter of type of the enum, then write about that
 
 something something,
+
 ```
 type Component = {component: string}
 type Action = {action: string}
@@ -71,7 +72,7 @@ const allCases = <A extends string>(values: StuctureRecord<{type: A}, true>): (k
 }
 
 // const typesafeFromEntries = <T extends Array<string>>(array: T): StuctureRecord<{type: typeof T[number]}, true> => {
-//   return 
+//   return
 // }
 
 type ActionType = "a" | "b" | "c" | "d"
