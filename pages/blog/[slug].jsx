@@ -10,6 +10,7 @@ import FlowGrid from "../../src/components/FlowGrid";
 import Instabug from "../../src/components/Instabug";
 import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
+import slugify from "slugify";
 
 export default function BlogPage(props) {
   const pageContext = {
@@ -25,8 +26,34 @@ export default function BlogPage(props) {
       <MDXRemote
         {...props.source}
         components={{
-          h1: props => <Header is="h1" {...props} />,
-          h2: props => <Header is="h2" {...props} />,
+          h1: props => {
+            return (
+              <Header
+                is="h1"
+                id={slugify(props.children)}
+                {...{
+                  ...props,
+                  ...(typeof props.children === "string"
+                    ? { id: slugify(props.children.toLowerCase()) }
+                    : {})
+                }}
+              />
+            );
+          },
+          h2: props => {
+            return (
+              <Header
+                is="h2"
+                id={slugify(props.children)}
+                {...{
+                  ...props,
+                  ...(typeof props.children === "string"
+                    ? { id: slugify(props.children.toLowerCase()) }
+                    : {})
+                }}
+              />
+            );
+          },
           image: props => <div className="w-full">Yo</div>,
           img: props => <div className="w-full">Yo</div>,
           CaptionedImage: props => <CaptionedImage {...props} />,

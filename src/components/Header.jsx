@@ -56,6 +56,22 @@ class HeaderLink extends React.Component {
   }
 }
 
+const H1 = styled.h1`
+  position: relative;
+  @media all and (min-width: 600px) {
+    margin-left: -50px;
+    padding-left: 50px;
+  }
+`;
+
+const H2 = styled.h2`
+  position: relative;
+  @media all and (min-width: 600px) {
+    margin-left: -50px;
+    padding-left: 50px;
+  }
+`;
+
 export default class Header extends React.Component {
   constructor() {
     super();
@@ -92,13 +108,7 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const MyTag = styled[this.props.is]`
-      position: relative;
-      @media all and (min-width: 600px) {
-        margin-left: -50px;
-        padding-left: 50px;
-      }
-    `;
+    const MyTag = { h1: H1, h2: H2 }[this.props.is];
     return (
       <MyTag
         id={this.props.id}

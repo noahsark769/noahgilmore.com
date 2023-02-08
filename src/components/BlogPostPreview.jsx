@@ -94,7 +94,7 @@ export default class BlogPostPreview extends React.Component {
           </NonContent>
           <Content>
             <MarkdownContent>
-              <ReactMarkdown source={this.props.mdxPreview} />
+              <ReactMarkdown>{this.props.mdxPreview}</ReactMarkdown>
             </MarkdownContent>
           </Content>
           <NonContent>
