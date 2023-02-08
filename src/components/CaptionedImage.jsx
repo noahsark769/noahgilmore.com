@@ -34,11 +34,7 @@ export default class CaptionedImage extends React.Component {
     return (
       <Wrap>
         <Container max={this.props.max}>
-          <Image
-            width="500px"
-            filename={this.props.filename}
-            alt={this.props.alt}
-          />
+          <Image filename={this.props.filename} alt={this.props.alt} />
           <Caption>{this.props.caption}</Caption>
         </Container>
       </Wrap>
