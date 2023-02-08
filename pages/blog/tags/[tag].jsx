@@ -1,11 +1,11 @@
-import MDXBlogPosts from "../src/components/MDXBlogPosts";
-import { getAllPosts } from "../src/utils/posts";
+import MDXBlogPosts from "../../../src/components/MDXBlogPosts";
+import { getAllPosts } from "../../../src/utils/posts";
 
 export default function BlogPage(props) {
   return <MDXBlogPosts mdxEdges={props.edges} />;
 }
 
-export const getStaticProps = async ({ tag }) => {
+export const getStaticProps = async ({ params }) => {
   const posts = getAllPosts([
     "slug",
     "content",
@@ -13,7 +13,7 @@ export const getStaticProps = async ({ tag }) => {
     "date",
     "mdxPreview",
     "tags"
-  ]).filter(p => p.tags.includes(tag));
+  ]).filter(p => p.tags.includes(params.tag));
   return {
     props: {
       edges: posts.map(post => {
@@ -44,7 +44,7 @@ export const getStaticPaths = async () => {
     "mdxPreview",
     "tags"
   ]);
-  const uniqueTags = Array.from(new Set(posts.map(p => p.tags).flat()));
+  const uniqueTags = [...new Set(posts.map(p => p.tags).flat())];
   return {
     paths: uniqueTags.map(tag => ({ params: { tag } })),
     fallback: false

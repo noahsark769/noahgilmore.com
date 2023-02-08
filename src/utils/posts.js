@@ -15,27 +15,28 @@ export function getPostBySlug(slug, fields) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  const items = {};
+  const post = {};
   fields.forEach(field => {
     if (field === "content") {
-      items[field] = content;
+      post[field] = content;
     } else if (field === "slug") {
-      items[field] = realSlug;
+      post[field] = realSlug;
     } else if (field === "date") {
-      items[field] = formatDateString(data[field]);
+      post[field] = formatDateString(data[field]);
+    } else if (field === "tags") {
+      post[field] = data[field]
+        ? data[field].split(",").map(tag => tag.trim())
+        : [];
     } else if (typeof data[field] !== "undefined") {
-      items[field] = data[field];
+      post[field] = data[field];
     }
   });
 
-  return items;
+  return post;
 }
-
-// Yes
 
 export function getAllPosts(fields) {
   const slugs = getPostSlugs();
-  console.log("slugs", slugs);
   const posts = slugs
     .map(slug => getPostBySlug(slug, fields))
     // sort posts by date in descending order

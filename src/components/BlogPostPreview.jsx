@@ -50,7 +50,6 @@ const StyledDate = styled.div`
   font-style: italic;
   font-size: 14px;
   color: #999;
-  margin-bottom: 20px;
 `;
 
 const Content = styled.div`
@@ -59,7 +58,6 @@ const Content = styled.div`
   line-height: 16px;
   color: #333;
   padding-bottom: 15px;
-  margin-top: 15px;
   line-height: 26px;
 `;
 
