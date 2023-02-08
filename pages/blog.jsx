@@ -7,7 +7,6 @@ export default function BlogPage(props) {
 
 export const getStaticProps = async () => {
   const posts = getAllPosts(["slug", "content", "title", "date", "mdxPreview"]);
-  console.log(posts[0]);
   return {
     props: {
       edges: posts.map(post => {

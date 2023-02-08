@@ -1,107 +1,111 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
-import { A, P, colors } from '../components/default';
-import MarkdownContent from '../components/MarkdownContent';
-import ReactMarkdown from 'react-markdown';
+import { A, P, colors } from "../components/default";
+import MarkdownContent from "../components/MarkdownContent";
+import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
-const Wrapper = styled.div`
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    padding: 20px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    -webkit-transition: 0.2s ease-in-out;
-    -moz-transition: 0.2s ease-in-out;
-    -o-transition: 0.2s ease-in-out;
-    transition: 0.2s ease-in-out;
-    background-color: white;
+const Wrapper = styled.a`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  background-color: white;
 
-    @media (prefers-color-scheme: dark) {
-        background-color: ${colors.secondaryDarkBackground};
-    }
+  @media (prefers-color-scheme: dark) {
+    background-color: ${colors.secondaryDarkBackground};
+  }
 
-    &:hover {
-        border-color: rgba(128, 165, 177, 1);
-    }
+  &:hover {
+    border-color: rgba(128, 165, 177, 1);
+  }
 
-    @media all and (max-width: 600px) {
-        border-right: none;
-        border-left: none;
-        padding-right: 0;
-        padding-left: 0;
-    }
+  @media all and (max-width: 600px) {
+    border-right: none;
+    border-left: none;
+    padding-right: 0;
+    padding-left: 0;
+  }
 `;
 
 const Title = styled.h1`
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    font-size: 20px;
-    margin-bottom: 5px;
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 20px;
+  margin-bottom: 5px;
 
-    @media (prefers-color-scheme: dark) {
-        color: #fff;
-    }
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+  }
 `;
 
 const StyledDate = styled.div`
-    font-family: "Merriweather", times, serif;
-    font-style: italic;
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 20px;
+  font-family: "Merriweather", times, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 20px;
 `;
 
 const Content = styled.div`
-    font-family: "Open Sans", times, serif;
-    font-size: 13px;
-    line-height: 16px;
-    color: #333;
-    padding-bottom: 15px;
-    margin-top: 15px;
-    line-height: 26px;
+  font-family: "Open Sans", times, serif;
+  font-size: 13px;
+  line-height: 16px;
+  color: #333;
+  padding-bottom: 15px;
+  margin-top: 15px;
+  line-height: 26px;
 `;
 
 const NonContent = styled.div`
-    @media all and (max-width: 600px) {
-        padding-right: 5%;
-        padding-left: 5%;
-    }
+  @media all and (max-width: 600px) {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
 `;
 
 const StyledA = styled(A)`
-    &, &:hover {
-        color: #1A3F4B;
-        text-decoration: underline;
-        font-family: "Merriweather", times, serif;
-        font-size: 16px;
-        line-height: 18px;
+  &,
+  &:hover {
+    color: #1a3f4b;
+    text-decoration: underline;
+    font-family: "Merriweather", times, serif;
+    font-size: 16px;
+    line-height: 18px;
 
-        @media (prefers-color-scheme: dark) {
-            color: #60b5d1;
-        }
+    @media (prefers-color-scheme: dark) {
+      color: #60b5d1;
     }
+  }
 `;
 
 export default class BlogPostPreview extends React.Component {
-    handleClick() {
-        window.location = this.props.url;
-    }
-
-    render() {
-        return (
-            <Wrapper onClick={() => this.handleClick()}>
-                <NonContent>
-                    <Title>{this.props.title}</Title>
-                    <StyledDate>{this.props.date}</StyledDate>
-                </NonContent>
-                <Content>
-                    <MarkdownContent>
-                        <ReactMarkdown source={this.props.mdxPreview} />
-                    </MarkdownContent>
-                </Content>
-                <NonContent>
-                    <P><StyledA href={this.props.url}>Read more</StyledA></P>
-                </NonContent>
-            </Wrapper>
-        );
-    }
-};
+  render() {
+    return (
+      <Link href={this.props.url} passHref>
+        <Wrapper>
+          <NonContent>
+            <Title>{this.props.title}</Title>
+            <StyledDate>{this.props.date}</StyledDate>
+          </NonContent>
+          <Content>
+            <MarkdownContent>
+              <ReactMarkdown source={this.props.mdxPreview} />
+            </MarkdownContent>
+          </Content>
+          <NonContent>
+            <P>
+              <StyledA href={this.props.url}>Read more</StyledA>
+            </P>
+          </NonContent>
+        </Wrapper>
+      </Link>
+    );
+  }
+}

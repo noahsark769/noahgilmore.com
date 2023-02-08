@@ -2,7 +2,7 @@ import React from "react";
 
 const CustomImage = props => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <img
         alt={props.alt}
         src={
