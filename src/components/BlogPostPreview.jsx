@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { A, P, colors } from "../components/default";
+import { P, colors } from "../components/default";
 import MarkdownContent from "../components/MarkdownContent";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";

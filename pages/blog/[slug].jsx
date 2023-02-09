@@ -12,7 +12,7 @@ import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
 import slugify from "slugify";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { dark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 export default function BlogPage(props) {
   const pageContext = {
@@ -56,8 +56,6 @@ export default function BlogPage(props) {
               />
             );
           },
-          image: props => <div className="w-full">Yo</div>,
-          img: props => <div className="w-full">Yo</div>,
           CaptionedImage: props => <CaptionedImage {...props} />,
           Tweet: props => <Tweet {...props} />,
           FlowGrid: props => <FlowGrid {...props} />,
@@ -65,17 +63,30 @@ export default function BlogPage(props) {
           IOS13SystemColorTable: props => <IOS13SystemColorTable {...props} />,
           TrestleBlogPostLink: props => <TrestleBlogPostLink {...props} />,
           code: props => {
-            console.log("the code", props);
             if (props.className && typeof props.children === "string") {
               return (
                 <SyntaxHighlighter
-                  style={dark}
+                  PreTag={undefined}
+                  // Note (Noah, 2023-02-09): vscode-highlight-code is specified in the CSS,
+                  // this is an artifact of the fact that we used to use hljs directly, should
+                  // probably change this to a different name or something
+                  codeTagProps={{ className: "vscode-highlight-code" }}
+                  customStyle={{ padding: 0, overflowX: "scroll" }}
+                  style={monokaiSublime}
                   language={props.className?.replace("language-", "")}
                   {...props}
                 />
               );
             }
-            return <code>{props.children}</code>;
+            return <code {...props} />;
+          },
+          pre: props => {
+            // Note (Noah, 2023-02-09): react-syntax-highlighter inserts an extra <pre>
+            // which messes with our CSS in MarkdownContent
+            if (props.children?.props.className.includes("language-")) {
+              return <>{props.children}</>;
+            }
+            return <pre {...props} />;
           }
         }}
       />
