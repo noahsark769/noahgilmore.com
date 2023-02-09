@@ -68,14 +68,19 @@ const NonContent = styled.div`
   }
 `;
 
-const StyledA = styled(A)`
+const LinkSpan = styled.span`
+  &,
+  &:hover,
+  &:focus {
+    outline: none;
+    color: inherit;
+    text-decoration: none;
+  }
   &,
   &:hover {
     color: #1a3f4b;
     text-decoration: underline;
     font-family: "Merriweather", times, serif;
-    font-size: 16px;
-    line-height: 18px;
 
     @media (prefers-color-scheme: dark) {
       color: #60b5d1;
@@ -94,12 +99,18 @@ export default class BlogPostPreview extends React.Component {
           </NonContent>
           <Content>
             <MarkdownContent>
-              <ReactMarkdown>{this.props.mdxPreview}</ReactMarkdown>
+              <ReactMarkdown
+                components={{
+                  a: props => <LinkSpan {...props}>{props.children}</LinkSpan>
+                }}
+              >
+                {this.props.mdxPreview}
+              </ReactMarkdown>
             </MarkdownContent>
           </Content>
           <NonContent>
             <P>
-              <StyledA href={this.props.url}>Read more</StyledA>
+              <LinkSpan href={this.props.url}>Read more</LinkSpan>
             </P>
           </NonContent>
         </Wrapper>

@@ -16,6 +16,7 @@
     "react-helmet": "^5.2.0",
     "react-icons": "^3.11.0",
     "react-markdown": "^8.0.5",
+    "react-syntax-highlighter": "^15.5.0",
     "react-twitter-embed": "^4.0.4",
     "rehype-img-size": "^1.0.1",
     "slugify": "^1.6.5",

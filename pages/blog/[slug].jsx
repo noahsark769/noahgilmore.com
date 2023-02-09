@@ -11,6 +11,8 @@ import Instabug from "../../src/components/Instabug";
 import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
 import slugify from "slugify";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { dark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export default function BlogPage(props) {
   const pageContext = {
@@ -61,7 +63,20 @@ export default function BlogPage(props) {
           FlowGrid: props => <FlowGrid {...props} />,
           Instabug: props => <Instabug {...props} />,
           IOS13SystemColorTable: props => <IOS13SystemColorTable {...props} />,
-          TrestleBlogPostLink: props => <TrestleBlogPostLink {...props} />
+          TrestleBlogPostLink: props => <TrestleBlogPostLink {...props} />,
+          code: props => {
+            console.log("the code", props);
+            if (props.className && typeof props.children === "string") {
+              return (
+                <SyntaxHighlighter
+                  style={dark}
+                  language={props.className?.replace("language-", "")}
+                  {...props}
+                />
+              );
+            }
+            return <code>{props.children}</code>;
+          }
         }}
       />
     </BlogPageLayout>
