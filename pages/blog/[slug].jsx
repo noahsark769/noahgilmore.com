@@ -12,7 +12,27 @@ import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
 import slugify from "slugify";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import {
+  vscDarkPlus,
+  duotoneLight
+} from "react-syntax-highlighter/dist/cjs/styles/prism";
+import useIsDarkMode from "../../src/hooks/useIsDarkMode";
+
+const SyntaxHighlightedCode = props => {
+  const isDarkMode = useIsDarkMode({ default: true });
+  return (
+    <SyntaxHighlighter
+      // Note (Noah, 2023-02-09): vscode-highlight-code is specified in the CSS,
+      // this is an artifact of the fact that we used to use hljs directly, should
+      // probably change this to a different name or something
+      codeTagProps={{ className: "vscode-highlight-code" }}
+      customStyle={{ padding: 0, overflowX: "scroll" }}
+      style={isDarkMode ? vscDarkPlus : duotoneLight}
+      language={props.className?.replace("language-", "")}
+      {...props}
+    />
+  );
+};
 
 export default function BlogPage(props) {
   const pageContext = {
@@ -64,18 +84,7 @@ export default function BlogPage(props) {
           TrestleBlogPostLink: props => <TrestleBlogPostLink {...props} />,
           code: props => {
             if (props.className && typeof props.children === "string") {
-              return (
-                <SyntaxHighlighter
-                  // Note (Noah, 2023-02-09): vscode-highlight-code is specified in the CSS,
-                  // this is an artifact of the fact that we used to use hljs directly, should
-                  // probably change this to a different name or something
-                  codeTagProps={{ className: "vscode-highlight-code" }}
-                  customStyle={{ padding: 0, overflowX: "scroll" }}
-                  style={vscDarkPlus}
-                  language={props.className?.replace("language-", "")}
-                  {...props}
-                />
-              );
+              return <SyntaxHighlightedCode {...props} />;
             }
             return <code {...props} />;
           },

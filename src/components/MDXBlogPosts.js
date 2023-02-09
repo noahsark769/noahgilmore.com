@@ -5,7 +5,6 @@ import Nav from "../components/Nav";
 import { BlogPostContainer } from "../components/BlogPost";
 import BlogPostPreview from "../components/BlogPostPreview";
 import ReactGA from "react-ga";
-import { formatDateString } from "../lib/dateFormat";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -16,9 +15,6 @@ const Container = styled.div`
 
 export default class MDXBlogPosts extends React.Component {
   render() {
-    let isDarkMode =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
     return (
       <Container>
         <BlogGlobalStyle />
@@ -33,18 +29,6 @@ export default class MDXBlogPosts extends React.Component {
             href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&display=swap"
             rel="stylesheet"
           />
-          {!isDarkMode && (
-            <link
-              rel="stylesheet"
-              href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/atom-one-light.min.css"
-            />
-          )}
-          {isDarkMode && (
-            <link
-              rel="stylesheet"
-              href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.0/styles/zenburn.min.css"
-            />
-          )}
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:creator" content="@noahsark769" />
           <meta property="og:url" content={`https://noahgilmore.com/blog`} />
