@@ -91,7 +91,7 @@ export default function BlogPage(props) {
           pre: props => {
             // Note (Noah, 2023-02-09): react-syntax-highlighter inserts an extra <pre>
             // which messes with our CSS in MarkdownContent
-            if (props.children?.props.className.includes("language-")) {
+            if (props?.children?.props?.className?.includes("language-")) {
               return <>{props.children}</>;
             }
             return <pre {...props} />;

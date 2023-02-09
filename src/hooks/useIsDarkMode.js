@@ -17,7 +17,7 @@ export default function useIsDarkMode(config) {
     return () => {
       mediaQueryList.removeEventListener(onDarkModeChange);
     };
-  }, [window]);
+  }, []);
 
   return isDarkMode;
 }
