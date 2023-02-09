@@ -11,8 +11,8 @@ import Instabug from "../../src/components/Instabug";
 import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
 import slugify from "slugify";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export default function BlogPage(props) {
   const pageContext = {
@@ -66,13 +66,12 @@ export default function BlogPage(props) {
             if (props.className && typeof props.children === "string") {
               return (
                 <SyntaxHighlighter
-                  PreTag={undefined}
                   // Note (Noah, 2023-02-09): vscode-highlight-code is specified in the CSS,
                   // this is an artifact of the fact that we used to use hljs directly, should
                   // probably change this to a different name or something
                   codeTagProps={{ className: "vscode-highlight-code" }}
                   customStyle={{ padding: 0, overflowX: "scroll" }}
-                  style={monokaiSublime}
+                  style={vscDarkPlus}
                   language={props.className?.replace("language-", "")}
                   {...props}
                 />
