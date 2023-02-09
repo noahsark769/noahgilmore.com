@@ -2,10 +2,11 @@
 title: "Loading WebP Images from UIPasteboard"
 date: 2021-02-24
 tags: ios, swift, uikit, apple
-staticPreview: "I recently got a bug report for Transparent App Icons to the effect of \"I tried to paste in a transparent image, but it didn't work.\" After cropping the background to create a \"transparent\" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image..."
+staticPreview: 'I recently got a bug report for Transparent App Icons to the effect of "I tried to paste in a transparent image, but it didn''t work." After cropping the background to create a "transparent" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image...'
 mdxPreview: >
-    I recently got a bug report for [Transparent App Icons](https://apps.apple.com/app/apple-store/id1533210346?pt=118551115&ct=uibpbp&mt=8) to the effect of "I tried to paste in a transparent image, but it didn't work." After cropping the background to create a "transparent" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image...
+  I recently got a bug report for [Transparent App Icons](https://apps.apple.com/app/apple-store/id1533210346?pt=118551115&ct=uibpbp&mt=8) to the effect of "I tried to paste in a transparent image, but it didn't work." After cropping the background to create a "transparent" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image...
 ---
+
 I recently got a bug report for [Transparent App Icons](https://apps.apple.com/app/apple-store/id1533210346?pt=118551115&ct=uibpbp&mt=8) to the effect of "I tried to paste in a transparent image, but it didn't work." After cropping the background to create a "transparent" image users can use for their Shortcuts icons, the app allows the user to paste an image from the clipboard to overlay and create a semi-transparent icon - this user was trying to paste a WebP image.
 
 Turns out that [WebP](https://developers.google.com/speed/webp), the web-optimized image format developed by Google, isn't supported natively by UIKit. Luckily it's not too hard to implement support for it with the help of a small library and some deeper UIKit APIs.
@@ -13,6 +14,7 @@ Turns out that [WebP](https://developers.google.com/speed/webp), the web-optimiz
 > Looking for a `UIPasteboard` extension which loads WebP images? Skip to the bottom!
 
 # UIPasteboard data
+
 I haven't had to use the more complicated parts of `UIPasteboard` very much in my time as an iOS developer - in [Transparent App Icons](https://apps.apple.com/app/apple-store/id1533210346?pt=118551115&ct=uibpbp&mt=8), I was just checking `UIPasteboard.general.image` in order to figure out whether there was an image copied. In iOS 14, you can copy a WebP image no problem, but there's no `UIImage` initializer representation for it, and as such it doesn't get reported as a `UIImage` in the same way it would if you had copied a PNG.
 
 Luckily, there's a higher-effort, higher-reward way to interact with `UIPasteboard`. When the user copies data, the app it copied from might choose to write multiple _representations_ of the data to the pasteboard - for example, if I'm writing an HTML editor and the user copies part of the document, I could write both HTML and string repreesentations to the pasteboard. Then, an app like notes doesn't have to worry about the HTML representation, it can just read the string value.
@@ -22,6 +24,7 @@ Each representation of an object in the pasteboard is denoted by a type, usually
 > Note: When I was trying to figure this out, I first tried using `loadItem` on the pasteboard's `itemProviders`, but this returns a `URL` that you can't read the data of since it's restricted (annoyingly, only on device will you get permission denied errors - this URL is perfectly readable on simulator). I then moved on to `loadData`, before realizing I could just use `data(forPasteboardType:)` directly.
 
 # Parsing WebP
+
 Once we have the data, we'll need to convert it into a `UIImage` - `UIImage` doesn't support this out of the box, but luckily [Mattt](https://twitter.com/mattt) has a [great little library](https://github.com/mattt/WebPImageSerialization) for encoding/decoding `UIImage`s with WebP. Taking that with our data representation, we can write an extension to load a WebP image if one exists:
 
 ```swift

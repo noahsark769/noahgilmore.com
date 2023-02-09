@@ -1,18 +1,7 @@
-import { useStaticQuery, graphql } from 'gatsby';
-
 export const useSiteMetadata = () => {
-  const { site } = useStaticQuery(
-  graphql`
-    query {
-    site {
-      siteMetadata {
-      title
-      description
-      siteUrl
-      }
-    }
-    }
-  `,
-  );
-  return site.siteMetadata;
+  return {
+    title: "Noah Gilmore",
+    description: "Noah Gilmore's Blog",
+    siteUrl: "https://noahgilmore.com"
+  };
 };
