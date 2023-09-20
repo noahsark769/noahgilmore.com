@@ -1,24 +1,15 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { BlogGlobalStyle, colors } from "../components/default";
+import { BlogGlobalStyle } from "../components/default";
 import Nav from "../components/Nav";
 import { BlogPostContainer } from "../components/BlogPost";
 import BlogPostPreview from "../components/BlogPostPreview";
 import ReactGA from "react-ga";
-import { default as styled } from "styled-components";
-
-console.log("styled2", styled);
-
-const Container = styled.div`
-  @media (prefers-color-scheme: dark) {
-    background-color: ${colors.darkBackground};
-  }
-`;
 
 export default class MDXBlogPosts extends React.Component {
   render() {
     return (
-      <Container>
+      <div className="dark:bg-darkBackground">
         <BlogGlobalStyle />
         <Helmet>
           <title>{(this.props.tag || "Blog") + " | "}Noah Gilmore</title>
@@ -58,7 +49,7 @@ export default class MDXBlogPosts extends React.Component {
             );
           })}
         </BlogPostContainer>
-      </Container>
+      </div>
     );
   }
 

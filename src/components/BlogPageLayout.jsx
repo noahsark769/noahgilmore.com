@@ -107,7 +107,7 @@ export default class BlogPageLayout extends React.Component {
                 />
                 <div
                   style={{ fontFamily: "'Merriweather', times, serif" }}
-                  className="dark-mode:text-white flex flex-col leading-6 mt-32 pt-16 border-t border-solid border-white"
+                  className="dark:text-white flex flex-col leading-6 mt-32 pt-16 border-t border-solid border-white"
                 >
                   <div className="flex flex-row items-center mb-12 md:mb-0">
                     <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">

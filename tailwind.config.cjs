@@ -7,6 +7,10 @@ module.exports = {
       md: "768px",
       lg: "1024px",
       xl: "1280px",
+    },
+    colors: {
+      darkBackground: "#23282f",
+      secondaryDarkBackground: "#2b2c2f"
     }
   },
   variants: {},

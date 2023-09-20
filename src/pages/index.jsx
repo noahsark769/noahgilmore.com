@@ -22,7 +22,7 @@ class IndexPage extends React.Component {
   render() {
     return (
       <div
-        className="outerWrapper h-screen dark-mode:text-white"
+        className="outerWrapper h-screen dark:text-white"
         style={{ fontFamily: "'Merriweather', times, serif" }}
       >
         <Nav />
