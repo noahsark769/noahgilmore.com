@@ -1,7 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import { formatDateString } from "../lib/dateFormat";
+import { formatDateString } from "../lib/dateFormat.js";
 
 const postsDirectory = join(process.cwd(), "src", "pages", "blog");
 

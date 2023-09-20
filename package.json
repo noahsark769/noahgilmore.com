@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "author": "Noah Gilmore",
   "dependencies": {
-    "babel-plugin-styled-components": "^1.8.0",
+    "babel-plugin-styled-components": "^2.0.7",
+    "feed": "^4.2.2",
     "gh-pages": "^2.0.1",
     "gray-matter": "^4.0.3",
     "next": "^12.2.0",
     "next-mdx-remote": "^4.1.0",
+    "next-transpile-modules": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-ga": "^3.3.1",
@@ -19,7 +21,7 @@
     "react-twitter-embed": "^4.0.4",
     "rehype-img-size": "^1.0.1",
     "slugify": "^1.6.5",
-    "styled-components": "^4.3.2"
+    "styled-components": "^5.3.6"
   },
   "keywords": [
     "gatsby"
@@ -31,8 +33,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:rss": "node scripts/rss.js"
   },
+  "prebuild": "npm run generate:rss",
   "devDependencies": {
     "prettier": "^1.14.2",
     "tailwindcss": "^1.8.9"
@@ -40,5 +44,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/gatsbyjs/gatsby-starter-default"
-  }
+  },
+  "type": "module"
 }

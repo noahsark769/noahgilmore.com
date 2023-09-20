@@ -61,7 +61,7 @@ class IndexPage extends React.Component {
             content="Noah Gilmore's personal website. Software development (web, iOS)."
           />
         </Helmet>
-        <div className="innerWrapper flex flex-row justify-center">
+        <div className="flex flex-row justify-center text-red-500 dark-mode:text-white">
           <div className="max-w-4xl flex flex-col leading-6 p-8 md:p-32">
             <div className="flex flex-row items-center mb-12">
               <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
@@ -74,7 +74,7 @@ class IndexPage extends React.Component {
               </div>
               <div className="flex flex-col">
                 <h1
-                  className="uppercase text-3xl font-bold mb-4 leading-8"
+                  className="uppercase text-3xl font-bold mb-4 leading-8 dark-mode:text-white"
                   style={{ fontFamily: "'Roboto', sans-serif" }}
                 >
                   Noah Gilmore

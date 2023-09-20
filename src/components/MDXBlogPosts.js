@@ -5,7 +5,9 @@ import Nav from "../components/Nav";
 import { BlogPostContainer } from "../components/BlogPost";
 import BlogPostPreview from "../components/BlogPostPreview";
 import ReactGA from "react-ga";
-import styled from "styled-components";
+import { default as styled } from "styled-components";
+
+console.log("styled2", styled);
 
 const Container = styled.div`
   @media (prefers-color-scheme: dark) {
