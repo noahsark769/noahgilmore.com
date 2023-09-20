@@ -43,19 +43,6 @@ const PostContainerInner = styled.div`
 `;
 
 export default class BlogPageLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShowingInstabug: true
-    };
-  }
-
-  handleInstabugHide() {
-    this.setState({
-      isShowingInstabug: false
-    });
-  }
-
   render() {
     return (
       <Container>

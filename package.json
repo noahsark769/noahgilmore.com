@@ -21,7 +21,8 @@
     "react-twitter-embed": "^4.0.4",
     "rehype-img-size": "^1.0.1",
     "slugify": "^1.6.5",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "tailwindcss": "^3.3.3"
   },
   "keywords": [
     "gatsby"
@@ -38,8 +39,7 @@
   },
   "prebuild": "npm run generate:rss",
   "devDependencies": {
-    "prettier": "^1.14.2",
-    "tailwindcss": "^1.8.9"
+    "prettier": "^1.14.2"
   },
   "repository": {
     "type": "git",

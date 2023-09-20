@@ -7,7 +7,6 @@ import Header from "../../src/components/Header";
 import Tweet from "../../src/components/Tweet";
 import CaptionedImage from "../../src/components/CaptionedImage";
 import FlowGrid from "../../src/components/FlowGrid";
-import Instabug from "../../src/components/Instabug";
 import IOS13SystemColorTable from "../../src/components/IOS13SystemColorTable";
 import TrestleBlogPostLink from "../../src/components/DataLink";
 import slugify from "slugify";
@@ -79,7 +78,6 @@ export default function BlogPage(props) {
           CaptionedImage: props => <CaptionedImage {...props} />,
           Tweet: props => <Tweet {...props} />,
           FlowGrid: props => <FlowGrid {...props} />,
-          Instabug: props => <Instabug {...props} />,
           IOS13SystemColorTable: props => <IOS13SystemColorTable {...props} />,
           TrestleBlogPostLink: props => <TrestleBlogPostLink {...props} />,
           code: props => {

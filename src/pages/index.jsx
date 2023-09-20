@@ -1,32 +1,22 @@
 import React from "react";
-import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import Image from "next/image";
 import ReactGA from "react-ga";
-import { colors, BlogGlobalStyle } from "../components/default";
+import { BlogGlobalStyle } from "../components/default";
 import Nav from "../components/Nav";
 import corgi from "../../public/corgi.jpg";
+import Link from "next/link";
 
-const A = styled.a`
-  & {
-    color: #1a3f4b;
-    -webkit-transition: 0.2s ease-in-out;
-    -moz-transition: 0.2s ease-in-out;
-    -o-transition: 0.2s ease-in-out;
-    transition: 0.2s ease-in-out;
-
-    @media (prefers-color-scheme: dark) {
-      color: #60b5d1;
-    }
-  }
-  &:hover {
-    color: #47656e;
-
-    @media (prefers-color-scheme: dark) {
-      color: #6bcfef;
-    }
-  }
-`;
+const A = props => {
+  return (
+    <Link
+      href={props.href}
+      className="text-[#1a3f4b] hover:text-[#47656e] transition-all"
+    >
+      {props.children}
+    </Link>
+  );
+};
 
 class IndexPage extends React.Component {
   render() {
@@ -61,7 +51,7 @@ class IndexPage extends React.Component {
             content="Noah Gilmore's personal website. Software development (web, iOS)."
           />
         </Helmet>
-        <div className="flex flex-row justify-center text-red-500 dark-mode:text-white">
+        <div className="flex flex-row justify-center text-red-500 dark:text-white">
           <div className="max-w-4xl flex flex-col leading-6 p-8 md:p-32">
             <div className="flex flex-row items-center mb-12">
               <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
@@ -74,7 +64,7 @@ class IndexPage extends React.Component {
               </div>
               <div className="flex flex-col">
                 <h1
-                  className="uppercase text-3xl font-bold mb-4 leading-8 dark-mode:text-white"
+                  className="uppercase text-3xl font-bold mb-4 leading-8 dark:text-white"
                   style={{ fontFamily: "'Roboto', sans-serif" }}
                 >
                   Noah Gilmore
