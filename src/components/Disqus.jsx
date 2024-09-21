@@ -1,17 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  margin-top: 40px;
-`;
+import React from 'react'
 
 export default class Disqus extends React.Component {
   render() {
     return (
-      <Wrapper>
+      <div className="mt-10">
         <div id="disqus_thread"></div>
-      </Wrapper>
-    );
+      </div>
+    )
   }
 
   componentDidMount() {
@@ -24,13 +19,13 @@ export default class Disqus extends React.Component {
         this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         */
-    (function() {
+    ;(function () {
       // DON'T EDIT BELOW THIS LINE
       var d = document,
-        s = d.createElement("script");
-      s.src = "//noahgilmore-com.disqus.com/embed.js";
-      s.setAttribute("data-timestamp", +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
+        s = d.createElement('script')
+      s.src = '//noahgilmore-com.disqus.com/embed.js'
+      s.setAttribute('data-timestamp', +new Date())
+      ;(d.head || d.body).appendChild(s)
+    })()
   }
 }

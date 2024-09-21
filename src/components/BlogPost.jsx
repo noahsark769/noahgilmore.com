@@ -1,89 +1,65 @@
-import React from 'react';
-import styled, { css } from "styled-components";
-import { Helmet } from "react-helmet";
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import styled, { css } from 'styled-components'
 
-export const BlogPostContainer = styled.div`
-    padding: 60px 0;
-    margin: 0 auto;
-    width: 90%;
+export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
+  return (
+    <div
+      className={`
+      py-[60px] mx-auto w-[90%]
+      ${isCompressed ? 'sm:max-w-[700px]' : 'sm:max-w-[1600px]'} sm:mx-auto
+      max-sm:w-full max-sm:py-5
+      ${darkened ? 'max-sm:bg-[#f6f6f6] max-sm:dark:bg-inherit' : ''}
+    `}
+    >
+      {children}
+    </div>
+  )
+}
 
-    @media all and (min-width: 600px) {
-        max-width: ${(props) => props.isCompressed ? "700px" : "1600px"};
-        margin: auto;
-    }
+const TitleContainer = ({ children }) => (
+  <div className="w-full mb-10">{children}</div>
+)
 
-    @media all and (max-width: 600px) {
-        width: 100%;
-        padding: 20px 0;
-        ${(props) => props.darkened && css`
-            background-color: #f6f6f6;
-            @media (prefers-color-scheme: dark) {
-                background-color: inherit;
-            }
-        `}
-    }
-`;
+const Heading = ({ children }) => (
+  <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[34px] mb-[10px] leading-[1.2em] dark:text-white">
+    {children}
+  </h1>
+)
 
-const TitleContainer = styled.div`
-    width: 100%;
-    margin-bottom: 40px;
-`;
+const SubtitleHeading = ({ children }) => (
+  <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[18px] mb-[10px] leading-[1.2em] italic dark:text-[#ddd]">
+    {children}
+  </h1>
+)
 
-const Heading = styled.h1`
-    width: 100%;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    font-size: 34px;
-    margin-bottom: 10px;
-    line-height: 1.2em;
-
-    @media (prefers-color-scheme: dark) {
-        color: #fff;
-    }
-`;
-
-const SubtitleHeaading = styled.h1`
-    width: 100%;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    font-size: 18px;
-    margin-bottom: 10px;
-    line-height: 1.2em;
-    font-style: italic;
-
-    @media (prefers-color-scheme: dark) {
-        color: #ddd;
-    }
-`;
-
-const DateContainer = styled.p`
-    font-family: "Merriweather", times, serif;
-    font-style: italic;
-    font-size: 13px;
-    color: #999;
-`;
+const DateContainer = ({ children }) => (
+  <p className="font-['Merriweather',times,serif] italic text-[13px] text-[#999]">
+    {children}
+  </p>
+)
 
 export const BlogPostMeta = (props) => {
-    return (
-        <div>
-            <Helmet>
-                <title>{props.title}</title>
-            </Helmet>
-            <TitleContainer>
-                <Heading>{props.title}</Heading>
-                {props.subtitle && <SubtitleHeaading>{props.subtitle}</SubtitleHeaading>}
-                <DateContainer>{props.date}</DateContainer>
-            </TitleContainer>
-        </div>
-    );
-};
+  return (
+    <div>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
+      <TitleContainer>
+        <Heading>{props.title}</Heading>
+        {props.subtitle && <SubtitleHeading>{props.subtitle}</SubtitleHeading>}
+        <DateContainer>{props.date}</DateContainer>
+      </TitleContainer>
+    </div>
+  )
+}
 
 export default class BlogPost extends React.Component {
-    render() {
-        return (
-            <BlogPostContainer>
-                <div>
-                    {this.props.children}
-                </div>
-            </BlogPostContainer>
-        );
-    }
-};
+  render() {
+    return (
+      <BlogPostContainer>
+        <div>{this.props.children}</div>
+      </BlogPostContainer>
+    )
+  }
+}

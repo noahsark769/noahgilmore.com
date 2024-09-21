@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { colors } from "../components/default";
+import React from 'react'
+import styled from 'styled-components'
+import { colors } from '../components/default'
 
 const Container = styled.div`
   p,
   li {
     margin: 0;
     padding: 0;
-    font-family: "Merriweather", times, serif;
+    font-family: 'Merriweather', times, serif;
     font-size: 18px;
     line-height: 29px;
     color: #333;
@@ -172,7 +172,7 @@ const Container = styled.div`
   h5,
   h6 {
     width: 100%;
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
+    font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', sans-serif;
     margin-bottom: 10px;
     margin-top: 40px;
     @media all and (max-width: 600px) {
@@ -201,10 +201,10 @@ const Container = styled.div`
   strong {
     font-weight: bold;
   }
-`;
+`
 
 export default class MarkdownContent extends React.Component {
   render() {
-    return <Container>{this.props.children}</Container>;
+    return <Container>{this.props.children}</Container>
   }
 }

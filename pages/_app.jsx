@@ -1,8 +1,7 @@
 import "../src/global.css";
 import React from "react";
 
-function MyApp({ Component, pageProps }) {
-  console.log("MyApp rendering")
+function App({ Component, pageProps }) {
   return (
     <>
       <Component {...pageProps} />
@@ -10,4 +9,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default App;

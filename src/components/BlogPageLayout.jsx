@@ -1,46 +1,45 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import { BlogGlobalStyle, colors } from "./default";
-import Nav from "./Nav";
-import EndButtons from "./EndButtons";
-import { BlogPostContainer, BlogPostMeta } from "./BlogPost";
-import MarkdownContent from "./MarkdownContent";
-import Disqus from "./Disqus";
-import ReactGA from "react-ga";
-import styled from "styled-components";
-import { OGImage } from "./OGImage";
-import Image from "next/image";
-import { HighlightedA } from "../components/default";
-import corgi from "../../public/corgi.jpg";
+import classNames from 'classnames'
+import Image from 'next/image'
+import React from 'react'
+import ReactGA from 'react-ga'
+import { Helmet } from 'react-helmet'
+import corgi from '../../public/corgi.jpg'
+import { HighlightedA } from '../components/default'
+import { BlogPostContainer, BlogPostMeta } from './BlogPost'
+import { BlogGlobalStyle } from './default'
+import Disqus from './Disqus'
+import EndButtons from './EndButtons'
+import MarkdownContent from './MarkdownContent'
+import Nav from './Nav'
+import { OGImage } from './OGImage'
 
-const Container = styled.div`
-  @media (prefers-color-scheme: dark) {
-    background-color: ${colors.darkBackground};
-  }
-`;
+const Container = ({ children }) => (
+  <div className="dark:bg-darkBackground">{children}</div>
+)
 
-const NonContent = styled.div`
-  @media all and (max-width: 600px) {
-    padding-right: 5%;
-    padding-left: 5%;
-  }
-`;
+const NonContent = ({ children }) => (
+  <div className="max-sm:px-[5%]">{children}</div>
+)
 
-const PostContainerOuter = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: ${props => (props.hasPadding ? "20px" : "0")};
+const PostContainerOuter = ({ children, hasPadding }) => (
+  <div
+    className={classNames(
+      'flex',
+      'flex-row',
+      {
+        'p-5': hasPadding,
+        'p-0': !hasPadding,
+      },
+      'max-xl:p-0'
+    )}
+  >
+    {children}
+  </div>
+)
 
-  @media all and (max-width: 1200px) {
-    padding: 0;
-  }
-`;
-
-const PostContainerInner = styled.div`
-  display: block;
-  flex-direction: column;
-  width: 100%;
-`;
+const PostContainerInner = ({ children }) => (
+  <div className="block w-full flex-col">{children}</div>
+)
 
 export default class BlogPageLayout extends React.Component {
   render() {
@@ -107,20 +106,20 @@ export default class BlogPageLayout extends React.Component {
                 />
                 <div
                   style={{ fontFamily: "'Merriweather', times, serif" }}
-                  className="dark:text-white flex flex-col leading-6 mt-32 pt-16 border-t border-solid border-white"
+                  className="mt-32 flex flex-col border-t border-solid border-white pt-16 leading-6 dark:text-white"
                 >
-                  <div className="flex flex-row items-center mb-12 md:mb-0">
-                    <div className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8">
+                  <div className="mb-12 flex flex-row items-center md:mb-0">
+                    <div className="mr-8 w-32 max-w-none overflow-hidden rounded-full md:w-48">
                       <Image
                         src={corgi}
                         layout="responsive"
                         alt="Picture of me with a corgi"
-                        className="w-32 md:w-48 max-w-none rounded-full overflow-hidden mr-8"
+                        className="mr-8 w-32 max-w-none overflow-hidden rounded-full md:w-48"
                       />
                     </div>
                     <div className="flex flex-col">
                       <h1
-                        className="uppercase text-3xl font-bold mb-4 leading-8"
+                        className="mb-4 text-3xl font-bold uppercase leading-8"
                         style={{ fontFamily: "'Roboto', sans-serif" }}
                       >
                         Noah Gilmore
@@ -132,19 +131,19 @@ export default class BlogPageLayout extends React.Component {
                       </p>
                     </div>
                   </div>
-                  <p className="block md:hidden mb-12">
+                  <p className="mb-12 block md:hidden">
                     Hello! I'm Noah, a software developer based in the San
                     Francisco bay area. I focus mainly on iOS, Apple platform
                     development, and full stack web development.
                   </p>
                   <div>
-                    <ul className="p-0 md:pt-8 md:pb-8">
+                    <ul className="p-0 md:pb-8 md:pt-8">
                       <li className="pb-6">
                         <span role="img" aria-label="Computer">
                           💻
-                        </span>{" "}
+                        </span>{' '}
                         I'm writing a macOS editor for Atlassian Confluence
-                        called{" "}
+                        called{' '}
                         <HighlightedA
                           className="underline"
                           href="https://getfluency.io"
@@ -155,9 +154,9 @@ export default class BlogPageLayout extends React.Component {
                       <li className="pb-6">
                         <span role="img" aria-label="Phone">
                           📱
-                        </span>{" "}
+                        </span>{' '}
                         I wrote an app which lets you create transparent app
-                        icons called{" "}
+                        icons called{' '}
                         <HighlightedA
                           className="underline"
                           href="https://transparenticons.app"
@@ -168,8 +167,8 @@ export default class BlogPageLayout extends React.Component {
                       <li className="pb-6">
                         <span role="img" aria-label="Puzzle">
                           🧩
-                        </span>{" "}
-                        I made a puzzle game for iPhone and iPad called{" "}
+                        </span>{' '}
+                        I made a puzzle game for iPhone and iPad called{' '}
                         <HighlightedA
                           className="underline"
                           href="https://apps.apple.com/us/app/trestle-the-new-sudoku/id1300230302"
@@ -180,9 +179,9 @@ export default class BlogPageLayout extends React.Component {
                       <li className="pb-6">
                         <span role="img" aria-label="Art">
                           🎨
-                        </span>{" "}
+                        </span>{' '}
                         I wrote a CoreImage filter utility app for iOS
-                        developers called{" "}
+                        developers called{' '}
                         <HighlightedA
                           className="underline"
                           href="https://apps.apple.com/us/app/cifilter-io/id1457458557"
@@ -193,8 +192,8 @@ export default class BlogPageLayout extends React.Component {
                       <li>
                         <span role="img" aria-label="Wave">
                           👋
-                        </span>{" "}
-                        Please feel free to reach out on{" "}
+                        </span>{' '}
+                        Please feel free to reach out on{' '}
                         <HighlightedA
                           className="underline"
                           href="https://twitter.com/noahsark769"
@@ -211,11 +210,11 @@ export default class BlogPageLayout extends React.Component {
           </PostContainerOuter>
         </BlogPostContainer>
       </Container>
-    );
+    )
   }
 
   componentDidMount() {
-    ReactGA.initialize("UA-35325391-1");
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.initialize('UA-35325391-1')
+    ReactGA.pageview(window.location.pathname + window.location.search)
   }
 }
