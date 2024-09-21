@@ -13,7 +13,7 @@ const StyledNav = ({ children }) => (
 )
 
 const Title = ({ children }) => (
-  <div className="flex-[2] font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[28px] dark:text-white">
+  <div className="flex-2 font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[28px] dark:text-white">
     {children}
   </div>
 )

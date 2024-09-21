@@ -64,35 +64,28 @@ const IndexPage = () => {
         }}
       />
       <div className="flex flex-row justify-center">
-        <div className="flex max-w-4xl flex-col p-8 leading-6 md:p-32">
-          <div className="mb-12 flex flex-row items-center">
-            <div className="mr-8 w-32 max-w-none overflow-hidden rounded-full md:w-48">
+        <div className="flex max-w-4xl flex-col p-8 leading-6 md:p-32 gap-12">
+          <div className="grid grid-cols-[128px,1fr] gap-5">
+            <div className="w-[128px] md:self-center md:row-span-2">
               <Image
                 src={corgi}
                 layout="responsive"
                 alt="Picture of me with a corgi"
-                className="mr-8 w-32 max-w-none overflow-hidden rounded-full md:w-48"
+                className="overflow-hidden rounded-full"
               />
             </div>
-            <div className="flex flex-col">
-              <h1
-                className="mb-4 text-3xl font-bold uppercase leading-8"
-                style={{ fontFamily: "'Roboto', sans-serif" }}
-              >
-                Noah Gilmore
-              </h1>
-              <p className="hidden md:block">
-                I'm Noah, a software developer based in the San Francisco Bay
-                Area. I focus mainly on iOS, Apple platform development, and
-                full stack web development.
-              </p>
-            </div>
+            <h1
+              className="text-3xl font-bold uppercase leading-7 md:leading-8 self-center"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              Noah Gilmore
+            </h1>
+            <p className="mt-2 col-span-2 md:col-span-1">
+              I'm Noah, a software developer based in the San Francisco Bay
+              Area. I focus mainly on iOS, Apple platform development, and full
+              stack web development.
+            </p>
           </div>
-          <p className="mb-12 block md:hidden">
-            Hello! I'm Noah, a software developer based in the San Francisco bay
-            area. I focus mainly on iOS, Apple platform development, and full
-            stack web development.
-          </p>
           <div>
             <ul className="p-0 md:p-8">
               <li className="pb-6">
