@@ -35,11 +35,11 @@ const NonContent = ({ children }) => (
 )
 
 const LinkSpan = ({ children, href }) => (
-  <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-none hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-none dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
-    <Link href={href}>
-      <a>{children}</a>
-    </Link>
-  </span>
+  <Link href={href}>
+    <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-none hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-none dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
+      {children}
+    </span>
+  </Link>
 )
 
 const BlogPostPreview = ({ url, title, date, mdxPreview }) => {
