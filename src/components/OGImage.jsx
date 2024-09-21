@@ -1,20 +1,20 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import { useSiteMetadata } from "../hooks/siteMetadata";
+import Head from 'next/head'
+import React from 'react'
+import { useSiteMetadata } from '../hooks/siteMetadata'
 
-const ImageHelmet = props => {
-  const { siteUrl } = useSiteMetadata();
+const ImageHead = (props) => {
+  const { siteUrl } = useSiteMetadata()
   return (
-    <Helmet>
+    <Head>
       <meta property="og:image" content={siteUrl + props.fullImagePath} />
       <meta name="twitter:image" content={siteUrl + props.fullImagePath} />
-    </Helmet>
-  );
-};
+    </Head>
+  )
+}
 
-export const OGImage = props => {
-  const publicUrl = props.filename.startsWith("/")
+export const OGImage = (props) => {
+  const publicUrl = props.filename.startsWith('/')
     ? props.filename
-    : `/${props.filename}`;
-  return <ImageHelmet fullImagePath={publicUrl} />;
-};
+    : `/${props.filename}`
+  return <ImageHead fullImagePath={publicUrl} />
+}

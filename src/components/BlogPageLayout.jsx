@@ -1,8 +1,8 @@
 import classNames from 'classnames'
+import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react'
 import ReactGA from 'react-ga'
-import { Helmet } from 'react-helmet'
 import corgi from '../../public/corgi.jpg'
 import { HighlightedA } from '../components/default'
 import { BlogPostContainer, BlogPostMeta } from './BlogPost'
@@ -44,7 +44,7 @@ export default class BlogPageLayout extends React.Component {
   render() {
     return (
       <Container>
-        <Helmet>
+        <Head>
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:700"
             rel="stylesheet"
@@ -81,7 +81,7 @@ export default class BlogPageLayout extends React.Component {
             name="description"
             content={this.props.pageContext.frontmatter.staticPreview}
           />
-        </Helmet>
+        </Head>
         <style
           dangerouslySetInnerHTML={{
             __html: `

@@ -1,8 +1,8 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import ReactGA from 'react-ga'
-import { Helmet } from 'react-helmet'
 import corgi from '../../public/corgi.jpg'
 import Nav from '../components/Nav'
 
@@ -28,7 +28,7 @@ const IndexPage = () => {
       style={{ fontFamily: "'Merriweather', times, serif" }}
     >
       <Nav />
-      <Helmet>
+      <Head>
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:700"
           rel="stylesheet"
@@ -51,7 +51,7 @@ const IndexPage = () => {
           name="Description"
           content="Noah Gilmore's personal website. Software development (web, iOS)."
         />
-      </Helmet>
+      </Head>
       <style
         dangerouslySetInnerHTML={{
           __html: `

@@ -1,5 +1,5 @@
+import Head from 'next/head'
 import React from 'react'
-import { Helmet } from 'react-helmet'
 
 export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
   return (
@@ -41,9 +41,9 @@ const DateContainer = ({ children }) => (
 export const BlogPostMeta = (props) => {
   return (
     <div>
-      <Helmet>
+      <Head>
         <title>{props.title}</title>
-      </Helmet>
+      </Head>
       <TitleContainer>
         <Heading>{props.title}</Heading>
         {props.subtitle && <SubtitleHeading>{props.subtitle}</SubtitleHeading>}

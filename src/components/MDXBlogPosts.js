@@ -1,6 +1,6 @@
+import Head from 'next/head'
 import React from 'react'
 import ReactGA from 'react-ga'
-import { Helmet } from 'react-helmet'
 import { BlogPostContainer } from '../components/BlogPost'
 import BlogPostPreview from '../components/BlogPostPreview'
 import Nav from '../components/Nav'
@@ -9,7 +9,7 @@ export default class MDXBlogPosts extends React.Component {
   render() {
     return (
       <div className="dark:bg-darkBackground">
-        <Helmet>
+        <Head>
           <title>{(this.props.tag || 'Blog') + ' | '}Noah Gilmore</title>
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:700"
@@ -32,7 +32,7 @@ export default class MDXBlogPosts extends React.Component {
             name="Description"
             content="Noah Gilmore's personal blog. Software development (web, iOS)."
           />
-        </Helmet>
+        </Head>
         <style
           dangerouslySetInnerHTML={{
             __html: `
