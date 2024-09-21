@@ -77,14 +77,6 @@ const Nav = (props) => {
             <IoLogoGithub color={blue} size="24" />
           </StyledA>
         </NavLink>
-        <NavLink title="App Store">
-          <StyledA
-            aria-label="App Store"
-            href="https://apps.apple.com/us/app/cifilter-io/id1457458557"
-          >
-            <IoIosAppstore color={blue} size="24" />
-          </StyledA>
-        </NavLink>
       </NavLinks>
     </StyledNav>
   )
