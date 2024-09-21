@@ -42,6 +42,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
+    "vercel": "^37.5.3",
     "wrangler": "^3.78.7"
   },
   "repository": {
