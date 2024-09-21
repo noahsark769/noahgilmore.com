@@ -1,20 +1,20 @@
+import Head from 'next/head'
 import React from 'react'
-import { ImageProvider } from './Image'
-import { Helmet } from 'react-helmet'
-import { useSiteMetadata } from "../hooks/siteMetadata";
+import { useSiteMetadata } from '../hooks/siteMetadata'
 
-const ImageHelmet = (props) => {
-    const { siteUrl } = useSiteMetadata();
-    return <Helmet>
-        <meta property="og:image" content={siteUrl + props.fullImagePath} />
-        <meta name="twitter:image" content={siteUrl + props.fullImagePath} />
-    </Helmet>
+const ImageHead = (props) => {
+  const { siteUrl } = useSiteMetadata()
+  return (
+    <Head>
+      <meta property="og:image" content={siteUrl + props.fullImagePath} />
+      <meta name="twitter:image" content={siteUrl + props.fullImagePath} />
+    </Head>
+  )
 }
 
 export const OGImage = (props) => {
-    return <ImageProvider {...props} noChildImageContent={(node) => {
-        return <ImageHelmet fullImagePath={node.publicURL} />
-    }} childImagesContent={(node, imageSizes) => {
-        return <ImageHelmet fullImagePath={node.publicURL} />
-    }}/>
-};
+  const publicUrl = props.filename.startsWith('/')
+    ? props.filename
+    : `/${props.filename}`
+  return <ImageHead fullImagePath={publicUrl} />
+}

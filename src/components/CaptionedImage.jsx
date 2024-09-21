@@ -1,43 +1,29 @@
-import React from 'react';
-import styled from "styled-components";
-import Image from "../components/Image";
+import React from 'react'
+import Image from '../components/Image'
 
-const Wrap = styled.div`
-    display: flex;
-    margin: 20px 0;
-    justify-content: center;
-`;
+const Wrap = (props) => <div className="my-5 flex justify-center" {...props} />
 
-const Container = styled.div`
-    flex: 1;
-    ${props => props.max ? "max-width: " + props.max + "px" : ""};
-`;
+const Container = ({ max, children }) => (
+  <div className="flex-1" style={max ? { maxWidth: `${max}px` } : {}}>
+    {children}
+  </div>
+)
 
-const Caption = styled.div`
-    font-family: "Gentium Book Basic", times, serif;
-    font-style: italic;
-    font-size: 16px;
-    color: #999;
-    margin-bottom: 30px;
-    margin-top: 12px;
-    text-align: center;
-    line-height: 1.2em;
-
-    img {
-        width: 100%;
-        margin-bottom: 10px;   
-    }
-`;
+const Caption = ({ children }) => (
+  <div className="mb-8 mt-3 text-center font-['Gentium_Book_Basic',_times,_serif] text-base italic leading-snug text-gray-500">
+    {children}
+  </div>
+)
 
 export default class CaptionedImage extends React.Component {
-    render() {
-        return (
-            <Wrap>
-                <Container max={this.props.max}>
-                    <Image filename={this.props.filename} alt={this.props.alt} />
-                    <Caption>{this.props.caption}</Caption>
-                </Container>
-            </Wrap>
-        );
-    }
-};
+  render() {
+    return (
+      <Wrap>
+        <Container max={this.props.max}>
+          <Image filename={this.props.filename} alt={this.props.alt} />
+          <Caption>{this.props.caption}</Caption>
+        </Container>
+      </Wrap>
+    )
+  }
+}

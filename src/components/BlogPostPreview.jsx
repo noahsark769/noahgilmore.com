@@ -1,107 +1,72 @@
-import React from 'react';
-import styled from "styled-components";
-import { A, P, colors } from '../components/default';
-import MarkdownContent from '../components/MarkdownContent';
-import ReactMarkdown from 'react-markdown';
+import Link from 'next/link'
+import React from 'react'
+import ReactMarkdown from 'react-markdown'
+import { P } from '../components/default'
+import MarkdownContent from '../components/MarkdownContent'
 
-const Wrapper = styled.div`
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    padding: 20px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    -webkit-transition: 0.2s ease-in-out;
-    -moz-transition: 0.2s ease-in-out;
-    -o-transition: 0.2s ease-in-out;
-    transition: 0.2s ease-in-out;
-    background-color: white;
+const Wrapper = ({ children, href }) => (
+  <Link href={href}>
+    <a className="mb-5 flex cursor-pointer flex-col rounded-sm border border-[#ddd] bg-white p-5 transition-all duration-200 ease-in-out hover:border-[rgba(128,165,177,1)] dark:border-[#444] dark:bg-secondaryDarkBackground">
+      {children}
+    </a>
+  </Link>
+)
 
-    @media (prefers-color-scheme: dark) {
-        background-color: ${colors.secondaryDarkBackground};
-    }
+const Title = ({ children }) => (
+  <h1 className="mb-[5px] font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[20px] dark:text-white">
+    {children}
+  </h1>
+)
 
-    &:hover {
-        border-color: rgba(128, 165, 177, 1);
-    }
+const StyledDate = ({ children }) => (
+  <div className="font-['Merriweather',times,serif] text-[14px] italic text-[#999]">
+    {children}
+  </div>
+)
 
-    @media all and (max-width: 600px) {
-        border-right: none;
-        border-left: none;
-        padding-right: 0;
-        padding-left: 0;
-    }
-`;
+const Content = ({ children }) => (
+  <div className="pb-[15px] font-['Open_Sans',times,serif] text-[13px] leading-[26px] text-[#333]">
+    {children}
+  </div>
+)
 
-const Title = styled.h1`
-    font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
-    font-size: 20px;
-    margin-bottom: 5px;
+const NonContent = ({ children }) => <div>{children}</div>
 
-    @media (prefers-color-scheme: dark) {
-        color: #fff;
-    }
-`;
+const LinkSpan = ({ children, href }) => (
+  <Link href={href}>
+    <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-none hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-none dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
+      {children}
+    </span>
+  </Link>
+)
 
-const StyledDate = styled.div`
-    font-family: "Merriweather", times, serif;
-    font-style: italic;
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 20px;
-`;
+const BlogPostPreview = ({ url, title, date, mdxPreview }) => {
+  return (
+    <Link href={url} passHref>
+      <Wrapper>
+        <NonContent>
+          <Title>{title}</Title>
+          <StyledDate>{date}</StyledDate>
+        </NonContent>
+        <Content>
+          <MarkdownContent>
+            <ReactMarkdown
+              components={{
+                a: (props) => <LinkSpan {...props}>{props.children}</LinkSpan>,
+              }}
+            >
+              {mdxPreview}
+            </ReactMarkdown>
+          </MarkdownContent>
+        </Content>
+        <NonContent>
+          <P>
+            <LinkSpan href={url}>Read more</LinkSpan>
+          </P>
+        </NonContent>
+      </Wrapper>
+    </Link>
+  )
+}
 
-const Content = styled.div`
-    font-family: "Open Sans", times, serif;
-    font-size: 13px;
-    line-height: 16px;
-    color: #333;
-    padding-bottom: 15px;
-    margin-top: 15px;
-    line-height: 26px;
-`;
-
-const NonContent = styled.div`
-    @media all and (max-width: 600px) {
-        padding-right: 5%;
-        padding-left: 5%;
-    }
-`;
-
-const StyledA = styled(A)`
-    &, &:hover {
-        color: #1A3F4B;
-        text-decoration: underline;
-        font-family: "Merriweather", times, serif;
-        font-size: 16px;
-        line-height: 18px;
-
-        @media (prefers-color-scheme: dark) {
-            color: #60b5d1;
-        }
-    }
-`;
-
-export default class BlogPostPreview extends React.Component {
-    handleClick() {
-        window.location = this.props.url;
-    }
-
-    render() {
-        return (
-            <Wrapper onClick={() => this.handleClick()}>
-                <NonContent>
-                    <Title>{this.props.title}</Title>
-                    <StyledDate>{this.props.date}</StyledDate>
-                </NonContent>
-                <Content>
-                    <MarkdownContent>
-                        <ReactMarkdown source={this.props.mdxPreview} />
-                    </MarkdownContent>
-                </Content>
-                <NonContent>
-                    <P><StyledA href={this.props.url}>Read more</StyledA></P>
-                </NonContent>
-            </Wrapper>
-        );
-    }
-};
+export default BlogPostPreview

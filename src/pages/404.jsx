@@ -1,47 +1,38 @@
 import React from 'react'
-import styled from 'styled-components';
 
-const OuterContainer = styled.div`
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    background-color: #3070a5;
-    height: 100vh;  
-`;
+const OuterContainer = ({ children }) => (
+  <div className="m-0 p-0 w-full bg-[#3070a5] h-screen">{children}</div>
+)
 
+const Container = ({ children }) => (
+  <div className="m-0 p-0 w-[600px] max-w-full mx-auto h-screen text-white font-sans pt-[300px] px-[50px] box-border">
+    {children}
+  </div>
+)
 
-const Container = styled.div`
-    margin: 0;
-    padding: 0;
-    width: 600px;
-    max-width: 100%;
-    margin: 0 auto;
-    height: 100vh;
-    color: white;
-    font-family: Helvetica, sans-serif;
-    padding: 300px 50px 0 50px;
-    box-sizing: border-box;
-`;
+const Title = ({ children }) => (
+  <h1 className="text-[100px] pb-10">{children}</h1>
+)
 
-const Title = styled.h1`
-    font-size: 100px;
-    padding-bottom: 40px;
-`;
-
-const A = styled.a`
-    &, &:hover, &:visited {
-        color: white;
-    }
-    text-decoration: underline;
-`;
+const A = ({ children, ...props }) => (
+  <a
+    className="text-white underline hover:text-white visited:text-white"
+    {...props}
+  >
+    {children}
+  </a>
+)
 
 const NotFoundPage = () => (
-    <OuterContainer>
-        <Container>
-            <Title>:(</Title>
-            <p>You found a page that doesn't exist (404). <A href="/blog">Go back home</A></p>
-        </Container>
-    </OuterContainer>
+  <OuterContainer>
+    <Container>
+      <Title>:(</Title>
+      <p>
+        You found a page that doesn't exist (404).{' '}
+        <A href="/blog">Go back home</A>
+      </p>
+    </Container>
+  </OuterContainer>
 )
 
 export default NotFoundPage
