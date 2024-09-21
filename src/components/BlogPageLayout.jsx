@@ -17,7 +17,7 @@ const Container = ({ children }) => (
 )
 
 const NonContent = ({ children }) => (
-  <div className="max-sm:px-[5%]">{children}</div>
+  <div className="sm:px-[5%]">{children}</div>
 )
 
 const PostContainerOuter = ({ children, hasPadding }) => (

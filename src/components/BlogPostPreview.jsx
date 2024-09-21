@@ -6,7 +6,7 @@ import MarkdownContent from '../components/MarkdownContent'
 
 const Wrapper = ({ children, href }) => (
   <Link href={href}>
-    <a className="mb-5 flex cursor-pointer flex-col rounded-sm border border-[#ddd] bg-white p-5 transition-all duration-200 ease-in-out hover:border-[rgba(128,165,177,1)] max-sm:border-l-0 max-sm:border-r-0 max-sm:px-0 dark:border-[#444] dark:bg-secondaryDarkBackground">
+    <a className="mb-5 flex cursor-pointer flex-col rounded-sm border border-[#ddd] bg-white p-5 transition-all duration-200 ease-in-out hover:border-[rgba(128,165,177,1)] dark:border-[#444] dark:bg-secondaryDarkBackground">
       {children}
     </a>
   </Link>
@@ -30,9 +30,7 @@ const Content = ({ children }) => (
   </div>
 )
 
-const NonContent = ({ children }) => (
-  <div className="max-sm:px-[5%]">{children}</div>
-)
+const NonContent = ({ children }) => <div>{children}</div>
 
 const LinkSpan = ({ children, href }) => (
   <Link href={href}>

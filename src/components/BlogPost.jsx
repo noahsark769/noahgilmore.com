@@ -1,15 +1,16 @@
+import classNames from 'classnames'
 import Head from 'next/head'
 import React from 'react'
 
 export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
   return (
     <div
-      className={`
-      py-[60px] mx-auto w-[90%]
-      ${isCompressed ? 'sm:max-w-[700px]' : 'sm:max-w-[1600px]'} sm:mx-auto
-      max-sm:w-full max-sm:py-5
-      ${darkened ? 'max-sm:bg-[#f6f6f6] max-sm:dark:bg-inherit' : ''}
-    `}
+      className={classNames(
+        'py-[60px] md:px-0 mx-auto w-[90%]',
+        'sm:mx-auto',
+        isCompressed ? 'sm:max-w-[700px]' : 'sm:max-w-[1600px]',
+        darkened && 'bg-[#f6f6f6] dark:bg-inherit'
+      )}
     >
       {children}
     </div>
@@ -53,12 +54,6 @@ export const BlogPostMeta = (props) => {
   )
 }
 
-export default class BlogPost extends React.Component {
-  render() {
-    return (
-      <BlogPostContainer>
-        <div>{this.props.children}</div>
-      </BlogPostContainer>
-    )
-  }
+export default function BlogPost({ children }) {
+  return <BlogPostContainer>{children}</BlogPostContainer>
 }
