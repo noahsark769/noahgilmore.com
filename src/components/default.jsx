@@ -19,11 +19,6 @@ export const GlobalStyle = createGlobalStyle`
     * {
         box-sizing: border-box !important;
     }
-
-    body {
-        margin: 0;
-        padding: 0;
-    }
 `;
 
 // Some styles are duplicated here because including two createGlobalStyle components in
@@ -45,12 +40,6 @@ export const BlogGlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         padding: 0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        html, body {
-            background-color: ${colors.darkBackground};
-        }
     }
 `;
 
