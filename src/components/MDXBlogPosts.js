@@ -1,10 +1,10 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import { BlogGlobalStyle } from "../components/default";
-import Nav from "../components/Nav";
-import { BlogPostContainer } from "../components/BlogPost";
-import BlogPostPreview from "../components/BlogPostPreview";
-import ReactGA from "react-ga";
+import React from 'react'
+import ReactGA from 'react-ga'
+import { Helmet } from 'react-helmet'
+import { BlogPostContainer } from '../components/BlogPost'
+import BlogPostPreview from '../components/BlogPostPreview'
+import { BlogGlobalStyle } from '../components/default'
+import Nav from '../components/Nav'
 
 export default class MDXBlogPosts extends React.Component {
   render() {
@@ -12,7 +12,7 @@ export default class MDXBlogPosts extends React.Component {
       <div className="dark:bg-darkBackground">
         <BlogGlobalStyle />
         <Helmet>
-          <title>{(this.props.tag || "Blog") + " | "}Noah Gilmore</title>
+          <title>{(this.props.tag || 'Blog') + ' | '}Noah Gilmore</title>
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:700"
             rel="stylesheet"
@@ -35,26 +35,37 @@ export default class MDXBlogPosts extends React.Component {
             content="Noah Gilmore's personal blog. Software development (web, iOS)."
           />
         </Helmet>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            .twitter-embed > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+            }
+          `,
+          }}
+        />
         <Nav blog />
         <BlogPostContainer isCompressed darkened>
-          {this.props.mdxEdges.map(edge => {
+          {this.props.mdxEdges.map((edge) => {
             return (
               <BlogPostPreview
                 key={edge.node.id}
-                url={"/blog/" + edge.node.parent.name}
+                url={'/blog/' + edge.node.parent.name}
                 title={edge.node.frontmatter.title}
                 date={edge.node.frontmatter.date}
                 mdxPreview={edge.node.frontmatter.mdxPreview}
               />
-            );
+            )
           })}
         </BlogPostContainer>
       </div>
-    );
+    )
   }
 
   componentDidMount() {
-    ReactGA.initialize("UA-35325391-1");
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.initialize('UA-35325391-1')
+    ReactGA.pageview(window.location.pathname + window.location.search)
   }
 }

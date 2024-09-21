@@ -6,7 +6,9 @@ const Wrapper = ({ children }) => (
 )
 
 const InnerWrapper = ({ children }) => (
-  <div className="w-[1px] min-w-[500px] sm:min-w-[90%]">{children}</div>
+  <div className="w-[1px] min-w-[500px] sm:min-w-[90%] mx-auto twitter-embed">
+    {children}
+  </div>
 )
 
 export default class Tweet extends React.Component {
@@ -14,7 +16,10 @@ export default class Tweet extends React.Component {
     return (
       <Wrapper>
         <InnerWrapper>
-          <TwitterTweetEmbed tweetId={this.props.tweetId} />
+          <TwitterTweetEmbed
+            style={{ width: '100%' }}
+            tweetId={this.props.tweetId}
+          />
         </InnerWrapper>
       </Wrapper>
     )

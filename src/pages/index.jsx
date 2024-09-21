@@ -1,11 +1,11 @@
-import React from 'react'
-import { Helmet } from 'react-helmet'
 import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 import ReactGA from 'react-ga'
+import { Helmet } from 'react-helmet'
+import corgi from '../../public/corgi.jpg'
 import { BlogGlobalStyle } from '../components/default'
 import Nav from '../components/Nav'
-import corgi from '../../public/corgi.jpg'
-import Link from 'next/link'
 
 const A = (props) => {
   return (
@@ -54,6 +54,17 @@ const IndexPage = () => {
           content="Noah Gilmore's personal website. Software development (web, iOS)."
         />
       </Helmet>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .twitter-embed > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+            }
+          `,
+        }}
+      />
       <div className="flex flex-row justify-center">
         <div className="flex max-w-4xl flex-col p-8 leading-6 md:p-32">
           <div className="mb-12 flex flex-row items-center">

@@ -84,6 +84,17 @@ export default class BlogPageLayout extends React.Component {
             content={this.props.pageContext.frontmatter.staticPreview}
           />
         </Helmet>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            .twitter-embed > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+            }
+          `,
+          }}
+        />
         {this.props.pageContext.frontmatter.ogimage && (
           <OGImage filename={this.props.pageContext.frontmatter.ogimage} />
         )}

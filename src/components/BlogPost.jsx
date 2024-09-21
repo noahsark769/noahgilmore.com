@@ -1,6 +1,5 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import styled, { css } from 'styled-components'
 
 export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
   return (
