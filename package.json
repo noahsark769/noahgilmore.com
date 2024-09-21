@@ -31,7 +31,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate:rss": "node scripts/rss.js",
-    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:build": "npm run generate:rss && npx @cloudflare/next-on-pages",
     "preview": "npm run pages:build && wrangler pages dev",
     "deploy": "npm run pages:build && wrangler pages deploy"
   },
