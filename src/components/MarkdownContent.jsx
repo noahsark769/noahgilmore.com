@@ -1,6 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-import { colors } from '../components/default'
 
 export default class MarkdownContent extends React.Component {
   render() {

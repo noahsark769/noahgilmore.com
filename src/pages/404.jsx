@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 
 const OuterContainer = ({ children }) => (
   <div className="m-0 p-0 w-full bg-[#3070a5] h-screen">{children}</div>

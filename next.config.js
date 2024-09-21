@@ -1,10 +1,6 @@
-import withTmInitializer from "next-transpile-modules";
-const withTM = withTmInitializer(["styled-components"]);
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
 
-// next.config.js
-export default withTM({
-  compiler: {
-    // Enables the styled-components SWC transform
-    styledComponents: true
-  }
-});
+export default nextConfig

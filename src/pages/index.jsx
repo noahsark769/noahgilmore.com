@@ -4,7 +4,6 @@ import React from 'react'
 import ReactGA from 'react-ga'
 import { Helmet } from 'react-helmet'
 import corgi from '../../public/corgi.jpg'
-import { BlogGlobalStyle } from '../components/default'
 import Nav from '../components/Nav'
 
 const A = (props) => {
@@ -29,7 +28,6 @@ const IndexPage = () => {
       style={{ fontFamily: "'Merriweather', times, serif" }}
     >
       <Nav />
-      <BlogGlobalStyle />
       <Helmet>
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:700"

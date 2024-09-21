@@ -1,47 +1,9 @@
 import classNames from 'classnames'
-import { createGlobalStyle } from 'styled-components'
 
 export const colors = {
   darkBackground: `#23282f`,
   secondaryDarkBackground: `#2b2c2f`,
 }
-
-export const GlobalStyle = createGlobalStyle`
-    @font-face {
-        font-family: 'Bariol';
-        src: url('/fonts/Bariol-Regular.otf');
-        src: url('/fonts/Bariol-Regular.eot?#iefix') format('embedded-opentype'),
-             url('/fonts/Bariol-Regular.woff') format('woff'),
-             url('/fonts/Bariol-Regular.ttf') format('truetype'),
-             url('/fonts/Bariol-Regular.svg#svgBariolRegular') format('svg');
-    }
-
-    * {
-        box-sizing: border-box !important;
-    }
-`
-
-// Some styles are duplicated here because including two createGlobalStyle components in
-// the same component tree doesn't seem to work...
-export const BlogGlobalStyle = createGlobalStyle`
-    @font-face {
-        font-family: 'Bariol';
-        src: url('/fonts/Bariol-Regular.otf');
-        src: url('/fonts/Bariol-Regular.eot?#iefix') format('embedded-opentype'),
-            url('/fonts/Bariol-Regular.woff') format('woff'),
-            url('/fonts/Bariol-Regular.ttf') format('truetype'),
-            url('/fonts/Bariol-Regular.svg#svgBariolRegular') format('svg');
-    }
-
-    * {
-        box-sizing: border-box !important;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-    }
-`
 
 export const Div = ({ className, ...props }) => (
   <div className={className} {...props} />

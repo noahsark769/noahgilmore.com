@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Bariol';
+  src: url('/fonts/Bariol-Regular.otf');
+  src:
+    url('/fonts/Bariol-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/Bariol-Regular.woff') format('woff'),
+    url('/fonts/Bariol-Regular.ttf') format('truetype'),
+    url('/fonts/Bariol-Regular.svg#svgBariolRegular') format('svg');
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

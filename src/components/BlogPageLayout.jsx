@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet'
 import corgi from '../../public/corgi.jpg'
 import { HighlightedA } from '../components/default'
 import { BlogPostContainer, BlogPostMeta } from './BlogPost'
-import { BlogGlobalStyle } from './default'
 import Disqus from './Disqus'
 import EndButtons from './EndButtons'
 import MarkdownContent from './MarkdownContent'
@@ -45,7 +44,6 @@ export default class BlogPageLayout extends React.Component {
   render() {
     return (
       <Container>
-        <BlogGlobalStyle />
         <Helmet>
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:700"

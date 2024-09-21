@@ -3,8 +3,7 @@ import React from 'react'
 import { FaTwitter } from 'react-icons/fa'
 import { ImBlog } from 'react-icons/im'
 import { IoIosAppstore, IoIosHome, IoLogoGithub } from 'react-icons/io'
-import styled from 'styled-components'
-import { blue, blueHighlight } from '../components/colors'
+import { blue } from '../components/colors'
 import { A, LI, UL } from '../components/default'
 
 const StyledNav = ({ children }) => (

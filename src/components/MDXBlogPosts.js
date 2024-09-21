@@ -3,14 +3,12 @@ import ReactGA from 'react-ga'
 import { Helmet } from 'react-helmet'
 import { BlogPostContainer } from '../components/BlogPost'
 import BlogPostPreview from '../components/BlogPostPreview'
-import { BlogGlobalStyle } from '../components/default'
 import Nav from '../components/Nav'
 
 export default class MDXBlogPosts extends React.Component {
   render() {
     return (
       <div className="dark:bg-darkBackground">
-        <BlogGlobalStyle />
         <Helmet>
           <title>{(this.props.tag || 'Blog') + ' | '}Noah Gilmore</title>
           <link
