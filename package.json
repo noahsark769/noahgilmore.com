@@ -30,14 +30,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:rss": "node scripts/rss.js"
+    "generate:rss": "node scripts/rss.js",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy"
   },
   "prebuild": "npm run generate:rss",
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@tailwindcss/typography": "^0.5.15",
     "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.6"
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "wrangler": "^3.78.7"
   },
   "repository": {
     "type": "git",
