@@ -6,7 +6,7 @@ const Wrapper = ({ children }) => (
 )
 
 const InnerWrapper = ({ children }) => (
-  <div className="w-[1px] min-w-[500px] sm:min-w-[90%] mx-auto twitter-embed">
+  <div className="w-[1px] md:min-w-[500px] min-w-[90%] mx-auto twitter-embed">
     {children}
   </div>
 )
