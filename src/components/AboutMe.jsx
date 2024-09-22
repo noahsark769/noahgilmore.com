@@ -32,8 +32,7 @@ export default function AboutMe() {
         </h1>
         <p className="mt-2 col-span-2 md:col-span-1">
           I'm Noah, a software developer based in the San Francisco Bay Area. I
-          focus mainly on iOS, Apple platform development, and full stack web
-          development.
+          focus mainly on full stack web and iOS development
         </p>
       </div>
       <div>
