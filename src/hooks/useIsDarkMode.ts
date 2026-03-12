@@ -4,7 +4,7 @@ export default function useIsDarkMode(config: any) {
   const [isDarkMode, setIsDarkMode] = useState(config.default);
 
   useEffect(() => {
-    const onDarkModeChange = event => {
+    const onDarkModeChange = (event: MediaQueryListEvent) => {
       setIsDarkMode(event.matches);
     };
     let isDarkMode =

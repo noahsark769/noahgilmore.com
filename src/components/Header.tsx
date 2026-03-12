@@ -59,7 +59,7 @@ export default function Header({ is, id, children }: any) {
     textField.remove()
   }
 
-  const Tag = { h1: H1, h2: H2 }[is] as any
+  const Tag = ({ h1: H1, h2: H2 } as Record<string, React.ComponentType<any>>)[is]
   return (
     <Tag
       id={id}

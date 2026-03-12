@@ -1,6 +1,6 @@
 import React from 'react'
 
-function group(array, numPerGroup) {
+function group(array: any[], numPerGroup: number) {
   let result = []
   let currentGroup = []
 

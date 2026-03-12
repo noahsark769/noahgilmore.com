@@ -3,7 +3,7 @@ import path from 'path'
 import { Feed } from 'feed'
 import { getAllPosts } from '../src/utils/posts'
 
-export default async function generateRssFeed(config) {
+export default async function generateRssFeed(config: { title: string; description: string; tag?: string; path: string }) {
   const allPosts = getAllPosts([
     'slug',
     'title',

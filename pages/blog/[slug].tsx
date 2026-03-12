@@ -17,7 +17,7 @@ import {
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import useIsDarkMode from "../../src/hooks/useIsDarkMode";
 
-const SyntaxHighlightedCode = props => {
+const SyntaxHighlightedCode = (props: any) => {
   const isDarkMode = useIsDarkMode({ default: true });
   return (
     <SyntaxHighlighter
@@ -33,7 +33,7 @@ const SyntaxHighlightedCode = props => {
   );
 };
 
-export default function BlogPage(props) {
+export default function BlogPage(props: any) {
   const pageContext = {
     frontmatter: props.post
   };
@@ -100,7 +100,7 @@ export default function BlogPage(props) {
   );
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params }: any) {
   const post = getPostBySlug(params.slug, [
     "title",
     "subtitle",

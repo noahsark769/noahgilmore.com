@@ -412,7 +412,7 @@ const DataTable = (props: any) => {
             RGBA
           </Cell>
         </Row>
-        {props.data.map(function (color) {
+        {props.data.map(function (color: { name: string; hexString: string; rgbaString: string }) {
           return (
             <Row key={color.name}>
               <Cell narrow monospace>

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import corgi from '../../public/corgi.jpg'
 
-const A = (props) => {
+const A = (props: any) => {
   return (
     <Link href={props.href} className="text-[#1a3f4b] underline transition-all hover:text-[#47656e] dark:text-[#5a8b9b] dark:hover:text-[#7aa5b3]">
       {props.children}

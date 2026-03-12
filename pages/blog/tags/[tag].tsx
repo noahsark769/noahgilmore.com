@@ -1,11 +1,11 @@
 import MDXBlogPosts from '../../../src/components/MDXBlogPosts'
 import { getAllPosts } from '../../../src/utils/posts'
 
-export default function BlogPage(props) {
+export default function BlogPage(props: any) {
   return <MDXBlogPosts mdxEdges={props.edges} />
 }
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: any) => {
   const posts = getAllPosts([
     'slug',
     'content',
