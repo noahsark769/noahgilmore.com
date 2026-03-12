@@ -5,10 +5,8 @@ import { P } from '../components/default'
 import MarkdownContent from '../components/MarkdownContent'
 
 const Wrapper = ({ children, href }) => (
-  <Link href={href}>
-    <a className="mb-5 flex cursor-pointer flex-col rounded-sm border border-[#ddd] bg-white p-5 transition-all duration-200 ease-in-out hover:border-[rgba(128,165,177,1)] dark:border-[#444] dark:bg-secondaryDarkBackground">
-      {children}
-    </a>
+  <Link href={href} className="mb-5 flex cursor-pointer flex-col rounded-xs border border-[#ddd] bg-white p-5 transition-all duration-200 ease-in-out hover:border-[rgba(128,165,177,1)] dark:border-[#444] dark:bg-secondaryDarkBackground">
+    {children}
   </Link>
 )
 
@@ -32,18 +30,15 @@ const Content = ({ children }) => (
 
 const NonContent = ({ children }) => <div>{children}</div>
 
-const LinkSpan = ({ children, href }) => (
-  <Link href={href}>
-    <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-none hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-none dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
-      {children}
-    </span>
-  </Link>
+const LinkSpan = ({ children }) => (
+  <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-hidden hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-hidden dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
+    {children}
+  </span>
 )
 
 const BlogPostPreview = ({ url, title, date, mdxPreview }) => {
   return (
-    <Link href={url} passHref>
-      <Wrapper>
+    <Wrapper href={url}>
         <NonContent>
           <Title>{title}</Title>
           <StyledDate>{date}</StyledDate>
@@ -65,7 +60,6 @@ const BlogPostPreview = ({ url, title, date, mdxPreview }) => {
           </P>
         </NonContent>
       </Wrapper>
-    </Link>
   )
 }
 

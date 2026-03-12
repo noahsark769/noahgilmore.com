@@ -19,7 +19,7 @@ const Title = ({ children }) => (
 )
 
 const NavLinks = ({ children }) => (
-  <UL className="flex-[10] flex flex-row flex-wrap justify-end h-full self-center gap-5">
+  <UL className="flex-10 flex flex-row flex-wrap justify-end h-full self-center gap-5">
     {children}
   </UL>
 )

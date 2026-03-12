@@ -16,7 +16,7 @@ const ButtonStyle = ({ children, margin }) => (
       'transition-all duration-200 ease-in-out',
       'w-[100px] p-[10px_20px] text-center',
       'flex flex-col items-center justify-center',
-      'rounded',
+      'rounded-sm',
       { 'mr-5': margin }
     )}
   >

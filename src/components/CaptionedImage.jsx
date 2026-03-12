@@ -10,7 +10,7 @@ const Container = ({ max, children }) => (
 )
 
 const Caption = ({ children }) => (
-  <div className="mb-8 mt-3 text-center font-['Gentium_Book_Basic',_times,_serif] text-base italic leading-snug text-gray-500">
+  <div className="mb-8 mt-3 text-center font-['Gentium_Book_Basic',times,serif] text-base italic leading-snug text-gray-500">
     {children}
   </div>
 )

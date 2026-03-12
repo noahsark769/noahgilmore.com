@@ -25,9 +25,9 @@ export const P = ({ className, ...props }) => (
 export const A = ({ className, ...props }) => (
   <a
     className={classNames(
-      'outline-none text-inherit no-underline',
-      'hover:outline-none hover:text-inherit hover:no-underline',
-      'focus:outline-none focus:text-inherit focus:no-underline',
+      'outline-hidden text-inherit no-underline',
+      'hover:outline-hidden hover:text-inherit hover:no-underline',
+      'focus:outline-hidden focus:text-inherit focus:no-underline',
       className
     )}
     {...props}
@@ -39,7 +39,7 @@ export const HighlightedA = ({ className, ...props }) => (
     className={classNames(
       'text-[#1a3f4b] dark:text-[#60b5d1]',
       'transition-colors duration-200 ease-in-out',
-      'outline-none underline',
+      'outline-hidden underline',
       'hover:text-[#1a3f4b] dark:hover:text-[#60b5d1]',
       'focus:text-[#1a3f4b] dark:focus:text-[#60b5d1]',
       className

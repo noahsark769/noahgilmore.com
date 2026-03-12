@@ -4,10 +4,8 @@ import corgi from '../../public/corgi.jpg'
 
 const A = (props) => {
   return (
-    <Link href={props.href}>
-      <a className="text-[#1a3f4b] underline transition-all hover:text-[#47656e] dark:text-[#5a8b9b] dark:hover:text-[#7aa5b3]">
-        {props.children}
-      </a>
+    <Link href={props.href} className="text-[#1a3f4b] underline transition-all hover:text-[#47656e] dark:text-[#5a8b9b] dark:hover:text-[#7aa5b3]">
+      {props.children}
     </Link>
   )
 }
@@ -15,13 +13,14 @@ const A = (props) => {
 export default function AboutMe() {
   return (
     <div className="flex flex-col gap-12">
-      <div className="grid grid-cols-[128px,1fr] gap-5">
+      <div className="grid grid-cols-[128px_1fr] gap-5">
         <div className="w-[128px] md:self-center md:row-span-2">
           <Image
             src={corgi}
-            layout="responsive"
+            sizes="128px"
             alt="Picture of me with a corgi"
             className="overflow-hidden rounded-full"
+            style={{ width: '100%', height: 'auto' }}
           />
         </div>
         <h1
