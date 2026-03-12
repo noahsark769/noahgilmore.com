@@ -1,6 +1,6 @@
 import React from "react";
 
-const CustomImage = props => {
+const CustomImage = (props: any) => {
   return (
     <div className="w-full">
       <img

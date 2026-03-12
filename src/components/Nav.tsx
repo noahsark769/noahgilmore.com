@@ -6,31 +6,31 @@ import { IoIosAppstore, IoIosHome, IoLogoGithub } from 'react-icons/io'
 import { blue } from '../components/colors'
 import { A, LI, UL } from '../components/default'
 
-const StyledNav = ({ children }) => (
+const StyledNav = ({ children }: any) => (
   <nav className="flex flex-row flex-wrap p-5 sm:p-[20px_60px] dark:border-[#777]">
     {children}
   </nav>
 )
 
-const Title = ({ children }) => (
+const Title = ({ children }: any) => (
   <div className="flex-2 font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[28px] dark:text-white">
     {children}
   </div>
 )
 
-const NavLinks = ({ children }) => (
+const NavLinks = ({ children }: any) => (
   <UL className="flex-10 flex flex-row flex-wrap justify-end h-full self-center gap-5">
     {children}
   </UL>
 )
 
-const NavLink = ({ children }) => (
+const NavLink = ({ children }: any) => (
   <LI className="flex flex-col items-center text-center font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-base">
     {children}
   </LI>
 )
 
-const StyledA = ({ blue, children, className, ...props }) => (
+const StyledA = ({ blue, children, className, ...props }: any) => (
   <A
     className={classNames(
       'h-auto flex flex-col items-center transition-colors duration-200 ease-in-out',
@@ -45,7 +45,7 @@ const StyledA = ({ blue, children, className, ...props }) => (
   </A>
 )
 
-const Nav = (props) => {
+const Nav = (props: any) => {
   // props.blog means it's in a blog context
   return (
     <StyledNav>

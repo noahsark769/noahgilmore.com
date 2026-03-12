@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import Head from 'next/head'
 import React from 'react'
 
-export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
+export const BlogPostContainer = ({ children, isCompressed, darkened }: any) => {
   return (
     <div
       className={classNames(
@@ -17,29 +17,29 @@ export const BlogPostContainer = ({ children, isCompressed, darkened }) => {
   )
 }
 
-const TitleContainer = ({ children }) => (
+const TitleContainer = ({ children }: any) => (
   <div className="w-full mb-10">{children}</div>
 )
 
-const Heading = ({ children }) => (
+const Heading = ({ children }: any) => (
   <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[34px] mb-[10px] leading-[1.2em] dark:text-white">
     {children}
   </h1>
 )
 
-const SubtitleHeading = ({ children }) => (
+const SubtitleHeading = ({ children }: any) => (
   <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[18px] mb-[10px] leading-[1.2em] italic dark:text-[#ddd]">
     {children}
   </h1>
 )
 
-const DateContainer = ({ children }) => (
+const DateContainer = ({ children }: any) => (
   <p className="font-['Merriweather',times,serif] italic text-[13px] text-[#999]">
     {children}
   </p>
 )
 
-export const BlogPostMeta = (props) => {
+export const BlogPostMeta = (props: any) => {
   return (
     <div>
       <Head>
@@ -54,6 +54,6 @@ export const BlogPostMeta = (props) => {
   )
 }
 
-export default function BlogPost({ children }) {
+export default function BlogPost({ children }: any) {
   return <BlogPostContainer>{children}</BlogPostContainer>
 }

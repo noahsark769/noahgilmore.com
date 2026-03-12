@@ -1,7 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import { formatDateString } from "../lib/dateFormat.js";
+import { formatDateString } from "../lib/dateFormat";
 
 const postsDirectory = join(process.cwd(), "src", "pages", "blog");
 
@@ -9,13 +9,13 @@ export function getPostSlugs() {
   return fs.readdirSync(postsDirectory).filter(name => name.endsWith(".mdx"));
 }
 
-export function getPostBySlug(slug, fields) {
+export function getPostBySlug(slug: string, fields: string[]): Record<string, any> {
   const realSlug = slug.replace(/\.mdx$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  const post = {};
+  const post: Record<string, any> = {};
   fields.forEach(field => {
     if (field === "content") {
       post[field] = content;
@@ -25,7 +25,7 @@ export function getPostBySlug(slug, fields) {
       post[field] = formatDateString(data[field]);
     } else if (field === "tags") {
       post[field] = data[field]
-        ? data[field].split(",").map(tag => tag.trim())
+        ? data[field].split(",").map((tag: string) => tag.trim())
         : [];
     } else if (typeof data[field] !== "undefined") {
       post[field] = data[field];
@@ -35,7 +35,7 @@ export function getPostBySlug(slug, fields) {
   return post;
 }
 
-export function getAllPosts(fields) {
+export function getAllPosts(fields: string[]) {
   const slugs = getPostSlugs();
   const posts = slugs
     .map(slug => getPostBySlug(slug, fields))

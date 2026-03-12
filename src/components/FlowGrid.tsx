@@ -19,17 +19,17 @@ function group(array, numPerGroup) {
   return result
 }
 
-const Container = ({ children }) => (
+const Container = ({ children }: any) => (
   <div className="flex flex-col">{children}</div>
 )
 
-const Row = ({ children }) => (
+const Row = ({ children }: any) => (
   <div className="flex flex-row items-center">{children}</div>
 )
 
-const Item = ({ children }) => <div className="flex-1">{children}</div>
+const Item = ({ children }: any) => <div className="flex-1">{children}</div>
 
-const FlowGrid = (props) => {
+const FlowGrid = (props: any) => {
   let groupedChildren = group(props.children, props.columns)
   return (
     <Container>

@@ -5,24 +5,24 @@ export const colors = {
   secondaryDarkBackground: `#2b2c2f`,
 }
 
-export const Div = ({ className, ...props }) => (
+export const Div = ({ className, ...props }: any) => (
   <div className={className} {...props} />
 )
-export const Nav = ({ className, ...props }) => (
+export const Nav = ({ className, ...props }: any) => (
   <nav className={className} {...props} />
 )
 
-export const UL = ({ className, ...props }) => (
+export const UL = ({ className, ...props }: any) => (
   <ul className={classNames('m-0 p-0', className)} {...props} />
 )
-export const LI = ({ className, ...props }) => (
+export const LI = ({ className, ...props }: any) => (
   <li className={classNames('m-0 p-0', className)} {...props} />
 )
-export const P = ({ className, ...props }) => (
+export const P = ({ className, ...props }: any) => (
   <p className={classNames('m-0 p-0', className)} {...props} />
 )
 
-export const A = ({ className, ...props }) => (
+export const A = ({ className, ...props }: any) => (
   <a
     className={classNames(
       'outline-hidden text-inherit no-underline',
@@ -34,7 +34,7 @@ export const A = ({ className, ...props }) => (
   />
 )
 
-export const HighlightedA = ({ className, ...props }) => (
+export const HighlightedA = ({ className, ...props }: any) => (
   <div
     className={classNames(
       'text-[#1a3f4b] dark:text-[#60b5d1]',

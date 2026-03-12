@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React from 'react'
 import { useSiteMetadata } from '../hooks/siteMetadata'
 
-const ImageHead = (props) => {
+const ImageHead = (props: any) => {
   const { siteUrl } = useSiteMetadata()
   return (
     <Head>
@@ -12,7 +12,7 @@ const ImageHead = (props) => {
   )
 }
 
-export const OGImage = (props) => {
+export const OGImage = (props: any) => {
   const publicUrl = props.filename.startsWith('/')
     ? props.filename
     : `/${props.filename}`

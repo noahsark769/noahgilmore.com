@@ -1,16 +1,16 @@
 import classNames from 'classnames'
 import React from 'react'
 
-const Container = ({ children }) => <div>{children}</div>
+const Container = ({ children }: any) => <div>{children}</div>
 
-const Color = ({ color }) => (
+const Color = ({ color }: any) => (
   <div
     className="w-[30px] h-[30px] inline-block"
     style={{ backgroundColor: color }}
   ></div>
 )
 
-const Cell = ({ children, monospace, bold, wide, narrow }) => (
+const Cell = ({ children, monospace, bold, wide, narrow }: any) => (
   <td
     className={classNames(
       'p-2.5 text-center align-middle border-l border-b border-[#eee]',
@@ -29,11 +29,11 @@ const Cell = ({ children, monospace, bold, wide, narrow }) => (
   </td>
 )
 
-const Row = ({ children }) => (
+const Row = ({ children }: any) => (
   <tr className="first:border-t first:border-[#eee]">{children}</tr>
 )
 
-const Table = ({ children }) => (
+const Table = ({ children }: any) => (
   <table className="md:w-full md:mx-auto sm:w-[95%] sm:mx-auto">
     {children}
   </table>
@@ -394,7 +394,7 @@ export const darkModeData = [
   },
 ]
 
-const DataTable = (props) => {
+const DataTable = (props: any) => {
   return (
     <Table>
       <tbody>
@@ -433,7 +433,7 @@ const DataTable = (props) => {
   )
 }
 
-const IOS13SystemColorTable = (props) => {
+const IOS13SystemColorTable = (props: any) => {
   return (
     <Container>
       <h3>Light Mode</h3>

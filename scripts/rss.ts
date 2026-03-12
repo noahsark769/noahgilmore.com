@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Feed } from 'feed'
-import { getAllPosts } from '../src/utils/posts.js'
+import { getAllPosts } from '../src/utils/posts'
 
 export default async function generateRssFeed(config) {
   const allPosts = getAllPosts([
