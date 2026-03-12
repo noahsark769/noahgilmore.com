@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Noah Gilmore",
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.17.1",
     "classnames": "^2.5.1",
     "feed": "^4.2.2",
     "gh-pages": "^2.0.1",
@@ -30,20 +31,20 @@
     "start": "next start",
     "lint": "next lint",
     "generate:rss": "node scripts/rss.js",
-    "pages:build": "npm run generate:rss && npx @cloudflare/next-on-pages",
-    "preview": "npm run pages:build && wrangler pages dev",
-    "deploy": "npm run pages:build && wrangler pages deploy"
+    "cf:build": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy:staging": "opennextjs-cloudflare build && wrangler deploy --name noahgilmore-website-staging"
   },
   "prebuild": "npm run generate:rss",
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/typography": "^0.5.15",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "vercel": "^37.5.3",
-    "wrangler": "^3.78.7"
+    "wrangler": "^4.72.0"
   },
   "repository": {
     "type": "git",
