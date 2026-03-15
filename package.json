@@ -27,15 +27,17 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
-    "build": "pnpm run generate:rss && pnpm run generate:sitemap && opennextjs-cloudflare build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsgo --noEmit",
     "generate:rss": "tsx scripts/rss.ts",
+    "prebuild": "pnpm run generate:rss && pnpm run generate:sitemap",
     "generate:sitemap": "tsx scripts/sitemap.ts",
-    "preview": "pnpm run build && opennextjs-cloudflare preview",
-    "deploy": "pnpm run build && opennextjs-cloudflare deploy",
-    "deploy:staging": "pnpm run build && wrangler deploy --name noahgilmore-website-staging"
+    "cf:build": "pnpm build && opennextjs-cloudflare build",
+    "preview": "pnpm run cf:build && opennextjs-cloudflare preview",
+    "deploy": "pnpm run cf:build && opennextjs-cloudflare deploy",
+    "deploy:staging": "pnpm run cf:build && wrangler deploy --name noahgilmore-website-staging"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
