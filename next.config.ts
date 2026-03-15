@@ -6,7 +6,6 @@ const gitSha = process.env.NEXT_PUBLIC_GIT_SHA ||
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  bundlePagesRouterDependencies: true,
   env: {
     NEXT_PUBLIC_GIT_SHA: gitSha,
   },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 
 const OuterContainer = ({ children }: any) => (
   <div className="m-0 p-0 w-full bg-[#3070a5] h-screen">{children}</div>
@@ -23,16 +23,16 @@ const A = ({ children, ...props }: any) => (
   </a>
 )
 
-const NotFoundPage = () => (
-  <OuterContainer>
-    <Container>
-      <Title>:(</Title>
-      <p>
-        You found a page that doesn't exist (404).{' '}
-        <A href="/blog">Go back home</A>
-      </p>
-    </Container>
-  </OuterContainer>
-)
-
-export default NotFoundPage
+export default function NotFound() {
+  return (
+    <OuterContainer>
+      <Container>
+        <Title>:(</Title>
+        <p>
+          You found a page that doesn&apos;t exist (404).{" "}
+          <A href="/blog">Go back home</A>
+        </p>
+      </Container>
+    </OuterContainer>
+  )
+}

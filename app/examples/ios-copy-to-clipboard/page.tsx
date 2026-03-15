@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react'
-import ReactGA from 'react-ga'
+"use client"
+
+import React, { useEffect } from "react"
+import ReactGA from "react-ga"
 
 function iosCopyToClipboard(el: HTMLInputElement) {
   var oldContentEditable = el.contentEditable,
@@ -14,12 +16,12 @@ function iosCopyToClipboard(el: HTMLInputElement) {
   s?.removeAllRanges()
   s?.addRange(range)
 
-  el.setSelectionRange(0, 999999) // A big number, to cover anything that could be inside the element.
+  el.setSelectionRange(0, 999999)
 
   el.contentEditable = oldContentEditable
   el.readOnly = oldReadOnly
 
-  return document.execCommand('copy')
+  return document.execCommand("copy")
 }
 
 const Container = ({ children }: any) => (
@@ -28,7 +30,7 @@ const Container = ({ children }: any) => (
 
 function TrackingLink({ href, data, children }: any) {
   const handleOnClick = () => {
-    let element = document.createElement('input')
+    let element = document.createElement("input")
     let linkData = {
       timestamp: Date.now(),
       ...data,
@@ -36,13 +38,13 @@ function TrackingLink({ href, data, children }: any) {
     let json = JSON.stringify(linkData)
     let encoded = btoa(json)
     let toAppend
-    if (href.includes('?')) {
-      toAppend = '&ed=' + encoded
+    if (href.includes("?")) {
+      toAppend = "&ed=" + encoded
     } else {
-      toAppend = '?ed=' + encoded
+      toAppend = "?ed=" + encoded
     }
     element.value = href + toAppend
-    element.style.cssText = 'position: absolute; opacity: 0.0'
+    element.style.cssText = "position: absolute; opacity: 0.0"
     document.body.appendChild(element)
     iosCopyToClipboard(element)
   }
@@ -54,16 +56,16 @@ function TrackingLink({ href, data, children }: any) {
   )
 }
 
-export default function IndexPage() {
+export default function IOSCopyToClipboardPage() {
   useEffect(() => {
-    ReactGA.initialize('UA-35325391-1')
+    ReactGA.initialize("UA-35325391-1")
     ReactGA.pageview(window.location.pathname + window.location.search)
   }, [])
 
   return (
     <Container>
       <TrackingLink
-        data={{ referrer: 'pasteboard-blog-post' }}
+        data={{ referrer: "pasteboard-blog-post" }}
         href="https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8"
       >
         This is the link

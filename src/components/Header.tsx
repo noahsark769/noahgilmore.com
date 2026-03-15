@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { IoIosCheckmark, IoMdLink } from 'react-icons/io'
 

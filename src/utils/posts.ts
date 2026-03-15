@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import { join } from "path";
 import { formatDateString } from "../lib/dateFormat";
 
-const postsDirectory = join(process.cwd(), "src", "pages", "blog");
+const postsDirectory = join(process.cwd(), "src", "content", "blog");
 
 export function getPostSlugs() {
   return fs.readdirSync(postsDirectory).filter(name => name.endsWith(".mdx"));

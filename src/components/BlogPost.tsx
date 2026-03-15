@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import Head from 'next/head'
 import React from 'react'
 
 export const BlogPostContainer = ({ children, isCompressed, darkened }: any) => {
@@ -42,9 +41,6 @@ const DateContainer = ({ children }: any) => (
 export const BlogPostMeta = (props: any) => {
   return (
     <div>
-      <Head>
-        <title>{props.title}</title>
-      </Head>
       <TitleContainer>
         <Heading>{props.title}</Heading>
         {props.subtitle && <SubtitleHeading>{props.subtitle}</SubtitleHeading>}
