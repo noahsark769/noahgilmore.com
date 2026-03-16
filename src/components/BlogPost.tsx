@@ -28,19 +28,19 @@ const TitleContainer = ({ children }: React.PropsWithChildren) => (
 )
 
 const Heading = ({ children }: React.PropsWithChildren) => (
-  <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[34px] mb-[10px] leading-[1.2em] dark:text-white">
+  <h1 className="w-full font-sans text-[34px] mb-[10px] leading-[1.2em] dark:text-white">
     {children}
   </h1>
 )
 
 const SubtitleHeading = ({ children }: React.PropsWithChildren) => (
-  <h1 className="w-full font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[18px] mb-[10px] leading-[1.2em] italic dark:text-[#ddd]">
+  <h1 className="w-full font-sans text-[18px] mb-[10px] leading-[1.2em] italic dark:text-[#ddd]">
     {children}
   </h1>
 )
 
 const DateContainer = ({ children }: React.PropsWithChildren) => (
-  <p className="font-['Merriweather',times,serif] italic text-[13px] text-[#999]">
+  <p className="font-serif italic text-[13px] text-[#999]">
     {children}
   </p>
 )

@@ -12,7 +12,7 @@ const StyledNav = ({ children }: React.PropsWithChildren) => (
 )
 
 const Title = ({ children }: React.PropsWithChildren) => (
-  <div className="flex-2 font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[28px] dark:text-white">
+  <div className="flex-2 font-sans text-[28px] dark:text-white">
     {children}
   </div>
 )
@@ -24,7 +24,7 @@ const NavLinks = ({ children }: React.PropsWithChildren) => (
 )
 
 const NavLink = ({ children }: React.PropsWithChildren) => (
-  <LI className="flex flex-col items-center text-center font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-base">
+  <LI className="flex flex-col items-center text-center font-sans text-base">
     {children}
   </LI>
 )

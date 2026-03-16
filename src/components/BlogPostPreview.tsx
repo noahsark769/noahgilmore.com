@@ -11,13 +11,13 @@ const Wrapper = ({ children, href }: React.PropsWithChildren<{ href: string }>) 
 )
 
 const Title = ({ children }: React.PropsWithChildren) => (
-  <h2 className="mb-[5px] font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[20px] dark:text-white">
+  <h2 className="mb-[5px] font-sans text-[20px] dark:text-white">
     {children}
   </h2>
 )
 
 const StyledDate = ({ children }: React.PropsWithChildren) => (
-  <div className="font-['Merriweather',times,serif] text-[14px] italic text-[#999]">
+  <div className="font-serif text-[14px] italic text-[#999]">
     {children}
   </div>
 )
@@ -31,7 +31,7 @@ const Content = ({ children }: React.PropsWithChildren) => (
 const NonContent = ({ children }: React.PropsWithChildren) => <div>{children}</div>
 
 const LinkSpan = ({ children }: React.PropsWithChildren) => (
-  <span className="font-['Merriweather',times,serif] text-[#1a3f4b] text-inherit underline no-underline outline-hidden hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-hidden dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
+  <span className="font-serif text-[#1a3f4b] text-inherit underline no-underline outline-hidden hover:text-[#1a3f4b] hover:underline focus:text-inherit focus:no-underline focus:outline-hidden dark:text-[#60b5d1] dark:hover:text-[#60b5d1]">
     {children}
   </span>
 )

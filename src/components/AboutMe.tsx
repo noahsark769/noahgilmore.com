@@ -26,8 +26,7 @@ export default function AboutMe() {
           />
         </div>
         <h1
-          className="text-3xl font-bold uppercase leading-7 md:leading-8 self-center"
-          style={{ fontFamily: "'Roboto', sans-serif" }}
+          className="font-sans text-3xl font-bold uppercase leading-7 md:leading-8 self-center"
         >
           Noah Gilmore
         </h1>

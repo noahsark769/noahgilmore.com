@@ -3,7 +3,7 @@ import { HighlightedA } from '../components/default'
 import { formatTweetIntentUrl } from '../lib/twitter'
 
 const Container = ({ children }: React.PropsWithChildren) => (
-  <div className="w-full flex flex-row items-center justify-center mt-10 font-['Merriweather'] dark:text-white">
+  <div className="w-full flex flex-row items-center justify-center mt-10 font-serif dark:text-white">
     {children}
   </div>
 )

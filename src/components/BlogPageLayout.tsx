@@ -65,8 +65,7 @@ export default function BlogPageLayout({ pageContext, location, children }: Reac
                 tweetUrl={`https://noahgilmore.com${location.pathname}`}
               />
               <div
-                style={{ fontFamily: "'Merriweather', times, serif" }}
-                className="mt-32 flex flex-col border-t border-solid border-white pt-16 leading-6 dark:text-white"
+                className="font-serif mt-32 flex flex-col border-t border-solid border-white pt-16 leading-6 dark:text-white"
               >
                 <AboutMe />
               </div>

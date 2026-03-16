@@ -3,6 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'media', // This enables dark mode based on prefers-color-scheme
@@ -15,9 +16,9 @@ module.exports = {
         standardBlueHighlight: 'rgba(151, 195, 210, 1)',
       },
       fontFamily: {
-        serif: ['Merriweather', ...defaultTheme.fontFamily.serif],
+        serif: ['var(--font-merriweather)', ...defaultTheme.fontFamily.serif],
         sans: [
-          'Roboto',
+          'var(--font-roboto)',
           'Helvetica Neue',
           'Helvetica',
           ...defaultTheme.fontFamily.sans,
@@ -28,7 +29,7 @@ module.exports = {
         DEFAULT: {
           css: {
             'p, li': {
-              fontFamily: 'Merriweather, times, serif',
+              fontFamily: 'var(--font-merriweather), times, serif',
               fontSize: '18px',
               lineHeight: '29px',
               color: '#333',
@@ -99,7 +100,7 @@ module.exports = {
               marginLeft: '40px',
             },
             'h1, h2, h3, h4, h5, h6': {
-              fontFamily: 'Roboto, Helvetica Neue, Helvetica, sans-serif',
+              fontFamily: 'var(--font-roboto), Helvetica Neue, Helvetica, sans-serif',
               marginBottom: '10px',
               marginTop: '40px',
             },

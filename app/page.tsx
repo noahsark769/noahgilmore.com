@@ -3,7 +3,7 @@ import AboutMe from "../src/components/AboutMe"
 import Nav from "../src/components/Nav"
 
 export const metadata: Metadata = {
-  title: "Noah Gilmore",
+  title: "Noah Gilmore - iOS & Web Developer Blog",
   description:
     "Noah Gilmore's personal website. Software development (web, iOS).",
   alternates: {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     url: "https://noahgilmore.com",
-    title: "Noah Gilmore",
+    title: "Noah Gilmore - iOS & Web Developer Blog",
     description:
       "Noah Gilmore's personal website. Software development (web, iOS).",
   },
@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <div
       className="outerWrapper h-screen dark:text-white"
-      style={{ fontFamily: "'Merriweather', times, serif" }}
+      style={{ fontFamily: "var(--font-merriweather), times, serif" }}
     >
       <script
         type="application/ld+json"
