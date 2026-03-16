@@ -11,6 +11,7 @@ export interface Post {
   title: string
   subtitle: string
   date: string
+  rawDate: string
   mdxPreview: string
   tags: string[]
   ogimage: string
@@ -34,6 +35,7 @@ export function getPostBySlug(slug: string): Post {
     title: data.title ?? "",
     subtitle: data.subtitle ?? "",
     date: formatDateString(data.date),
+    rawDate: new Date(data.date).toISOString().split("T")[0],
     mdxPreview: data.mdxPreview ?? "",
     tags: data.tags
       ? data.tags.split(",").map((tag: string) => tag.trim())

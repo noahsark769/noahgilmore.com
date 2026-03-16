@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Noah Gilmore",
   description:
     "Noah Gilmore's personal website. Software development (web, iOS).",
+  alternates: {
+    canonical: "https://noahgilmore.com",
+  },
   openGraph: {
     url: "https://noahgilmore.com",
     title: "Noah Gilmore",
@@ -18,12 +21,30 @@ export const metadata: Metadata = {
   },
 }
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Noah Gilmore",
+  url: "https://noahgilmore.com",
+  jobTitle: "Software Developer",
+  description:
+    "Software developer based in the San Francisco Bay Area, focusing on full stack web and iOS development.",
+  sameAs: [
+    "https://x.com/noahsark769",
+    "https://github.com/noahsark769",
+  ],
+}
+
 export default function HomePage() {
   return (
     <div
       className="outerWrapper h-screen dark:text-white"
       style={{ fontFamily: "'Merriweather', times, serif" }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
       <Nav />
       <div className="flex flex-col justify-center items-center">
         <div className="max-w-4xl flex-col p-8 leading-6 md:p-32">

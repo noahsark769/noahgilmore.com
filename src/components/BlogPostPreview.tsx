@@ -11,9 +11,9 @@ const Wrapper = ({ children, href }: React.PropsWithChildren<{ href: string }>) 
 )
 
 const Title = ({ children }: React.PropsWithChildren) => (
-  <h1 className="mb-[5px] font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[20px] dark:text-white">
+  <h2 className="mb-[5px] font-['Roboto','Helvetica_Neue','Helvetica',sans-serif] text-[20px] dark:text-white">
     {children}
-  </h1>
+  </h2>
 )
 
 const StyledDate = ({ children }: React.PropsWithChildren) => (

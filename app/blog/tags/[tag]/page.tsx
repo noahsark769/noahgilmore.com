@@ -4,14 +4,23 @@ import BlogPostPreview from "../../../../src/components/BlogPostPreview"
 import Nav from "../../../../src/components/Nav"
 import { getAllPosts } from "../../../../src/utils/posts"
 
-export const metadata: Metadata = {
-  title: "Blog | Noah Gilmore",
-  description:
-    "Noah Gilmore's personal blog. Software development (web, iOS).",
-  twitter: {
-    card: "summary",
-    creator: "@noahsark769",
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ tag: string }>
+}): Promise<Metadata> {
+  const { tag } = await params
+  return {
+    title: `Posts tagged "${tag}" | Noah Gilmore`,
+    description: `Blog posts about ${tag} by Noah Gilmore.`,
+    alternates: {
+      canonical: `https://noahgilmore.com/blog/tags/${tag}`,
+    },
+    twitter: {
+      card: "summary",
+      creator: "@noahsark769",
+    },
+  }
 }
 
 export async function generateStaticParams() {

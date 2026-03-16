@@ -33,6 +33,9 @@ export async function generateMetadata({
   const metadata: Metadata = {
     title: post.title,
     description: post.staticPreview,
+    alternates: {
+      canonical: `https://noahgilmore.com/blog/${slug}`,
+    },
     openGraph: {
       url: `https://noahgilmore.com/blog/${slug}`,
       title: post.title,
@@ -80,11 +83,36 @@ export default async function BlogPostPage({
 
   const pageContext = { frontmatter: post }
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.staticPreview,
+    datePublished: post.rawDate,
+    url: `https://noahgilmore.com/blog/${slug}`,
+    author: {
+      "@type": "Person",
+      name: "Noah Gilmore",
+      url: "https://noahgilmore.com",
+    },
+    ...(post.ogimage
+      ? {
+          image: post.ogimage.startsWith("/")
+            ? `https://noahgilmore.com${post.ogimage}`
+            : `https://noahgilmore.com/${post.ogimage}`,
+        }
+      : {}),
+  }
+
   return (
     <BlogPageLayout
       pageContext={pageContext}
       location={{ pathname: `/blog/${slug}` }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <MDXRemote
         source={post.content || ""}
         options={{

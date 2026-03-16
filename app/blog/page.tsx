@@ -8,9 +8,12 @@ export const metadata: Metadata = {
   title: "Blog | Noah Gilmore",
   description:
     "Noah Gilmore's personal blog. Software development (web, iOS).",
+  alternates: {
+    canonical: "https://noahgilmore.com/blog",
+  },
   openGraph: {
     url: "https://noahgilmore.com/blog",
-    title: "Blog - Noah Gilmore",
+    title: "Blog | Noah Gilmore",
     description:
       "Noah Gilmore's personal blog. Software development (web, iOS).",
   },

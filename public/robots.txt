@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://noahgilmore.com/sitemap.xml
