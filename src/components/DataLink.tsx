@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 function iosCopyToClipboard(string: string) {
     let el = document.createElement("input");
@@ -21,7 +21,10 @@ function iosCopyToClipboard(string: string) {
     return document.execCommand('copy');
 }
 
-function DataLink({ href, data, children }: any) {
+function DataLink({ href, data, children }: React.PropsWithChildren<{
+    href: string
+    data: Record<string, string>
+}>) {
     const handleOnClick = () => {
         let jsonData = {
             timestamp: Date.now(),
@@ -48,6 +51,6 @@ function DataLink({ href, data, children }: any) {
 
 export default DataLink;
 
-export const TrestleBlogPostLink = (props: any) => {
-    return (<DataLink data={{"referrer": "pasteboard-blog-post"}} href={"https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8"}>{props.children}</DataLink>);
+export const TrestleBlogPostLink = ({ children }: React.PropsWithChildren) => {
+    return (<DataLink data={{"referrer": "pasteboard-blog-post"}} href={"https://itunes.apple.com/us/app/trestle-the-new-sudoku/id1300230302?mt=8"}>{children}</DataLink>);
 };

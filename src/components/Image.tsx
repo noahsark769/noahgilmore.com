@@ -1,12 +1,12 @@
 import React from "react";
 
-const CustomImage = (props: any) => {
+const CustomImage = ({ filename, alt, ...props }: { filename: string; alt: string } & Omit<React.ComponentProps<'img'>, 'src' | 'alt'>) => {
   return (
     <div className="w-full">
       <img
-        alt={props.alt}
+        alt={alt}
         src={
-          props.filename.startsWith("/") ? props.filename : `/${props.filename}`
+          filename.startsWith("/") ? filename : `/${filename}`
         }
         {...props}
       />

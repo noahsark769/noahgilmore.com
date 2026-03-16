@@ -51,7 +51,7 @@ export default async function TagPage({
     <div className="dark:bg-darkBackground">
       <Nav blog />
       <BlogPostContainer isCompressed darkened>
-        {edges.map((edge: any) => (
+        {edges.map((edge) => (
           <BlogPostPreview
             key={edge.node.id}
             url={"/blog/" + edge.node.parent.name}

@@ -1,6 +1,11 @@
 import React from 'react';
-import MDXBlogPosts  from "../components/MDXBlogPosts";
+import MDXBlogPosts, { type BlogPostEdge } from "../components/MDXBlogPosts";
 
-export default function MDXBlogPostsTemplate(props: any) {
-  return <MDXBlogPosts tag={props.pageContext.tag} mdxEdges={props.pageContext.edges} />;
+export default function MDXBlogPostsTemplate({ pageContext }: {
+  pageContext: {
+    tag: string
+    edges: BlogPostEdge[]
+  }
+}) {
+  return <MDXBlogPosts mdxEdges={pageContext.edges} />;
 };

@@ -9,13 +9,13 @@ export function getPostSlugs() {
   return fs.readdirSync(postsDirectory).filter(name => name.endsWith(".mdx"));
 }
 
-export function getPostBySlug(slug: string, fields: string[]): Record<string, any> {
+export function getPostBySlug(slug: string, fields: string[]): Record<string, string | string[]> {
   const realSlug = slug.replace(/\.mdx$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  const post: Record<string, any> = {};
+  const post: Record<string, string | string[]> = {};
   fields.forEach(field => {
     if (field === "content") {
       post[field] = content;

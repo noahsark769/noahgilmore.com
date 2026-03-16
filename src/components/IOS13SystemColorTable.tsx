@@ -1,16 +1,27 @@
 import classNames from 'classnames'
 import React from 'react'
 
-const Container = ({ children }: any) => <div>{children}</div>
+interface SystemColor {
+  name: string
+  hexString: string
+  rgbaString: string
+}
 
-const Color = ({ color }: any) => (
+const Container = ({ children }: React.PropsWithChildren) => <div>{children}</div>
+
+const Color = ({ color }: { color: string }) => (
   <div
     className="w-[30px] h-[30px] inline-block"
     style={{ backgroundColor: color }}
   ></div>
 )
 
-const Cell = ({ children, monospace, bold, wide, narrow }: any) => (
+const Cell = ({ children, monospace, bold, wide, narrow }: React.PropsWithChildren<{
+  monospace?: boolean
+  bold?: boolean
+  wide?: boolean
+  narrow?: boolean
+}>) => (
   <td
     className={classNames(
       'p-2.5 text-center align-middle border-l border-b border-[#eee]',
@@ -29,11 +40,11 @@ const Cell = ({ children, monospace, bold, wide, narrow }: any) => (
   </td>
 )
 
-const Row = ({ children }: any) => (
+const Row = ({ children }: React.PropsWithChildren) => (
   <tr className="first:border-t first:border-[#eee]">{children}</tr>
 )
 
-const Table = ({ children }: any) => (
+const Table = ({ children }: React.PropsWithChildren) => (
   <table className="md:w-full md:mx-auto sm:w-[95%] sm:mx-auto">
     {children}
   </table>
@@ -394,7 +405,7 @@ export const darkModeData = [
   },
 ]
 
-const DataTable = (props: any) => {
+const DataTable = ({ data }: { data: SystemColor[] }) => {
   return (
     <Table>
       <tbody>
@@ -412,7 +423,7 @@ const DataTable = (props: any) => {
             RGBA
           </Cell>
         </Row>
-        {props.data.map(function (color: { name: string; hexString: string; rgbaString: string }) {
+        {data.map(function (color) {
           return (
             <Row key={color.name}>
               <Cell narrow monospace>
@@ -433,7 +444,7 @@ const DataTable = (props: any) => {
   )
 }
 
-const IOS13SystemColorTable = (props: any) => {
+const IOS13SystemColorTable = () => {
   return (
     <Container>
       <h3>Light Mode</h3>

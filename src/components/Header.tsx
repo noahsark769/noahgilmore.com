@@ -3,17 +3,17 @@
 import React, { useState } from 'react'
 import { IoIosCheckmark, IoMdLink } from 'react-icons/io'
 
-const HeaderLinkContainer = ({ children, ...props }: any) => (
+const HeaderLinkContainer = ({ children, ...props }: React.ComponentProps<'div'>) => (
   <div className="absolute top-0 left-0" {...props}>{children}</div>
 )
 
-const Icon = ({ children }: any) => (
+const Icon = ({ children }: React.PropsWithChildren) => (
   <div className="cursor-pointer text-[#1a3f4b] transition-all duration-200 ease-in-out hover:text-[#47656e] dark:text-[#60b5d1] dark:hover:text-[#6bcfef] sm:block hidden">
     {children}
   </div>
 )
 
-const HeaderLink = ({ onClick }: any) => {
+const HeaderLink = ({ onClick }: { onClick: () => void }) => {
   const [done, setDone] = useState(false)
 
   const handleClick = () => {
@@ -28,19 +28,25 @@ const HeaderLink = ({ onClick }: any) => {
   )
 }
 
-const H1 = ({ children, ...props }: any) => (
+const H1 = ({ children, ...props }: React.ComponentProps<'h1'>) => (
   <h1 className="relative sm:-ml-[50px] sm:pl-[50px]" {...props}>
     {children}
   </h1>
 )
 
-const H2 = ({ children, ...props }: any) => (
+const H2 = ({ children, ...props }: React.ComponentProps<'h2'>) => (
   <h2 className="relative sm:-ml-[50px] sm:pl-[50px]" {...props}>
     {children}
   </h2>
 )
 
-export default function Header({ is, id, children }: any) {
+const tagMap = { h1: H1, h2: H2 } as const
+
+export default function Header({ is, id, children }: {
+  is: keyof typeof tagMap
+  id: string
+  children: React.ReactNode
+}) {
   const [isHovering, setIsHovering] = useState(false)
 
   const copyToClipboard = () => {
@@ -61,7 +67,7 @@ export default function Header({ is, id, children }: any) {
     textField.remove()
   }
 
-  const Tag = ({ h1: H1, h2: H2 } as Record<string, React.ComponentType<any>>)[is]
+  const Tag = tagMap[is]
   return (
     <Tag
       id={id}
@@ -71,7 +77,6 @@ export default function Header({ is, id, children }: any) {
       {children}
       {isHovering && (
         <HeaderLink
-          id={id}
           onClick={() => copyToClipboard()}
         />
       )}

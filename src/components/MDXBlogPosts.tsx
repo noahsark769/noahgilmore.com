@@ -3,12 +3,24 @@ import { BlogPostContainer } from '../components/BlogPost'
 import BlogPostPreview from '../components/BlogPostPreview'
 import Nav from '../components/Nav'
 
-export default function MDXBlogPosts({ mdxEdges }: any) {
+export interface BlogPostEdge {
+  node: {
+    id: string
+    parent: { name: string }
+    frontmatter: {
+      title: string
+      date: string
+      mdxPreview: string
+    }
+  }
+}
+
+export default function MDXBlogPosts({ mdxEdges }: { mdxEdges: BlogPostEdge[] }) {
   return (
     <div className="dark:bg-darkBackground">
       <Nav blog />
       <BlogPostContainer isCompressed darkened>
-        {mdxEdges.map((edge: any) => {
+        {mdxEdges.map((edge) => {
           return (
             <BlogPostPreview
               key={edge.node.id}

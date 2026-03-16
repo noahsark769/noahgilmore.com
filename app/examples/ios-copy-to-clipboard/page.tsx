@@ -24,11 +24,14 @@ function iosCopyToClipboard(el: HTMLInputElement) {
   return document.execCommand("copy")
 }
 
-const Container = ({ children }: any) => (
+const Container = ({ children }: React.PropsWithChildren) => (
   <div className="mx-auto h-screen w-[960px]">{children}</div>
 )
 
-function TrackingLink({ href, data, children }: any) {
+function TrackingLink({ href, data, children }: React.PropsWithChildren<{
+  href: string
+  data: Record<string, string>
+}>) {
   const handleOnClick = () => {
     let element = document.createElement("input")
     let linkData = {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { A, Div } from '../components/default'
 
-const StyledLink = ({ children, ...props }: any) => (
+const StyledLink = ({ children, ...props }: React.ComponentProps<typeof Div>) => (
   <Div
     className="block w-full py-[15px] pr-[15px] bg-white cursor-pointer font-['Bariol','Helvetica_Neue','Helvetica',sans-serif] text-center text-base uppercase mb-[10px] text-right"
     {...props}
@@ -10,15 +10,18 @@ const StyledLink = ({ children, ...props }: any) => (
   </Div>
 )
 
-const HomepageLink = (props: any) => {
-  if (props.to) {
+const HomepageLink = ({ to, onClick, children }: React.PropsWithChildren<{
+  to?: string
+  onClick?: () => void
+}>) => {
+  if (to) {
     return (
       <StyledLink>
-        <A href={props.to}>{props.children}</A>
+        <A href={to}>{children}</A>
       </StyledLink>
     )
   } else {
-    return <StyledLink onClick={props.onClick}>{props.children}</StyledLink>
+    return <StyledLink onClick={onClick}>{children}</StyledLink>
   }
 }
 

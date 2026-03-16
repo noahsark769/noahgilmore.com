@@ -7,15 +7,15 @@ import EndButtons from './EndButtons'
 import MarkdownContent from './MarkdownContent'
 import Nav from './Nav'
 
-const Container = ({ children }: any) => (
+const Container = ({ children }: React.PropsWithChildren) => (
   <div className="dark:bg-darkBackground">{children}</div>
 )
 
-const NonContent = ({ children }: any) => (
+const NonContent = ({ children }: React.PropsWithChildren) => (
   <div className="sm:px-[5%]">{children}</div>
 )
 
-const PostContainerOuter = ({ children, hasPadding }: any) => (
+const PostContainerOuter = ({ children, hasPadding }: React.PropsWithChildren<{ hasPadding: boolean }>) => (
   <div
     className={classNames(
       'flex',
@@ -31,15 +31,26 @@ const PostContainerOuter = ({ children, hasPadding }: any) => (
   </div>
 )
 
-const PostContainerInner = ({ children }: any) => (
+const PostContainerInner = ({ children }: React.PropsWithChildren) => (
   <div className="block w-full flex-col">{children}</div>
 )
 
-export default function BlogPageLayout({ pageContext, location, children }: any) {
+export default function BlogPageLayout({ pageContext, location, children }: React.PropsWithChildren<{
+  pageContext: {
+    frontmatter: {
+      title: string
+      subtitle?: string
+      date: string
+    }
+  }
+  location: {
+    pathname: string
+  }
+}>) {
   return (
     <Container>
       <Nav blog />
-      <BlogPostContainer isCompressed={true}>
+      <BlogPostContainer isCompressed={true} darkened={false}>
         <PostContainerOuter hasPadding={false}>
           <PostContainerInner>
             <NonContent>

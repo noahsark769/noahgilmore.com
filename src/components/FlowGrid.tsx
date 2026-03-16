@@ -1,6 +1,6 @@
 import React from 'react'
 
-function group(array: any[], numPerGroup: number) {
+function group(array: React.ReactNode[], numPerGroup: number) {
   let result = []
   let currentGroup = []
 
@@ -19,18 +19,18 @@ function group(array: any[], numPerGroup: number) {
   return result
 }
 
-const Container = ({ children }: any) => (
+const Container = ({ children }: React.PropsWithChildren) => (
   <div className="flex flex-col">{children}</div>
 )
 
-const Row = ({ children }: any) => (
+const Row = ({ children }: React.PropsWithChildren) => (
   <div className="flex flex-row items-center">{children}</div>
 )
 
-const Item = ({ children }: any) => <div className="flex-1">{children}</div>
+const Item = ({ children }: React.PropsWithChildren) => <div className="flex-1">{children}</div>
 
-const FlowGrid = (props: any) => {
-  let groupedChildren = group(props.children, props.columns)
+const FlowGrid = ({ children, columns }: React.PropsWithChildren<{ columns: number }>) => {
+  let groupedChildren = group(React.Children.toArray(children), columns)
   return (
     <Container>
       {groupedChildren.map(function (group, index) {

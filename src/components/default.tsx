@@ -1,28 +1,29 @@
 import classNames from 'classnames'
+import React from 'react'
 
 export const colors = {
   darkBackground: `#23282f`,
   secondaryDarkBackground: `#2b2c2f`,
 }
 
-export const Div = ({ className, ...props }: any) => (
+export const Div = ({ className, ...props }: React.ComponentProps<'div'>) => (
   <div className={className} {...props} />
 )
-export const Nav = ({ className, ...props }: any) => (
+export const Nav = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav className={className} {...props} />
 )
 
-export const UL = ({ className, ...props }: any) => (
+export const UL = ({ className, ...props }: React.ComponentProps<'ul'>) => (
   <ul className={classNames('m-0 p-0', className)} {...props} />
 )
-export const LI = ({ className, ...props }: any) => (
+export const LI = ({ className, ...props }: React.ComponentProps<'li'>) => (
   <li className={classNames('m-0 p-0', className)} {...props} />
 )
-export const P = ({ className, ...props }: any) => (
+export const P = ({ className, ...props }: React.ComponentProps<'p'>) => (
   <p className={classNames('m-0 p-0', className)} {...props} />
 )
 
-export const A = ({ className, ...props }: any) => (
+export const A = ({ className, ...props }: React.ComponentProps<'a'>) => (
   <a
     className={classNames(
       'outline-hidden text-inherit no-underline',
@@ -34,8 +35,8 @@ export const A = ({ className, ...props }: any) => (
   />
 )
 
-export const HighlightedA = ({ className, ...props }: any) => (
-  <div
+export const HighlightedA = ({ className, ...props }: React.ComponentProps<'a'>) => (
+  <a
     className={classNames(
       'text-[#1a3f4b] dark:text-[#60b5d1]',
       'transition-colors duration-200 ease-in-out',

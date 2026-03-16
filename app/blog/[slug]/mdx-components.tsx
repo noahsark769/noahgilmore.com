@@ -14,7 +14,7 @@ import FlowGrid from "../../../src/components/FlowGrid"
 import IOS13SystemColorTable from "../../../src/components/IOS13SystemColorTable"
 import TrestleBlogPostLink from "../../../src/components/DataLink"
 
-export const SyntaxHighlightedCode = (props: any) => {
+export const SyntaxHighlightedCode = (props: React.ComponentProps<'code'>) => {
   const isDarkMode = useIsDarkMode({ default: true })
   return (
     <SyntaxHighlighter
@@ -27,10 +27,10 @@ export const SyntaxHighlightedCode = (props: any) => {
   )
 }
 
-export const MdxH1 = (props: any) => (
+export const MdxH1 = (props: React.ComponentProps<'h1'>) => (
   <Header
     is="h1"
-    id={slugify(props.children)}
+    id={slugify(String(props.children))}
     {...{
       ...props,
       ...(typeof props.children === "string"
@@ -40,10 +40,10 @@ export const MdxH1 = (props: any) => (
   />
 )
 
-export const MdxH2 = (props: any) => (
+export const MdxH2 = (props: React.ComponentProps<'h2'>) => (
   <Header
     is="h2"
-    id={slugify(props.children)}
+    id={slugify(String(props.children))}
     {...{
       ...props,
       ...(typeof props.children === "string"
@@ -53,15 +53,16 @@ export const MdxH2 = (props: any) => (
   />
 )
 
-export const MdxCode = (props: any) => {
+export const MdxCode = (props: React.ComponentProps<'code'>) => {
   if (props.className && typeof props.children === "string") {
     return <SyntaxHighlightedCode {...props} />
   }
   return <code {...props} />
 }
 
-export const MdxPre = (props: any) => {
-  if (props?.children?.props?.className?.includes("language-")) {
+export const MdxPre = (props: React.ComponentProps<'pre'>) => {
+  const childProps = (props.children as React.ReactElement<{ className?: string }>)?.props
+  if (childProps?.className?.includes("language-")) {
     return <>{props.children}</>
   }
   return <pre {...props} />
