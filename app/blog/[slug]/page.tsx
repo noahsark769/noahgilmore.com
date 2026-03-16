@@ -17,7 +17,7 @@ import {
 } from "./mdx-components"
 
 export async function generateStaticParams() {
-  const posts = getAllPosts(["slug"])
+  const posts = getAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
 
@@ -27,13 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const post = getPostBySlug(slug, [
-    "title",
-    "slug",
-    "staticPreview",
-    "usesLargeTwitterCard",
-    "ogimage",
-  ])
+  const post = getPostBySlug(slug)
   if (!post.title) return {}
 
   const metadata: Metadata = {
@@ -78,17 +72,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const post = getPostBySlug(slug, [
-    "title",
-    "subtitle",
-    "date",
-    "slug",
-    "content",
-    "tags",
-    "usesLargeTwitterCard",
-    "staticPreview",
-    "ogimage",
-  ])
+  const post = getPostBySlug(slug)
 
   if (!post.title) {
     notFound()

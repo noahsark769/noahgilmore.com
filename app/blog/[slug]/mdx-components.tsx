@@ -14,50 +14,35 @@ import FlowGrid from "../../../src/components/FlowGrid"
 import IOS13SystemColorTable from "../../../src/components/IOS13SystemColorTable"
 import TrestleBlogPostLink from "../../../src/components/DataLink"
 
-export const SyntaxHighlightedCode = (props: React.ComponentProps<'code'>) => {
+export const SyntaxHighlightedCode = ({ className, children }: React.ComponentProps<'code'>) => {
   const isDarkMode = useIsDarkMode({ default: true })
   return (
     <SyntaxHighlighter
       codeTagProps={{ className: "vscode-highlight-code" }}
       customStyle={{ padding: 0, overflowX: "scroll" }}
       style={isDarkMode ? vscDarkPlus : duotoneLight}
-      language={props.className?.replace("language-", "")}
-      {...props}
-    />
+      language={className?.replace("language-", "")}
+    >
+      {String(children)}
+    </SyntaxHighlighter>
   )
 }
 
-export const MdxH1 = (props: React.ComponentProps<'h1'>) => (
-  <Header
-    is="h1"
-    id={slugify(String(props.children))}
-    {...{
-      ...props,
-      ...(typeof props.children === "string"
-        ? { id: slugify(props.children.toLowerCase()) }
-        : {}),
-    }}
-  />
-)
+export const MdxH1 = ({ children, is: _is, ...props }: React.ComponentProps<'h1'>) => {
+  const id = typeof children === "string" ? slugify(children.toLowerCase()) : slugify(String(children))
+  return <Header is="h1" id={id} {...props}>{children}</Header>
+}
 
-export const MdxH2 = (props: React.ComponentProps<'h2'>) => (
-  <Header
-    is="h2"
-    id={slugify(String(props.children))}
-    {...{
-      ...props,
-      ...(typeof props.children === "string"
-        ? { id: slugify(props.children.toLowerCase()) }
-        : {}),
-    }}
-  />
-)
+export const MdxH2 = ({ children, is: _is, ...props }: React.ComponentProps<'h2'>) => {
+  const id = typeof children === "string" ? slugify(children.toLowerCase()) : slugify(String(children))
+  return <Header is="h2" id={id} {...props}>{children}</Header>
+}
 
-export const MdxCode = (props: React.ComponentProps<'code'>) => {
-  if (props.className && typeof props.children === "string") {
-    return <SyntaxHighlightedCode {...props} />
+export const MdxCode = ({ children, ...props }: React.ComponentProps<'code'>) => {
+  if (props.className && typeof children === "string") {
+    return <SyntaxHighlightedCode {...props}>{children}</SyntaxHighlightedCode>
   }
-  return <code {...props} />
+  return <code {...props} className="before:content-none after:content-none">{children}</code>
 }
 
 export const MdxPre = (props: React.ComponentProps<'pre'>) => {

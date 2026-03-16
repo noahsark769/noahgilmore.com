@@ -4,13 +4,7 @@ import { Feed } from 'feed'
 import { getAllPosts } from '../src/utils/posts'
 
 export default async function generateRssFeed(config: { title: string; description: string; tag?: string; path: string }) {
-  const allPosts = getAllPosts([
-    'slug',
-    'title',
-    'date',
-    'mdxPreview',
-    'staticPreview',
-  ])
+  const allPosts = getAllPosts()
   const siteUrl = process.env.NEXT_PUBLIC_ROOT_URL ?? 'localhost:3000'
 
   const feedOptions = {

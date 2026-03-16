@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 }
 
 export default function BlogPage() {
-  const posts = getAllPosts(["slug", "content", "title", "date", "mdxPreview"])
+  const posts = getAllPosts()
   const edges = posts.map((post) => ({
     node: {
       id: post.slug,

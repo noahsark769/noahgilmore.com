@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts(["slug", "tags"])
+  const posts = getAllPosts()
   const uniqueTags = [...new Set(posts.map((p) => p.tags).flat())]
   return uniqueTags.map((tag) => ({ tag }))
 }
@@ -26,14 +26,7 @@ export default async function TagPage({
   params: Promise<{ tag: string }>
 }) {
   const { tag } = await params
-  const posts = getAllPosts([
-    "slug",
-    "content",
-    "title",
-    "date",
-    "mdxPreview",
-    "tags",
-  ]).filter((p) => p.tags.includes(tag))
+  const posts = getAllPosts().filter((p) => p.tags.includes(tag))
 
   const edges = posts.map((post) => ({
     node: {

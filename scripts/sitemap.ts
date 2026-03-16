@@ -4,7 +4,7 @@ import { getAllPosts } from '../src/utils/posts'
 const siteUrl = 'https://noahgilmore.com'
 
 function generateSitemap() {
-  const posts = getAllPosts(['slug', 'date'])
+  const posts = getAllPosts()
 
   const staticPages = [
     { url: '/', priority: '1.0' },

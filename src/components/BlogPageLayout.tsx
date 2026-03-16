@@ -53,13 +53,11 @@ export default function BlogPageLayout({ pageContext, location, children }: Reac
       <BlogPostContainer isCompressed={true} darkened={false}>
         <PostContainerOuter hasPadding={false}>
           <PostContainerInner>
-            <NonContent>
-              <BlogPostMeta
-                title={pageContext.frontmatter.title}
-                subtitle={pageContext.frontmatter.subtitle}
-                date={pageContext.frontmatter.date}
-              />
-            </NonContent>
+            <BlogPostMeta
+              title={pageContext.frontmatter.title}
+              subtitle={pageContext.frontmatter.subtitle}
+              date={pageContext.frontmatter.date}
+            />
             <MarkdownContent>{children}</MarkdownContent>
             <NonContent>
               <EndButtons
