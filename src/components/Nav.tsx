@@ -46,7 +46,7 @@ const Nav = ({ blog }: { blog?: boolean }) => {
   return (
     <StyledNav>
       <Title>
-        <A href={blog ? '/blog' : '/'} className="text-white">NOAH GILMORE</A>
+        <A href={blog ? '/blog' : '/'} className="text-standardBlue hover:text-standardBlueHighlight dark:text-white">NOAH GILMORE</A>
       </Title>
       <NavLinks>
         {blog && (
