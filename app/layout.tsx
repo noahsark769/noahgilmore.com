@@ -36,18 +36,7 @@ export default function RootLayout({
     >
       <body>
         <GoogleAnalytics />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              .twitter-embed > div {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-              }
-            `,
-          }}
-        />
-        {children}
+{children}
       </body>
     </html>
   )
