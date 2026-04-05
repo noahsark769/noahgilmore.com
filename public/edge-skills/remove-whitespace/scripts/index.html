@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remove Whitespace</title>
+  </head>
+  <body>
+    <script>
+      window['ai_edge_gallery_get_result'] = async (data) => {
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.text;
+
+          if (typeof text !== 'string') {
+            return JSON.stringify({ error: 'Missing or invalid "text" field in input data.' });
+          }
+
+          // Remove all whitespace characters: spaces, tabs, newlines, carriage returns
+          const cleaned = text.replace(/\s+/g, '');
+
+          return JSON.stringify({ result: cleaned });
+        } catch (e) {
+          return JSON.stringify({ error: 'Failed to parse input data: ' + e.message });
+        }
+      };
+    </script>
+  </body>
+</html>
